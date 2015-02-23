@@ -1,9 +1,12 @@
 var app = require('exproose')();
 
 app.api().route('/reader').get(function(req, res) {
-    res.send(require('src/reader').all().map(function(reader) {
-        return reader.type;
-    }));
+    res.send(new require('src/user')({
+        email: 'me@example.com',
+        readers: {
+            'type1': {}
+        }
+    }).getReaders());
 });
 
 if (!module.parent) {
