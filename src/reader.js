@@ -1,9 +1,8 @@
-var pubsub  = require('src/pubsub');
-var extend  = require('extend');
-var fs      = require('fs');
-var config  = require('exproose').config;
-var _       = require('underscore');
-var User    = require('src/user');
+var pubsub = require('src/pubsub');
+var extend = require('extend');
+var fs     = require('fs');
+var config = require('exproose').config;
+var _      = require('underscore');
 
 var reader = module.exports = function(type) {
     var readerClass = function() {
@@ -30,21 +29,22 @@ reader.forType = function(type) {
     return _.findWhere(this.all(), {type: type});
 };
 
-reader.Reader = function() {
+reader.Reader = function(user) {
+    this.user = user;
 };
 
 reader.Reader.prototype.getType = function() {
     return this.constructor.type;
 };
 
-reader.Reader.prototype.getUsers = function() {
-    return User.find().where('readers.' + this.getType()).exists().exec();
+reader.Reader.prototype.getUser = function() {
+    return this.user;
 };
 
-reader.Reader.prototype.emit = function(user, event) {
+reader.Reader.prototype.emit = function(event) {
     pubsub.emit('event.' + this.getType(), {
         event: extend(true, {}, event, {type: this.getType()}),
-        user: user
+        user: this.getUser()
     });
 };
 

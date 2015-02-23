@@ -1,14 +1,13 @@
 require('test/helper');
 
 var pubsub = require('src/pubsub');
-var User = require('src/user');
 var EventEmitter = require('eventemitter2').EventEmmiter2;
 var config = require('exproose').config;
 
 describe("reader", function () {
 
     var reader = require('src/reader');
-    var TestReader = reader('type0');
+    var TestReader = reader('test');
 
     it('is a function', function() {
         expect(reader).to.be.a('function');
@@ -21,63 +20,50 @@ describe("reader", function () {
             .to.be.instanceOf(TestReader)
             .and
             .to.be.instanceOf(reader.Reader);
-            expect(TestReader).to.have.property('type', 'type0');
+            expect(TestReader).to.have.property('type', 'test');
         });
 
-        describe('new SubClass()', function() {
-
-            var unit = new TestReader();
-
+        describe('new SubClass(user)', function() {
             it("creates an instance of the reader", function () {
+                var user = { user: 'name'};
+                var unit = new TestReader(user);
             });
 
             describe('instance', function() {
                 describe('.constructor', function() {
                     it("is the subclass", function () {
-                        expect(unit.constructor).to.eq(TestReader);
+                        expect(new TestReader().constructor).to.eq(TestReader);
                     });
                 });
                 describe('.getType()', function() {
                     it("returns the type of the reader", function () {
-                        expect(unit.getType()).to.eq('type0');
+                        expect(new TestReader().getType()).to.eq('test');
                     });
                 });
 
-                describe('.getUsers()', function() {
-
-                    require('exproose').setup();
-
-                    it("returns a promise for all the users using the reader", function () {
-                        return expect(unit.getUsers())
-                        .to.eventually.have.length(1)
-                        .and.satisfy(function(readers) {
-                            return readers[0].equals(new User({
-                                _id: readers[0]._id,
-                                name: 'Name2',
-                                email: '2@example.com',
-                                readers: {
-                                    'type0': {}
-                                }
-                            }));
-                        });
+                describe('.getUser()', function() {
+                    it("returns the user", function () {
+                        var user = { user: 'name'};
+                        expect(new TestReader(user).getUser()).to.eq(user);
                     });
                 });
 
-                describe('.emit(user, event)', function() {
+                describe('.emit(event)', function() {
                     it("publishes an event and user through 'event.{{type}}'", function (done) {
                         var event = { some: 'event'};
                         var user = { user: 'name'};
+                        var unit = new TestReader(user);
 
-                        pubsub.on('event.type0', function(data) {
+                        pubsub.on('event.test', function(data) {
                             expect(data.event).to.deep.eq({
-                                type: 'type0',
+                                type: 'test',
                                 some: 'event'
                             });
                             expect(data.user).to.eq(user);
                             done();
                         });
 
-                        unit.emit(user, event);
+                        unit.emit(event);
                     });
                 });
 
