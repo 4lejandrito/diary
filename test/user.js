@@ -85,4 +85,19 @@ describe("user", function () {
             expect(user.readers).to.deep.eq({});
         });
     });
+
+    describe('startReaders()', function() {
+        it('calls start in all the readers', function() {
+            var user = new User();
+            sinon.stub(user, 'getReaders').returns([
+                {start: sinon.stub()},
+                {start: sinon.stub()}
+            ]);
+
+            user.startReaders();
+
+            expect(user.getReaders()[0].start).to.have.been.called;
+            expect(user.getReaders()[1].start).to.have.been.called;
+        });
+    });
 });
