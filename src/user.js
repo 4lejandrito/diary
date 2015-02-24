@@ -23,5 +23,6 @@ User.prototype.addReader = function(type, config) {
     if (Reader) {
         this.readers[type] = config;
         this.getReaders().push(new Reader(this));
+        return this.save();
     }
 };

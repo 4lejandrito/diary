@@ -24,14 +24,22 @@ describe("user", function () {
         });
 
         it('will cache the results', function() {
-            var user = new User({
+            var userA = new User({
                 email: 'me@example.com',
                 readers: {
                     'type1': {}
                 }
             });
 
-            expect(user.getReaders()).to.eq(user.getReaders());
+            var userB = new User({
+                _id: userA._id,
+                email: 'me@example.com',
+                readers: {
+                    'type1': {}
+                }
+            });
+
+            expect(userA.getReaders()).to.eq(userB.getReaders());
         });
     });
 
@@ -52,6 +60,18 @@ describe("user", function () {
                     some: 'config'
                 }
             });
+        });
+
+        it('updates the user in the database', function() {
+            var user = new User({
+                email: 'me@example.com'
+            });
+
+            sinon.stub(user, 'save');
+
+            user.addReader('type1', {some: 'config'});
+
+            expect(user.save).to.have.been.called;
         });
 
         it('does not fail when the reader does not exist', function() {

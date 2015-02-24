@@ -7,17 +7,15 @@
     "node": "0.10"
   },
   "dependencies": {
-    "chai-as-promised": "^4.2.0",
     "eventemitter2": "^0.4.14",
     "exproose": "*",
     "extend": "^2.0.0",
-    "promise": "^6.1.0",
-    "rekuire": "^0.1.9",
-    "require-directory": "^2.0.0",
-    "sinon": "^1.12.2",
     "underscore": "^1.8.2"
   },
   "devDependencies": {
+    "chai-as-promised": "^4.2.0",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.7.0",
     "chai": "*",
     "istanbul": "*",
     "mocha": "*",
