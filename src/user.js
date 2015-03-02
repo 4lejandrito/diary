@@ -2,7 +2,7 @@ var reader = require('src/reader');
 
 module.exports = function(schema, options) {
     schema.add({
-        readers: {type: Object, default: {}}
+        readers: {type: Object, minimize: false, default: {}}
     });
 
     var readers = {};
@@ -20,9 +20,12 @@ module.exports = function(schema, options) {
         var Reader = reader.forType(type);
 
         if (Reader) {
-            this.readers[type] = config;
-            this.getReaders().push(new Reader(this));
-            this.save();
+            this.set('readers.' + type, config);
+            var r = new Reader(this);
+            this.getReaders().push(r);
+            this.save(function(err, user, number) {
+                r.start();
+            });
         }
     };
 

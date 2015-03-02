@@ -11,6 +11,7 @@ var reader = module.exports = function(type) {
 
     readerClass.prototype = Object.create(reader.Reader.prototype);
     readerClass.prototype.constructor = readerClass;
+    extend(true, readerClass, reader.Reader);
     readerClass.type = type;
 
     return readerClass;
@@ -31,6 +32,14 @@ reader.forType = function(type) {
 
 reader.Reader = function(user) {
     this.user = user;
+    this.start();
+};
+
+reader.Reader.toJSON = function() {
+    return {
+        type: this.type,
+        schema: 'TODO'
+    };
 };
 
 reader.Reader.prototype.getType = function() {
@@ -48,4 +57,12 @@ reader.Reader.prototype.emit = function(event) {
     });
 };
 
+reader.Reader.prototype.toJSON = function() {
+    return {
+        type: this.getType(),
+        config: this.getUser().readers[this.getType]
+    };
+};
+
+reader.Reader.prototype.start = function() {};
 reader.Reader.prototype.stop = function() {};
