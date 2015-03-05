@@ -1,6 +1,6 @@
 var reader = require('src/reader');
 
-var RandomReader = module.exports = reader('random');
+var RandomReader = module.exports = reader.create('random');
 
 RandomReader.prototype.start = function() {
     var self = this;
