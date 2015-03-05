@@ -10,6 +10,7 @@ app.api.get('/user/reader', function(req, res) {
 });
 
 app.api.post('/user/reader/:type', function(req, res) {
+    if(!req.user.readers) req.user.readers = {};
     req.user.readers[req.params.type] = req.body;
     app.db.get('users').updateById(req.user._id, req.user)
     .on('success', function(n) {
