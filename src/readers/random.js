@@ -10,6 +10,7 @@ module.exports = {
                         value: Math.random()
                     });
                 }, 500);
+
             },
             stop: function() {
                 clearInterval(interval);

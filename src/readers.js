@@ -29,7 +29,7 @@ readers.forUser = function(user) {
 };
 
 readers.forUserType = function(type, user) {
-    return _.findWhere(this.forUser(user), {type: type});
+    return _.findWhere(readersForUser[user._id], {type: type});
 }
 
 readers.create = function(type, user) {
@@ -51,3 +51,8 @@ readers.create = function(type, user) {
     readersForUser[user._id].push(wrapper);
     return wrapper;
 };
+
+readers.delete = function(type, user) {
+    var i = _.findIndex(readersForUser[user._id], {type: type});
+    readersForUser[user._id].splice(i,1);
+}

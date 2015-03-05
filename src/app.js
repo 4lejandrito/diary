@@ -26,6 +26,7 @@ app.api.post('/user/reader/:type/delete', function(req, res) {
     .on('success', function(n) {
         var reader = readers.forUserType(req.params.type, req.user);
         reader.stop();
+        readers.delete(req.params.type, req.user);
         res.send(reader);
     });
 });
