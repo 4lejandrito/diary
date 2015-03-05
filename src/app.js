@@ -20,6 +20,16 @@ app.api.post('/user/reader/:type', function(req, res) {
     });
 });
 
+app.api.post('/user/reader/:type/delete', function(req, res) {
+    delete req.user.readers[req.params.type];
+    app.db.get('users').updateById(req.user._id, req.user)
+    .on('success', function(n) {
+        var reader = readers.forUserType(req.params.type, req.user);
+        reader.stop();
+        res.send(reader);
+    });
+});
+
 app.api.get('/user/event', function(req, res) {
     app.db.get('events').find({}, '-user').on('success', function(events) {
         res.send(events);

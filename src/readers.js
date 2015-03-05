@@ -28,6 +28,10 @@ readers.forUser = function(user) {
     return readersForUser[user._id];
 };
 
+readers.forUserType = function(type, user) {
+    return _.findWhere(this.forUser(user), {type: type});
+}
+
 readers.create = function(type, user) {
     var instance = this.forType(type).instance(user, function(data) {
         readers.emit('event', type, data, user);
