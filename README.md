@@ -13,4 +13,4 @@ Lovely diary...
 
 ----
 ## Instances
-- Stage: https://diary-stage.herokuapp.com/api
+- Stage: https://diary-stage.herokuapp.com
