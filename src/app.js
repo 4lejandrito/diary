@@ -1,5 +1,5 @@
 var app = require('exproose')();
-var readers = require('src/readers');
+var readers = require('./readers');
 
 app.api.get('/reader', function(req, res) {
     res.send(readers.all());
@@ -20,7 +20,7 @@ app.api.post('/user/reader/:type', function(req, res) {
     });
 });
 
-app.api.post('/user/reader/:type/delete', function(req, res) {
+app.api.delete('/user/reader/:type', function(req, res) {
     delete req.user.readers[req.params.type];
     app.db.get('users').updateById(req.user._id, req.user)
     .on('success', function(n) {
