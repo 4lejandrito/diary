@@ -55,7 +55,7 @@ readers.create = function(type, user) {
 readers.delete = function(type, user) {
     var reader = this.forUserType(type, user);
     reader.stop();
-    var i = _.findIndex(readersForUser[user._id], {type: type});
-    readersForUser[user._id].splice(i,1);
+    var indexReader = _.findIndex(readersForUser[user._id], {type: type});
+    readersForUser[user._id].splice(indexReader,1);
     return reader;
 }
