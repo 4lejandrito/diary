@@ -2,7 +2,7 @@ var extend = require('extend');
 var fs     = require('fs');
 var config = require('exproose').config;
 var _      = require('underscore');
-var readerWrapper = require('./readerWrapper');
+var readerWrapper = require('./reader-wrapper');
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
 
 var readers = module.exports = new EventEmitter2();
