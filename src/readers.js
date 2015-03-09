@@ -2,7 +2,7 @@ var extend = require('extend');
 var fs     = require('fs');
 var config = require('exproose').config;
 var _      = require('underscore');
-var readerWrapper = require('./ReaderWrapper');
+var readerWrapper = require('./readerWrapper');
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
 
 var readers = module.exports = new EventEmitter2();
@@ -38,7 +38,7 @@ readers.create = function(type, user) {
         readers.emit('event', type, data, user);
     });
 
-    var wrapper = new readerWrapper(instance, type);
+    var wrapper = readerWrapper(instance, type);
     readersForUser[user._id].push(wrapper);
     return wrapper;
 };
