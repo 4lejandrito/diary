@@ -11,6 +11,7 @@ var nodemon = require('gulp-nodemon');
 var reactify = require('reactify');
 var watchify = require('watchify');
 var less = require('gulp-less');
+var jshint = require('gulp-jshint');
 
 var bundle = function(path, dest, debug) {
     var b = browserify({
@@ -62,7 +63,13 @@ gulp.task('frontend:js', function () {
 gulp.task('frontend', ['frontend:js', 'frontend:less']);
 gulp.task('frontend:watch', ['frontend:js:watch', 'frontend:less:watch']);
 
-gulp.task('backend');
+gulp.task('backend:lint', function () {
+    return gulp.src(['src/**/*.js*', '!src/frontend/**/*.js*', '!src/public/**/*.js*'])
+    .pipe(jshint())
+    .pipe(jshint.reporter('default'));
+});
+
+gulp.task('backend', ['backend:lint']);
 gulp.task('backend:watch', function () {
     return nodemon({
         script: 'src/app.js',
