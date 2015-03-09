@@ -24,9 +24,7 @@ app.api.delete('/user/reader/:type', function(req, res) {
     delete req.user.readers[req.params.type];
     app.db.get('users').updateById(req.user._id, req.user)
     .on('success', function(n) {
-        var reader = readers.forUserType(req.params.type, req.user);
-        reader.stop();
-        readers.delete(req.params.type, req.user);
+        var reader = readers.delete(req.params.type, req.user);
         res.send(reader);
     });
 });
