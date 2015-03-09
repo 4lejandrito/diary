@@ -2,5 +2,5 @@ module.exports = {
     db: {
         url: 'mongodb://localhost/diary'
     },
-    readers: 'src/readers'
+    readers: process.cwd() + '/src/readers'
 };
