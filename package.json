@@ -40,7 +40,7 @@
         "gulp-less": "^3.0.1"
     },
     "scripts": {
-        "postpublish": "gulp",
+        "prepublish": "gulp",
         "start": "node src/app",
         "watch": "gulp watch",
         "debug": "node-debug src/app.js",
