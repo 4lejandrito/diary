@@ -1,3 +1,4 @@
+src/public/index.js
 coverage
 lib-cov
 *.seed
