@@ -14,18 +14,7 @@
     "react": "^0.12.2",
     "superagent": "^0.21.0",
     "underscore": "^1.8.2",
-    "watch": "^0.14.0"
-  },
-  "devDependencies": {
-    "reactify": "^1.0.0",
-    "watchify": "^2.4.0",
-    "chai-as-promised": "^4.2.0",
-    "sinon": "^1.12.2",
-    "sinon-chai": "^2.7.0",
-    "chai": "*",
-    "istanbul": "*",
-    "mocha": "*",
-    "node-inspector": "*",
+    "watch": "^0.14.0",
     "browserify": "^8.1.3",
     "glob": "^4.4.0",
     "source-map-support": "^0.2.9",
@@ -38,7 +27,18 @@
     "gulp-uglify": "^1.1.0",
     "gulp-nodemon": "^1.0.5",
     "gulp-less": "^3.0.1",
-    "gulp-jshint": "^1.9.2"
+    "gulp-jshint": "^1.9.2",
+    "reactify": "^1.0.0",
+    "watchify": "^2.4.0"
+  },
+  "devDependencies": {
+    "chai-as-promised": "^4.2.0",
+    "sinon": "^1.12.2",
+    "sinon-chai": "^2.7.0",
+    "chai": "*",
+    "istanbul": "*",
+    "mocha": "*",
+    "node-inspector": "*"
   },
   "scripts": {
     "prepublish": "gulp",
