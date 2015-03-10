@@ -1,4 +1,3 @@
-
 module.exports = function(reader, type) {
     return {
         type: type,
@@ -11,5 +10,5 @@ module.exports = function(reader, type) {
             this.running = false;
             reader.stop();
         }
-    }
-}
+    };
+};
