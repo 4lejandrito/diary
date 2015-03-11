@@ -1,6 +1,6 @@
 var extend = require('extend');
 var fs     = require('fs');
-var config = require('exproose').config;
+var config = require('config');
 var _      = require('underscore');
 var readerWrapper = require('./reader-wrapper');
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
@@ -44,6 +44,8 @@ readers.create = function(type, user) {
 };
 
 readers.delete = function(type, user) {
+    console.log(type);
+    console.log(user);
     var reader = this.forUserType(type, user);
     reader.stop();
     var indexReader = _.findIndex(readersForUser[user._id], {type: type});

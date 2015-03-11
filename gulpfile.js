@@ -59,12 +59,11 @@ gulp.task('frontend:js', function () {
     return bundle('./src/frontend/js/app.jsx', 'src/public/index.js', false);
 });
 
-
 gulp.task('frontend', ['frontend:js', 'frontend:less']);
 gulp.task('frontend:watch', ['frontend:js:watch', 'frontend:less:watch']);
 
 gulp.task('backend:lint', function () {
-    return gulp.src(['src/**/*.js*', '!src/frontend/**/*.js*', '!src/public/**/*.js*'])
+    return gulp.src(['src/backend/**/*.js*'])
     .pipe(jshint())
     .pipe(jshint.reporter('default'));
 });
@@ -72,7 +71,7 @@ gulp.task('backend:lint', function () {
 gulp.task('backend', ['backend:lint']);
 gulp.task('backend:watch', function () {
     return nodemon({
-        script: 'src/app.js',
+        script: 'src/diary.js',
         ignore: ['src/frontend/**', 'src/public/**']
     });
 });
