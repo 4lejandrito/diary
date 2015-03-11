@@ -44,8 +44,6 @@ readers.create = function(type, user) {
 };
 
 readers.delete = function(type, user) {
-    console.log(type);
-    console.log(user);
     var reader = this.forUserType(type, user);
     reader.stop();
     var indexReader = _.findIndex(readersForUser[user._id], {type: type});
