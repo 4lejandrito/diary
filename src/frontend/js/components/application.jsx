@@ -3,6 +3,7 @@ var ControlPanel = require('components/control-panel');
 var api = require('api');
 var Loading = require('components/loading');
 var Icon = require('components/icon');
+var Gravatar = require('react-gravatar');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -19,7 +20,8 @@ module.exports = React.createClass({
     render: function() {
         return <div className="app">
             <header>
-                <Icon name="pencil"/>
+                <Icon name="pencil"/> Diary
+                {this.state.user ? <Gravatar email={this.state.user.email} size={200}/> : false}
             </header>
             {this.state.user ? <ControlPanel user={this.state.user}/> : <Loading/>}
         </div>;

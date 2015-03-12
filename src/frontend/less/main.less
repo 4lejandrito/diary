@@ -5,7 +5,6 @@
 @main-color: fadeOut(blue, 45%);
 
 body {
-    padding-top: 2 * @spacing;
     font-family: jaf-bernino-sans, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
     color: rgba(0, 0, 0, 0.8);
     font-size: 20px;
@@ -27,13 +26,33 @@ h3 {
 
 header {
     text-align: center;
-    .icon {
-        font-size: 30px;
-    }
 }
 
 .app>header {
-    margin-bottom: -@spacing;
+    position: relative;
+    font-size: 30px;
+    color: white;
+    height: 60px;
+    text-align: left;
+    padding-top: 2 * @spacing;
+    padding-left: 3 * @spacing;
+    padding-right: 3 * @spacing;
+    background: @main-color;
+    margin-bottom: 2.5 * @spacing;
+    img {
+        background: white;
+        position: relative;
+        .circle(40px);
+        top: -30px;
+        display: block;
+        margin: 0 auto;
+        @media(max-width: 480px) {
+            position: absolute;
+            right: 2 * @spacing;
+            top: @spacing;
+            .circle(25px);
+        }
+    }
 }
 
 img {
@@ -73,11 +92,6 @@ section {
 
 .control-panel {
     text-align: center;
-
-    header > img {
-        .circle;
-        margin-bottom: @spacing;
-    }
 }
 
 input {

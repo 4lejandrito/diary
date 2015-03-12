@@ -1,7 +1,6 @@
 var React = require('react');
 var AvailableReaders = require('./available-readers');
 var ActiveReaders = require('./active-readers');
-var Gravatar = require('react-gravatar');
 var Icon = require('components/icon');
 var api = require('api');
 var _ = require('underscore');
@@ -40,7 +39,6 @@ module.exports = React.createClass({
         return <section className="control-panel">
             <header>
                 <h2>Settings</h2>
-                <Gravatar email={this.props.user.email} size={200}/>
             </header>
             <section>
                 <button onClick={this.toggle}>
