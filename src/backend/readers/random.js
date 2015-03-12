@@ -1,6 +1,10 @@
 module.exports = {
     type: 'random',
-    schema: {},
+    image: 'https://www.random.org/analysis/randbitmap-rdo-section.png',
+    description: 'Tracks random events, pretty useless',
+    schema: {
+        interval: 500
+    },
     instance: function(user, emit) {
         var interval;
         return {

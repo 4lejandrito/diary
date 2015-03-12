@@ -21,11 +21,12 @@ var Application = module.exports = function() {
     app.get ('/api/user', controllers.user.get);
     app.use ('/'        , express.static('src/public'));
 
-    app.get   ('/api/user/reader'      , controllers.user.getReaders);
-    app.post  ('/api/user/reader/:type', controllers.user.addReader);
-    app.delete('/api/user/reader/:type', controllers.user.deleteReader);
-    app.get   ('/api/user/event'       , controllers.user.getEvents);
-    app.get   ('/api/reader'           , controllers.reader.getAvailable);
+    app.get   ('/api/user/reader'         , controllers.user.getReaders);
+    app.post  ('/api/user/reader/:type'   , controllers.user.addReader);
+    app.delete('/api/user/reader/:type'   , controllers.user.deleteReader);
+    app.get   ('/api/user/event'          , controllers.user.getEvents);
+    app.get   ('/api/reader'              , controllers.reader.getAvailable);
+    app.get   ('/api/reader/:type/picture', controllers.reader.getPicture);
 
     app.db = monk(config.db.url);
 
