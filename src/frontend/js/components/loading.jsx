@@ -2,8 +2,8 @@ var React = require('react');
 
 module.exports = React.createClass({
     render: function() {
-        return <div>
-            Loading...
+        return <div className="loading">
+            Please wait...
         </div>;
     }
 });

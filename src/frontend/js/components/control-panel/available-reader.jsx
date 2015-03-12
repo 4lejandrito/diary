@@ -9,6 +9,10 @@ module.exports = React.createClass({
         );
     },
     render: function() {
-        return <a href="#" onClick={this.addReader}>{this.props.reader.type}</a>;
+        return <div className="available-reader" onClick={this.addReader}>
+            <img src={'/api/reader/' + this.props.reader.type + '/picture'}/>
+            <strong>{this.props.reader.type}</strong>
+            <p>{this.props.reader.description || 'No description available'}</p>
+        </div>;
     }
 });

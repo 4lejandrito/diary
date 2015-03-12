@@ -1,3 +1,136 @@
 //@import "node_modules/material-ui/src/less/scaffolding.less";
 //@import "custom-overrides.less";
 //@import "node_modules/material-ui/src/less/components.less";
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css');
+@import url('http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css');
+@spacing: 10px;
+
+body {
+    padding-top: 2 * @spacing;
+    font-family: jaf-bernino-sans, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+h2 {
+    padding-bottom: @spacing * 2;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0;
+}
+
+h3 {
+    padding-bottom: @spacing * 2;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+header {
+    text-align: center;
+    .icon {
+        font-size: 30px;
+    }
+}
+
+.app>header {
+    margin-bottom: -@spacing;
+}
+
+img {
+    box-shadow: 0px 2px 10px -5px;
+    border: solid 1px #aaaaaa;
+    padding: 3px;
+}
+
+.loading {
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    margin: @spacing * 2 auto 0 auto;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.circle(@radius: 40px) {
+    width: @radius * 2;
+    height: @radius * 2;
+    border-radius: 50%;
+}
+
+button {
+    cursor: pointer;
+    @color: fadeOut(blue, 45%);
+    font-weight: bold;
+    border: solid 2px @color;
+    border-radius: 200px;
+    background: transparent;
+    padding: @spacing / 2 @spacing * 2;
+    padding-bottom: @spacing / 1.6;
+    font-size: 15px;
+    color: @color;
+    outline: none;
+}
+
+section {
+    padding: 2 * @spacing;
+}
+
+.control-panel {
+    text-align: center;
+
+    header > img {
+        .circle;
+        margin-bottom: @spacing;
+    }
+}
+
+input {
+    padding: @spacing;
+    width: 200px;
+    font-size: 15px;
+    border: none;
+    border-bottom: solid 1px #aaaaaa;
+    outline: none;
+    margin-bottom: 2 * @spacing;
+}
+
+.active-reader, .available-reader {
+    position: relative;
+    &:hover {
+        box-shadow: 0px 2px 10px -5px;
+        border: solid 1px #aaaaaa;
+    }
+    cursor: pointer;
+    box-sizing: border-box;
+    border: solid 1px transparent;
+    padding: @spacing;
+    display: inline-block;
+    width: 33.33%;
+    img {
+        .circle(20px);
+        display: block;
+        margin: 0 auto @spacing auto;
+    }
+    button {
+        display: none;
+    }
+    p {
+        margin-top: @spacing / 2;
+        font-weight: normal;
+        font-size: 12px;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    &:hover button {
+        display: block;
+        position: absolute;
+        border: none;
+        top: -21px;
+        left: -30px;
+        font-size: 25px;
+        color: lighten(red, 10%);
+    }
+}

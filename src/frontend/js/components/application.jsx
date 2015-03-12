@@ -2,6 +2,7 @@ var React = require('react');
 var ControlPanel = require('components/control-panel');
 var api = require('api');
 var Loading = require('components/loading');
+var Icon = require('components/icon');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -16,6 +17,11 @@ module.exports = React.createClass({
         });
     },
     render: function() {
-        return this.state.user ? <ControlPanel user={this.state.user}/> : <Loading/>;
+        return <div className="app">
+            <header>
+                <Icon name="pencil"/>
+            </header>
+            {this.state.user ? <ControlPanel user={this.state.user}/> : <Loading/>}
+        </div>;
     }
 });

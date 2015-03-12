@@ -3,10 +3,11 @@ var api = require('api');
 var AvailableReader = require('./available-reader');
 var _ = require('underscore');
 var Loading = require('components/loading');
+var Icon = require('components/icon');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {filter: ''};
+        return {filter: '', readers: []};
     },
     componentWillMount: function() {
         var self = this;
@@ -21,16 +22,13 @@ module.exports = React.createClass({
         var filteredReaders = _.filter(this.state.readers, function(reader) {
             return reader.type.indexOf(this.state.filter) != -1;
         }, this);
-        return <div>
-            <h3>Available readers</h3>
-            <input type="text" placeholder="Filter readers" onChange={this.filter}/>
-            {this.state.readers ? <ul>
+        return <section>
+            <Icon name="search"/> <input type="text" placeholder="Find a service" onChange={this.filter}/>
+            {this.state.readers.length ? <div>
                 {filteredReaders.map(function(reader) {
-                    return <li>
-                        <AvailableReader reader={reader}/>
-                    </li>;
+                    return <AvailableReader reader={reader}/>;
                 })}
-            </ul> : <Loading/>}
-        </div>;
+            </div> : <Loading/>}
+        </section>;
     }
 });

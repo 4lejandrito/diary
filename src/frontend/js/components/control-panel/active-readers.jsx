@@ -24,18 +24,15 @@ module.exports = React.createClass({
         });
     },
     render: function() {
-        return <div>
-            <h3>Active readers</h3>
+        return <section>
             {this.state.readers ?
-            <ul>
+            <div>
                 {
                     this.state.readers.map(function(reader) {
-                        return <li>
-                            <ActiveReader reader={reader}/>
-                        </li>;
+                        return <ActiveReader reader={reader}/>;
                     }, this)
                 }
-            </ul> : <Loading/>}
-        </div>;
+            </div> : <Loading/>}
+        </section>;
     }
 });
