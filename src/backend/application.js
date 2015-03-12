@@ -12,6 +12,7 @@ var Application = module.exports = function() {
 
     var passport = auth(app);
 
+    app.use(passport.initialize());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
 
