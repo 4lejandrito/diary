@@ -3,36 +3,28 @@ var api = require('api');
 var ActiveReader = require('./active-reader');
 var _ = require('underscore');
 var Loading = require('components/loading');
+var Icon = require('components/icon');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {};
+        return {filter: ''};
     },
-    componentWillMount: function() {
-        var self = this;
-        api.on('reader.removed', function(reader) {
-            self.setState({
-                readers: _.without(self.state.readers, reader)
-            });
-        });
-        api.on('reader.new', function(reader) {
-            self.state.readers.push(reader);
-            self.setState({readers: self.state.readers});
-        });
-        api.activeReaders(function(readers) {
-            self.setState({readers: readers});
-        });
+    filter: function(event) {
+        this.setState({filter: event.target.value});
     },
     render: function() {
-        return <section>
-            {this.state.readers ?
+        return this.props.readers.length ? <section>
+            <Icon name="search"/>
+            <input type="text" placeholder="Search your services" onChange={this.filter}/>
             <div>
                 {
-                    this.state.readers.map(function(reader) {
+                    _.filter(this.props.readers, function(reader) {
+                        return reader.type.indexOf(this.state.filter) != -1;
+                    }, this).map(function(reader) {
                         return <ActiveReader reader={reader}/>;
-                    }, this)
+                    })
                 }
-            </div> : <Loading/>}
-        </section>;
+            </div>
+        </section> : false;
     }
 });

@@ -7,28 +7,24 @@ var Icon = require('components/icon');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {filter: '', readers: []};
-    },
-    componentWillMount: function() {
-        var self = this;
-        api.availableReaders(function(readers) {
-            self.setState({readers: readers});
-        });
+        return {filter: ''};
     },
     filter: function(event) {
         this.setState({filter: event.target.value});
     },
     render: function() {
-        var filteredReaders = _.filter(this.state.readers, function(reader) {
-            return reader.type.indexOf(this.state.filter) != -1;
-        }, this);
-        return <section>
-            <Icon name="search"/> <input type="text" placeholder="Find a service" onChange={this.filter}/>
-            {this.state.readers.length ? <div>
-                {filteredReaders.map(function(reader) {
-                    return <AvailableReader reader={reader}/>;
-                })}
-            </div> : <Loading/>}
-        </section>;
+        return this.props.readers.length ? <section>
+            <Icon name="search"/>
+            <input type="text" placeholder="Find a service" onChange={this.filter}/>
+            <div>
+                {
+                    _.filter(this.props.readers, function(reader) {
+                        return reader.type.indexOf(this.state.filter) != -1;
+                    }, this).map(function(reader) {
+                        return <AvailableReader reader={reader}/>;
+                    })
+                }
+            </div>
+        </section> : <Loading/>;
     }
 });
