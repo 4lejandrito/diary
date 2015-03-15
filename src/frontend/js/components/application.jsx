@@ -39,7 +39,9 @@ module.exports = React.createClass({
             </Content>
             <footer>
                 <div>
-                    <Icon name="code"/> with <Icon name="heart"/> by
+                    <Icon name="code"/> on <a href="http://github.com/4lejandrito/diary" target="_blank">
+                        <Icon name="github-alt"/>
+                    </a> by
                 </div>
                 {
                     this.state.authors.map(function(author) {
