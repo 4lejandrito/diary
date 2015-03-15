@@ -15,12 +15,12 @@ module.exports = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        api.on('reader.new', function(reader) {
+        api.on('reader.new', this.onReaderCreated = function(reader) {
             self.state.activeReaders.push(reader);
             self.setState({activeReaders: self.state.activeReaders});
             self.toggle();
         });
-        api.on('reader.removed', function(reader) {
+        api.on('reader.removed', this.onReaderRemoved = function(reader) {
             self.setState({
                 activeReaders: _.without(self.state.activeReaders, reader)
             });
@@ -31,6 +31,10 @@ module.exports = React.createClass({
         api.availableReaders(function(readers) {
             self.setState({availableReaders: readers});
         });
+    },
+    componentWillUnmount: function() {
+        api.off('reader.new', this.onReaderCreated);
+        api.off('reader.removed', this.onReaderRemoved);
     },
     toggle: function() {
         this.setState({adding: !this.state.adding});
