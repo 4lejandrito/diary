@@ -1,13 +1,16 @@
 var React = require('react');
 var ControlPanel = require('components/control-panel');
 var api = require('api');
+var Content = require('components/content');
 var Loading = require('components/loading');
 var Icon = require('components/icon');
 var Gravatar = require('react-gravatar');
+var RouteHandler = require('react-router').RouteHandler;
+var Link = require('react-router').Link;
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {};
+        return {authors: []};
     },
     componentWillMount: function() {
         var self = this;
@@ -21,9 +24,13 @@ module.exports = React.createClass({
         return <div className="app">
             <header>
                 <Icon name="pencil"/> Diary
-                {this.state.user ? <Gravatar email={this.state.user.email} size={200}/> : false}
+                {this.state.user ? <Link to="settings" title="Settings">
+                    <Gravatar email={this.state.user.email} size={200}/>
+                </Link> : false}
             </header>
-            {this.state.user ? <ControlPanel user={this.state.user}/> : <Loading/>}
+            <Content>
+                <RouteHandler/>
+            </Content>
         </div>;
     }
 });

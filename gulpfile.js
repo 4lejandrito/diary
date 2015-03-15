@@ -28,6 +28,10 @@ var bundle = function(path, dest, debug) {
 
     function bundle() {
         return b.bundle()
+        .on('error', function (err) {
+            console.log(err.toString());
+            this.emit("end");
+        })
         .pipe(plumber())
         .pipe(source(dest))
         .pipe(buffer())
@@ -53,10 +57,10 @@ gulp.task('frontend:less:watch', ['frontend:less'], function() {
 });
 
 gulp.task('frontend:js:watch', function () {
-    return bundle('./src/frontend/js/app.jsx', 'src/public/index.js', true);
+    return bundle('./src/frontend/js/diary.jsx', 'src/public/index.js', true);
 });
 gulp.task('frontend:js', function () {
-    return bundle('./src/frontend/js/app.jsx', 'src/public/index.js', false);
+    return bundle('./src/frontend/js/diary.jsx', 'src/public/index.js', false);
 });
 
 gulp.task('frontend', ['frontend:js', 'frontend:less']);

@@ -37,20 +37,16 @@ module.exports = React.createClass({
     },
     render: function() {
         return <section className="control-panel">
-            <header>
-                <h2>Settings</h2>
-            </header>
-            <section>
-                <button onClick={this.toggle}>
-                    <Icon name={this.state.adding ? "minus" : 'plus'}/>
-                    {' ' + 'Add new service'}
-                </button>
-                {
-                    this.state.adding ?
-                    <AvailableReaders readers={this.state.availableReaders}/> :
-                    <ActiveReaders readers={this.state.activeReaders}/>
-                }
-            </section>
+            <h2>Settings</h2>
+            <button onClick={this.toggle}>
+                <Icon name={this.state.adding ? "minus" : 'plus'}/>
+                {' ' + 'Add new service'}
+            </button>
+            {
+                this.state.adding ?
+                <AvailableReaders readers={this.state.availableReaders}/> :
+                <ActiveReaders readers={this.state.activeReaders}/>
+            }
         </section>;
     }
 });

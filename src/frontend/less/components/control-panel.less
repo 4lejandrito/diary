@@ -1,0 +1,61 @@
+.control-panel {
+    text-align: center;
+
+    article {
+        .content;
+    }
+
+    .active-reader, .available-reader {
+        position: relative;
+        &:hover {
+            & > strong {
+                color: @main-color;
+            }
+        }
+        cursor: pointer;
+        box-sizing: border-box;
+        border: solid 1px transparent;
+        padding: @spacing;
+        display: inline-block;
+        width: 33.33%;
+        vertical-align: top;
+        @media(max-width: 480px) {
+            width: 50%;
+        }
+        @media(max-width: 300px) {
+            width: 100%;
+        }
+        margin-bottom: @spacing;
+        img {
+            .circle(40px);
+            display: block;
+            margin: 0 auto @spacing auto;
+        }
+        button {
+            display: none;
+        }
+        p {
+            margin-top: @spacing / 2;
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 15px;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        &:hover button {
+            display: block;
+            position: absolute;
+            border: none;
+            top: -21px;
+            left: -30px;
+            color: lighten(red, 10%);
+        }
+        .settings {
+            position: fixed;
+            left: 0;
+            width: 100%;
+        }
+    }
+}

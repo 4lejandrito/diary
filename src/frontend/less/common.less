@@ -1,0 +1,43 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: jaf-bernino-sans, 'Lucida Grande', 'Lucida Sans Unicode', 'Lucida Sans', Geneva, Verdana, sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+    font-size: 20px;
+    margin: 0 auto;
+    height: 100%;
+}
+
+h2 {
+    padding-bottom: @spacing * 2;
+    font-size: 40px;
+    font-weight: bold;
+    margin: 0;
+}
+
+h3 {
+    padding-bottom: @spacing * 2;
+    font-size: 20px;
+    font-weight: bold;
+}
+header, footer {
+    text-align: center;
+}
+
+.content {
+    padding: 2 * @spacing;
+}
+
+.circle(@radius: 40px) {
+    width: @radius * 2;
+    height: @radius * 2;
+    border-radius: 50%;
+}
+
+img {
+    box-shadow: 0 2px 10px -5px;
+    border: solid 1px #aaa;
+    padding: 3px;
+}

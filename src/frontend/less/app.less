@@ -1,0 +1,54 @@
+.app {
+    @footer-height: 4 * @spacing + 60px;
+    min-height: 100%;
+    position: relative;
+
+    & > header {
+        position: relative;
+        font-size: 30px;
+        color: white;
+        height: 60px;
+        text-align: left;
+        padding-top: 2 * @spacing;
+        padding-left: 3 * @spacing;
+        padding-right: 3 * @spacing;
+        background: @main-color;
+        margin-bottom: 2.5 * @spacing;
+        img {
+            background: white;
+            position: relative;
+            .circle(40px);
+            top: -30px;
+            display: block;
+            margin: 0 auto;
+            @media(max-width: 480px) {
+                position: absolute;
+                right: 2 * @spacing;
+                top: @spacing;
+                .circle(25px);
+            }
+        }
+    }
+
+    & > .content {
+        padding-bottom: @footer-height;
+    }
+
+    & > footer {
+        height: @footer-height;
+        position: absolute;
+        box-sizing: border-box;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        color: grey;
+        font-size: .7em;
+        padding: 2 * @spacing;
+
+        img {
+            margin: @spacing / 2;
+            margin-top: @spacing;
+            .circle(12px);
+        }
+    }
+}

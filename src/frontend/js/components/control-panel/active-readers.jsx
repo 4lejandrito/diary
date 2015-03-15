@@ -13,7 +13,7 @@ module.exports = React.createClass({
         this.setState({filter: event.target.value});
     },
     render: function() {
-        return this.props.readers.length ? <section>
+        return this.props.readers.length ? <article>
             <Icon name="search"/>
             <input type="text" placeholder="Search your services" onChange={this.filter}/>
             <div>
@@ -25,6 +25,6 @@ module.exports = React.createClass({
                     })
                 }
             </div>
-        </section> : false;
+        </article> : false;
     }
 });
