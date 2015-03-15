@@ -1,9 +1,10 @@
 var config = require('config');
 
-var version = require(process.cwd() + '/package.json').version;
+var package_json = require(process.cwd() + '/package.json');
 
 module.exports.get = function(req, res) {
     res.send({
-        version: version
+        version: package_json.version,
+        authors: package_json.contributors
     });
 };

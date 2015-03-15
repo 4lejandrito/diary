@@ -6,6 +6,19 @@
   "engines": {
     "node": "0.10"
   },
+  "contributors": [{
+      "name": "Matthew Alner",
+      "email": "matthew.alner@gmail.com",
+      "github": "MatthewAlner"
+  },{
+      "name": "Pau Folque",
+      "email": "paufolque@gmail.com",
+      "github": "pauful"
+  },{
+      "name": "Alejandro Tardin",
+      "email": "alejandro@tardin.com",
+      "github": "4lejandrito"
+  }],
   "dependencies": {
     "body-parser": "^1.12.0",
     "browserify": "^8.1.3",
@@ -28,6 +41,7 @@
     "passport-http": "^0.2.2",
     "react": "^0.12.2",
     "react-gravatar": "^1.0.0",
+    "react-router": "^0.12.4",
     "reactify": "^1.0.0",
     "require-directory": "^2.1.0",
     "source-map-support": "^0.2.9",

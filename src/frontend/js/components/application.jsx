@@ -7,6 +7,7 @@ var Icon = require('components/icon');
 var Gravatar = require('react-gravatar');
 var RouteHandler = require('react-router').RouteHandler;
 var Link = require('react-router').Link;
+var Author = require('components/author');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -17,6 +18,11 @@ module.exports = React.createClass({
         api.user(function(user) {
             self.setState({
                 user: user
+            });
+        });
+        api.authors(function(authors) {
+            self.setState({
+                authors: authors
             });
         });
     },
@@ -31,6 +37,16 @@ module.exports = React.createClass({
             <Content>
                 <RouteHandler/>
             </Content>
+            <footer>
+                <div>
+                    <Icon name="code"/> with <Icon name="heart"/> by
+                </div>
+                {
+                    this.state.authors.map(function(author) {
+                        return <Author data={author}/>;
+                    })
+                }
+            </footer>
         </div>;
     }
 });

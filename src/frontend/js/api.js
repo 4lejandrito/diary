@@ -30,5 +30,10 @@ var api = module.exports = extend(true, new EventEmitter2(), {
             api.emit('reader.removed', reader);
             if (cb) cb(res.body);
         });
+    },
+    authors: function(cb) {
+        return rest.get('/api', function(err, res) {
+            if (cb) cb(res.body.authors);
+        });
     }
 });
