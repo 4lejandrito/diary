@@ -3,7 +3,7 @@ var rest = require('superagent');
 
 module.exports = {
     type: 'Chuck Norris Jokes',
-    image: 'http://s30.postimg.org/wtdegowsh/9de9475b_92c7_4617_b27b_6d1025c0ff90.png',
+    image: 'http://s1.postimg.org/dhn0rp2un/9de9475b_92c7_4617_b27b_6d1025c0ff90.png',
     description: 'Get a random daily Chuck Norris joke',
     schema: {
     },
