@@ -34,8 +34,9 @@ readers.forUserType = function(type, user) {
 };
 
 readers.create = function(type, user) {
+    var timestamp = new Date();
     var instance = this.forType(type).instance(user, function(data) {
-        readers.emit('event', type, data, user);
+        readers.emit('event', type, data, user, timestamp);
     });
 
     var wrapper = readerWrapper(instance, type);

@@ -32,11 +32,12 @@ var Application = module.exports = function() {
     app.db = monk(config.db.url);
 
     app.db.on('open', function() {
-        readers.on('event', function(type, data, user) {
+        readers.on('event', function(type, data, user, timestamp) {
             app.db.get('events').insert({
                 type: type,
                 user: user._id,
-                data: data
+                data: data,
+                loggedAt: timestamp
             });
         });
 
