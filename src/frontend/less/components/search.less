@@ -1,4 +1,4 @@
-button, a.button {
+.search {
     cursor: pointer;
     @color: @main-color;
     font-weight: bold;
@@ -9,5 +9,16 @@ button, a.button {
     padding-bottom: @spacing / 1.6;
     color: @color;
     outline: none;
+    display: inline-block;
     text-decoration: none;
+
+    input {
+        width: 80%;
+        margin-left: @spacing;
+        padding: 0;
+        &::-webkit-input-placeholder {
+            color: @main-color;
+            font-weight: normal;
+        }
+    }
 }

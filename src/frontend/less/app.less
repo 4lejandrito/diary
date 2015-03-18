@@ -14,18 +14,32 @@
         padding-right: 3 * @spacing;
         background: @main-color;
         margin-bottom: 2.5 * @spacing;
-        img {
-            background: white;
+        @media(max-width: 480px) {
+            margin-bottom: 0;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+        }
+        aside {
+            img {
+                background: white;
+            }
             position: relative;
-            .circle(40px);
             top: -30px;
-            display: block;
+            text-align: center;
+            width: 110px;
             margin: 0 auto;
             @media(max-width: 480px) {
                 position: absolute;
                 right: 2 * @spacing;
                 top: @spacing;
-                .circle(25px);
+                img {
+                    .circle(25px);
+                }
+            }
+            a {
+                .circle(10px);
             }
         }
     }

@@ -1,5 +1,4 @@
 var React = require('react');
-var ControlPanel = require('components/control-panel');
 var api = require('api');
 var Content = require('components/content');
 var Loading = require('components/loading');
@@ -29,10 +28,12 @@ module.exports = React.createClass({
     render: function() {
         return <div className="app">
             <header>
-                <Icon name="pencil"/> Diary
-                {this.state.user ? <Link to="settings" title="Settings">
-                    <Gravatar email={this.state.user.email} size={200}/>
-                </Link> : false}
+                <Link to="/"><Icon name="pencil"/> Diary</Link>
+                <aside>
+                    {this.state.user ? <Link to="/services" title="Services">
+                        <Gravatar email={this.state.user.email} size={200}/>
+                    </Link> : false}
+                </aside>
             </header>
             <Content>
                 <RouteHandler/>

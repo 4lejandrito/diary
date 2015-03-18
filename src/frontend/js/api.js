@@ -1,6 +1,7 @@
 var rest = require('superagent');
 var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var extend = require('extend');
+var _ = require('underscore');
 
 var api = module.exports = extend(true, new EventEmitter2(), {
     user: function(cb) {
@@ -29,6 +30,11 @@ var api = module.exports = extend(true, new EventEmitter2(), {
         return rest.del('/api/user/reader/' + reader.type, function(res) {
             api.emit('reader.removed', reader);
             if (cb) cb(res.body);
+        });
+    },
+    getAvailableReader: function(type, cb) {
+        return rest.get('/api/reader', function(res) {
+            if (cb) cb(_.findWhere(res.body, {type: type}));
         });
     },
     authors: function(cb) {

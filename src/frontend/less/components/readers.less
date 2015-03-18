@@ -1,12 +1,15 @@
-.control-panel {
-    text-align: center;
+.active-readers, .available-readers {
 
-    article {
-        .content;
+    .search, .button {
+        display: inline-block;
+        margin: 0 @spacing;
+        margin-bottom: @spacing;
     }
 
     .active-reader, .available-reader {
         position: relative;
+        text-decoration: none;
+        color: @text-color;
         &:hover {
             & > strong {
                 color: @main-color;
@@ -51,11 +54,6 @@
             top: -21px;
             left: -30px;
             color: lighten(red, 10%);
-        }
-        .settings {
-            position: fixed;
-            left: 0;
-            width: 100%;
         }
     }
 }
