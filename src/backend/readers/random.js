@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 module.exports = {
     type: 'random',
     image: 'https://www.random.org/analysis/randbitmap-rdo-section.png',
@@ -11,10 +13,10 @@ module.exports = {
             start: function() {
                 interval = setInterval(function() {
                     emit({
+                        date: moment().dayOfYear(Math.random() * 365).toDate(),
                         value: Math.random()
                     });
-                }, 500);
-
+                }, user.readers.random.interval);
             },
             stop: function() {
                 clearInterval(interval);

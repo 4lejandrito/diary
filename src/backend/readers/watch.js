@@ -4,12 +4,14 @@ module.exports = {
     type: 'watch',
     image: 'http://blogs.mccombs.utexas.edu/the-most/files/2009/06/corrupted-excel-file.png',
     description: 'Tracks changes in the file system, also useless',
-    schema: {},
+    schema: {
+        directory: '.'
+    },
     instance: function(user, emit) {
         var interval;
         return {
             start: function() {
-                watch.watchTree('.', function (f, curr, prev) {
+                watch.watchTree(user.readers.watch.directory, function (f, curr, prev) {
                     if (!(typeof f == "object" && prev === null && curr === null)) {
                         emit({
                             action: (prev === null) ? 'new' : (curr.nlink === 0 ? 'removed' : 'changed'),
@@ -19,7 +21,7 @@ module.exports = {
                 });
             },
             stop: function() {
-                watch.unwatchTree('.');
+                watch.unwatchTree(user.readers.watch.directory);
             }
         };
     }

@@ -6,25 +6,30 @@
   "engines": {
     "node": "0.10"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Matthew Alner",
       "email": "matthewalner@googlemail.com",
       "github": "MatthewAlner"
-  },{
+    },
+    {
       "name": "Pau Folque",
       "email": "paufolque@gmail.com",
       "github": "pauful"
-  },{
+    },
+    {
       "name": "Alejandro Tardin",
       "email": "alejandro@tardin.com",
       "github": "4lejandrito"
-  }],
+    }
+  ],
   "dependencies": {
     "body-parser": "^1.12.0",
     "browserify": "^8.1.3",
     "config": "^1.12.0",
     "cron": "*",
     "dropbox": "^0.10.3",
+    "errorhandler": "^1.3.5",
     "eventemitter2": "^0.4.14",
     "express": "^4.12.2",
     "extend": "^2.0.0",
@@ -38,6 +43,7 @@
     "gulp-shell": "^0.3.0",
     "gulp-uglify": "^1.1.0",
     "imap-client": "^0.11.1",
+    "moment": "^2.9.0",
     "monk": "^1.0.0",
     "passport": "^0.2.1",
     "passport-http": "^0.2.2",
