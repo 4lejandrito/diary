@@ -26,6 +26,7 @@ var Application = module.exports = function() {
     app.post  ('/api/user/reader/:type'   , controllers.user.addReader);
     app.delete('/api/user/reader/:type'   , controllers.user.deleteReader);
     app.get   ('/api/user/event'          , controllers.user.getEvents);
+    app.get   ('/api/user/event/:year'    , controllers.user.getYearView);
     app.get   ('/api/reader'              , controllers.reader.getAvailable);
     app.get   ('/api/reader/:type/picture', controllers.reader.getPicture);
 

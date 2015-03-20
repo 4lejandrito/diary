@@ -1,4 +1,6 @@
 var readers = require('../readers');
+var moment = require('moment');
+var _ = require('underscore');
 
 module.exports = {
 
@@ -49,8 +51,30 @@ module.exports = {
     },
 
     getEvents: function(req, res) {
-        req.app.db.get('events').find({}, '-user').on('success', function(events) {
+        req.app.db.get('events').find({
+            user: req.user._id
+        }, '-user').on('success', function(events) {
             res.send(events);
+        });
+    },
+
+    getYearView: function(req, res) {
+        var events = req.app.db.get('events');
+        var start = moment().year(req.params.year).dayOfYear(1).hour(0);
+        var end = moment(start).add(1, 'years');
+
+        events.col.aggregate([{
+            $match: {
+                user: req.user._id,
+                date: {$gte: start.toDate(), $lte: end.toDate()}
+            }
+        },{
+            $group: {
+                _id: {month: {$month: "$date"}, type: "$type"},
+                count: {$sum: 1}
+            }
+        }], function(err, data) {
+            res.send(data);
         });
     }
 };
