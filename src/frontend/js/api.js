@@ -41,5 +41,20 @@ var api = module.exports = extend(true, new EventEmitter2(), {
         return rest.get('/api', function(err, res) {
             if (cb) cb(res.body.authors);
         });
+    },
+    events: function(cb) {
+        return rest.get('/api/user/event', function(res) {
+            cb(res.body);
+        });
+    },
+    viewYear: function(year, cb) {
+        return rest.get('/api/user/event/' + year, function(res) {
+            cb(res.body);
+        });
+    },
+    viewMonth: function(year, month, cb) {
+        return rest.get('/api/user/event/' + year + '/' + month, function(res) {
+            cb(res.body);
+        });
     }
 });

@@ -34,7 +34,7 @@ module.exports = React.createClass({
                 </Link> : false}
             </header>
             <Content>
-                <RouteHandler/>
+                <RouteHandler {...this.props.params}/>
             </Content>
             <footer>
                 <div>

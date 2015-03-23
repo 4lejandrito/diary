@@ -1,0 +1,105 @@
+.events-year {
+    text-align: center;
+
+    & > h2, & > h4 {
+        display: inline-block;
+        margin: 0 @spacing;
+    }
+
+    & > h4 {
+        opacity: .6;
+        a {
+            text-decoration: none;
+        }
+    }
+
+    .year {
+        margin: @spacing auto;
+        text-align: center;
+
+        .month {
+            width: 25%;
+            @media(max-width: 480px) {
+                width: 33.33%;
+            }
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 20px;
+            color: @main-color;
+            background: white;
+            box-sizing: border-box;
+            padding: @spacing;
+            vertical-align: top;
+            position: relative;
+            text-align: center;
+
+            &[disabled] {
+                pointer-events: none;
+                opacity: .2;
+            }
+
+            &:hover {
+                background: fadeOut(@main-color, 60%);
+                color: white;
+                h4 {
+                    color: white;
+                }
+            }
+
+            h4 {
+                margin-bottom: @spacing;
+                padding: 0;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+
+            strong {
+                font-size: 20px;
+                display: block;
+                margin-bottom: @spacing;
+            }
+
+            img {
+                .circle(10px);
+                padding: 2px;
+                display: inline-block;
+                position: relative;
+                color: red;
+                margin: 0 1px;
+            }
+        }
+    }
+}
+
+/* .day {
+    .circle(10px);
+    display: inline-block;
+    border: solid 1px @main-color;
+    color: @main-color;
+    padding: @spacing;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin: @spacing / 4;
+
+    &:empty {
+        visibility: hidden;
+        &:after {
+            content: '-';
+        }
+    }
+
+    &.today {
+        background: @main-color;
+        color: white;
+    }
+} */
+
+/* .month {
+    box-sizing: border-box;
+    display: inline-block;
+    width: 25%;
+    padding: @spacing;
+    vertical-align: top;
+}
+ */
