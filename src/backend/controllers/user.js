@@ -76,5 +76,24 @@ module.exports = {
         }], function(err, data) {
             res.send(data);
         });
+    },
+    getMonthView: function(req, res) {
+        var events = req.app.db.get('events');
+        var start = moment().year(req.params.year).month(req.params.month).date(1).hour(0);
+        var end = moment(start).add(1, 'months');
+
+        events.col.aggregate([{
+            $match: {
+                user: req.user._id,
+                date: {$gte: start.toDate(), $lte: end.toDate()}
+            }
+        },{
+            $group: {
+                _id: {day: {$dayOfMonth: "$date"}, type: "$type"},
+                count: {$sum: 1}
+            }
+        }], function(err, data) {
+            res.send(data);
+        });
     }
 };
