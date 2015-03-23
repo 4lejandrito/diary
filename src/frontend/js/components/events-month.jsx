@@ -12,36 +12,21 @@ var Day = React.createClass({
         if (this.props.moment.startOf('day').isSame(moment().startOf('day'))) {
             className += ' today';
         }
-        var totalNumberOfEvents = _.reduce(this.props.view, function(memo, e) {
-            return memo + e.count;
-        }, 0);
-        var top = totalNumberOfEvents ? this.props.view.map(function(e) {
-            return <ReaderImage type={e._id.type}/>;
-        }) : <img src="http://upload.wikimedia.org/wikipedia/commons/a/aa/Empty_set.svg"/>;
 
-        return <Link to="/" disabled={this.props.disabled || !totalNumberOfEvents} className={className}>
-            <h4>{this.props.moment.date()}</h4>
+        var top = !_.isEmpty(this.props.view) ? this.props.view.map(function(e) {
+            return <div>
+                <ReaderImage type={e._id.type}/>
+                {e.count}
+            </div>;
+        }) : <h4>No data</h4>;
+
+        return <Link to='/#' className={className} disabled={_.isEmpty(this.props.view)}>
+            <header>
+                <h4>{this.props.moment.format('dddd')}</h4>
+                <h2>{this.props.moment.date()}</h2>
+            </header>
             {top}
-            <strong>{totalNumberOfEvents || 'No data'}</strong>
         </Link>;
-    }
-});
-
-var Week = React.createClass({
-    render: function() {
-        var days = [], now = this.props.moment;
-        function filter(e) {
-            return e._id.day === now.date();
-        }
-        for (var day = 0; day < 7; day++) {
-            var current = moment(now).day(day);
-            days.push(<Day
-                view={this.props.view.filter(filter)}
-                disabled={current.month() !== now.month()}
-                moment={current}
-            />);
-        }
-        return <div>{days}</div>;
     }
 });
 
@@ -49,19 +34,26 @@ var Month = React.createClass({
     render: function() {
         var month = this.props.moment.month();
         var now = moment(this.props.moment).date(1);
-        var weeks = [];
+        var days = [];
+
+        function filter(e) {
+            return e._id.day === now.date();
+        }
 
         do {
-            weeks.push(<Week view={this.props.view} moment={moment(now)}/>);
-        } while (now.add(1, 'weeks').month() == month);
+            days.push(<Day view={this.props.view.filter(filter)} moment={moment(now)}/>);
+        } while (now.add(1, 'days').month() == month);
 
         return <div className="month">
-            {weeks}
+            {days}
         </div>;
     }
 });
 
 module.exports = React.createClass({
+    getInitialState: function() {
+        return {};
+    },
     componentWillMount: function() {
         this.refresh(this.props.year, this.props.month);
     },
@@ -70,27 +62,26 @@ module.exports = React.createClass({
     },
     refresh: function(year, month) {
         var self = this;
-        api.viewMonth(year || moment().year(), month || moment().month(), function(view) {
+        api.viewMonth(year, month, function(view) {
             self.setState({view: view});
         });
-        this.replaceState({});
     },
     render: function() {
-        if (!this.state) return <Loading/>;
-
         var day = moment()
         .year(parseInt(this.props.year))
         .month(parseInt(this.props.month));
+        var previous = moment(day).subtract(1, 'months');
+        var next = moment(day).add(1, 'months');
 
         return <section className="events-month">
             <h4>
-                <Link to="month" params={{year: day.year(), month: day.month() - 1}}>
+                <Link to="month" params={{year: previous.year(), month: previous.month()}}>
                     {moment(day).subtract(1, 'months').format('MMM')}
                 </Link>
             </h4>
             <h2>{day.format('MMMM')}</h2>
             <h4>
-                <Link to="month" params={{year: day.year(), month: day.month() + 1}}>
+                <Link to="month" params={{year: next.year(), month: next.month()}}>
                     {moment(day).add(1, 'months').format('MMM')}
                 </Link>
             </h4>

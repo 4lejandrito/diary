@@ -13,21 +13,39 @@
         }
     }
 
-    .day {
-        .circle(40px);
-        border-radius: 200px;
+    .month {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+        background: @main-color;
+        height: 50vh;
+        box-sizing: border-box;
+        padding: @spacing 0;
+        box-shadow: 0 2px 10px -5px black inset;
+    }
+
+    .month .day {
+        height: 100%;
+        width: 250px;
+        overflow-x: scroll;
+        background: white;
+        box-shadow: 0 2px 10px -5px black;
+        border-radius: 4px;
         display: inline-block;
-        border: solid 1px @main-color;
         box-sizing: border-box;
         color: @main-color;
-        padding: @spacing;
         text-align: center;
         font-weight: bold;
+        margin: 0 @spacing;
         text-decoration: none;
-        margin: @spacing / 4;
 
-        &:hover {
-            background: fadeOut(@main-color, 60%);
+        header {
+            padding: @spacing;
+        }
+
+        &:not([disabled]):hover {
+            box-shadow: none;
+            background: @main-color;
             color: white;
             h4 {
                 color: white;
@@ -35,35 +53,35 @@
         }
 
         &[disabled] {
-            pointer-events: none;
             opacity: .2;
+            pointer-events: none;
         }
 
-        &.today {
+        &.today h2 {
+            width: 40%;
+            margin: 0 auto;
+            border-radius: 200px;
             background: @main-color;
             color: white;
         }
 
-        img {
-            .circle(10px);
-            padding: 2px;
-            display: inline-block;
-            position: relative;
-            color: red;
-            margin: 0 1px;
+        div {
+            text-align: left;
+            width: 100%;
+            padding: @spacing / 2 25%;
+            box-sizing: border-box;
+
+            img {
+                .circle(20px);
+                margin-right: 3 * @spacing;
+                display: inline-block;
+                vertical-align: middle;
+            }
         }
 
         h4 {
-            margin-bottom: @spacing;
             padding: 0;
-            text-overflow: ellipsis;
-            overflow: hidden;
-        }
-
-        strong {
-            font-size: 20px;
-            display: block;
-            margin-bottom: @spacing;
+            margin: 0;
         }
     }
 }
