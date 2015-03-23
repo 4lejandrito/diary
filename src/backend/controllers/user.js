@@ -60,8 +60,8 @@ module.exports = {
 
     getYearView: function(req, res) {
         var events = req.app.db.get('events');
-        var start = moment().year(req.params.year).dayOfYear(1).hour(0);
-        var end = moment(start).add(1, 'years');
+        var start = moment().year(parseInt(req.params.year)).startOf('year');
+        var end = moment(start).endOf('year');
 
         events.col.aggregate([{
             $match: {
@@ -77,10 +77,12 @@ module.exports = {
             res.send(data);
         });
     },
+
     getMonthView: function(req, res) {
         var events = req.app.db.get('events');
-        var start = moment().year(req.params.year).month(req.params.month).date(1).hour(0);
-        var end = moment(start).add(1, 'months');
+        var start = moment().year(parseInt(req.params.year))
+        .month(parseInt(req.params.month)).startOf('month');
+        var end = moment(start).endOf('month');
 
         events.col.aggregate([{
             $match: {
