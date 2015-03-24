@@ -11,9 +11,8 @@ module.exports = React.createClass({
     addReader: function() {
         var self = this;
         api.addReader(this.state.reader.type, _.mapObject(this.refs, function(ref, name) {
-            var numberValue = parseFloat(ref.getDOMNode().value);
-            var isNumber = !isNaN(numberValue) && isFinite(numberValue);
-            return isNumber ? numberValue : ref.getDOMNode().value;
+            var value = ref.getDOMNode().value;
+            return !isNaN(value) ? parseFloat(value) : value;
         }), function() {
             self.transitionTo('/services');
         });
