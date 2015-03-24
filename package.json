@@ -44,7 +44,7 @@
     "gulp-uglify": "^1.1.0",
     "imap-client": "^0.11.1",
     "moment": "^2.9.0",
-    "monk": "^1.0.0",
+    "monk": "^0.9",
     "passport": "^0.2.1",
     "passport-http": "^0.2.2",
     "react": "^0.12.2",
