@@ -13,7 +13,9 @@ var Day = React.createClass({
             className += ' today';
         }
 
-        var top = !_.isEmpty(this.props.view) ? this.props.view.map(function(e) {
+        var top = !_.isEmpty(this.props.view) ? this.props.view.sort(function(a, b){
+            return b.count - a.count;
+        }).map(function(e) {
             return <div>
                 <ReaderImage type={e._id.type}/>
                 {e.count}

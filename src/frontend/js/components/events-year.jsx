@@ -19,11 +19,13 @@ var Month = React.createClass({
             return <ReaderImage type={e._id.type}/>;
         }) : <img src="http://upload.wikimedia.org/wikipedia/commons/a/aa/Empty_set.svg"/>;
 
-        return <Link to="month" params={params} disabled={!totalNumberOfEvents} className="month">
-            <h4>{this.props.moment.format('MMMM')}</h4>
-            {top}
-            <strong>{totalNumberOfEvents || 'No data'}</strong>
-        </Link>;
+        return <div className="month">
+            <Link to="month" params={params} disabled={!totalNumberOfEvents}>
+                <h4>{this.props.moment.format('MMMM')}</h4>
+                {top}
+                <strong>{totalNumberOfEvents || 'No data'}</strong>
+            </Link>
+        </div>;
     }
 });
 

@@ -14,74 +14,55 @@
     }
 
     .month {
+        @distanceBetweenDays: @spacing / 2;
+
         overflow-x: scroll;
         overflow-y: hidden;
         white-space: nowrap;
         background: @main-color;
         height: 50vh;
         box-sizing: border-box;
-        padding: @spacing 0;
+        padding: 2 * @distanceBetweenDays @distanceBetweenDays;
         box-shadow: 0 2px 10px -5px black inset;
-    }
 
-    .month .day {
-        height: 100%;
-        width: 250px;
-        overflow-x: scroll;
-        background: white;
-        box-shadow: 0 2px 10px -5px black;
-        border-radius: 4px;
-        display: inline-block;
-        box-sizing: border-box;
-        color: @main-color;
-        text-align: center;
-        font-weight: bold;
-        margin: 0 @spacing;
-        text-decoration: none;
+        .day {
+            .card;
 
-        header {
-            padding: @spacing;
-        }
+            height: 100%;
+            width: 250px;
+            overflow-x: scroll;
+            margin: 0 @distanceBetweenDays;
 
-        &:not([disabled]):hover {
-            box-shadow: none;
-            background: @main-color;
-            color: white;
-            h4 {
+            header {
+                margin-bottom: @spacing;
+            }
+
+            &.today h2 {
+                width: 40%;
+                margin: 0 auto;
+                border-radius: 200px;
+                background: @main-color;
                 color: white;
             }
-        }
 
-        &[disabled] {
-            opacity: .2;
-            pointer-events: none;
-        }
+            div {
+                text-align: left;
+                width: 100%;
+                padding: @spacing / 2 25%;
+                box-sizing: border-box;
 
-        &.today h2 {
-            width: 40%;
-            margin: 0 auto;
-            border-radius: 200px;
-            background: @main-color;
-            color: white;
-        }
-
-        div {
-            text-align: left;
-            width: 100%;
-            padding: @spacing / 2 25%;
-            box-sizing: border-box;
-
-            img {
-                .circle(20px);
-                margin-right: 3 * @spacing;
-                display: inline-block;
-                vertical-align: middle;
+                img {
+                    .circle(20px);
+                    margin-right: 3 * @spacing;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
             }
-        }
 
-        h4 {
-            padding: 0;
-            margin: 0;
+            h4 {
+                padding: 0;
+                margin: 0;
+            }
         }
     }
 }

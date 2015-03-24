@@ -14,36 +14,32 @@
     }
 
     .year {
+        @distanceBetweenMonths: @spacing / 2;
+
         margin: @spacing auto;
         text-align: center;
+        background: @main-color;
+        box-sizing: border-box;
+        padding: @distanceBetweenMonths;
+        box-shadow: 0 2px 10px -5px black inset;
 
         .month {
+            text-decoration: none;
+            display: inline-block;
+            box-sizing: border-box;
             width: 25%;
+            max-width: 200px;
+            min-width: 110px;
             @media(max-width: 480px) {
                 width: 33.33%;
             }
-            text-decoration: none;
-            display: inline-block;
-            border-radius: 20px;
-            color: @main-color;
-            background: white;
-            box-sizing: border-box;
-            padding: @spacing;
+            margin: 0;
+            padding: @distanceBetweenMonths;
             vertical-align: top;
-            position: relative;
-            text-align: center;
 
-            &[disabled] {
-                pointer-events: none;
-                opacity: .2;
-            }
-
-            &:hover {
-                background: fadeOut(@main-color, 60%);
-                color: white;
-                h4 {
-                    color: white;
-                }
+            a {
+                .card;
+                margin: 0;
             }
 
             h4 {
@@ -54,7 +50,6 @@
             }
 
             strong {
-                font-size: 20px;
                 display: block;
                 margin-bottom: @spacing;
             }
@@ -63,43 +58,9 @@
                 .circle(10px);
                 padding: 2px;
                 display: inline-block;
-                position: relative;
                 color: red;
                 margin: 0 1px;
             }
         }
     }
 }
-
-/* .day {
-    .circle(10px);
-    display: inline-block;
-    border: solid 1px @main-color;
-    color: @main-color;
-    padding: @spacing;
-    text-align: center;
-    font-size: 14px;
-    font-weight: bold;
-    margin: @spacing / 4;
-
-    &:empty {
-        visibility: hidden;
-        &:after {
-            content: '-';
-        }
-    }
-
-    &.today {
-        background: @main-color;
-        color: white;
-    }
-} */
-
-/* .month {
-    box-sizing: border-box;
-    display: inline-block;
-    width: 25%;
-    padding: @spacing;
-    vertical-align: top;
-}
- */

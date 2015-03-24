@@ -1,0 +1,29 @@
+.card {
+    padding: @spacing;
+    width: 100%;
+    background: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    border-radius: 2px;
+    display: inline-block;
+    box-sizing: border-box;
+    color: @main-color;
+    text-align: center;
+    font-weight: bold;
+    margin: @spacing;
+    text-decoration: none;
+    transition: background-color 100ms linear;
+
+    &:not([disabled]):hover {
+        box-shadow: none;
+        background: @main-color;
+        color: white;
+        h4 {
+            color: white;
+        }
+    }
+
+    &[disabled] {
+        opacity: .2;
+        pointer-events: none;
+    }
+}
