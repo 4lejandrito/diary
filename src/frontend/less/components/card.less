@@ -1,4 +1,4 @@
-.card {
+.card(@hover: true) {
     padding: @spacing;
     width: 100%;
     background: white;
@@ -8,17 +8,18 @@
     box-sizing: border-box;
     color: @main-color;
     text-align: center;
-    font-weight: bold;
     margin: @spacing;
     text-decoration: none;
     transition: background-color 100ms linear;
 
-    &:not([disabled]):hover {
-        box-shadow: none;
-        background: @main-color;
-        color: white;
-        h4 {
+    & when (@hover = true) {
+        &:not([disabled]):hover {
+            box-shadow: none;
+            background: @main-color;
             color: white;
+            h4 {
+                color: white;
+            }
         }
     }
 

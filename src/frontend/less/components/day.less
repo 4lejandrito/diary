@@ -26,14 +26,14 @@
             color: white;
             box-sizing: border-box;
             position: relative;
-            max-width: 400px;
-            margin: 0 auto;
+            margin: 0 0;
             padding: 2 * @spacing @spacing;
             min-height: 64px;
             display: block;
             &:nth-child(2n) {
                 margin-left: 50%;
                 border-left: solid 4px white;
+                text-align: left;
                 right: 4px;
                 padding-left: 5 * @spacing;
                 & > img {
@@ -44,6 +44,7 @@
                 margin-right: 50%;
                 border-right: solid 4px white;
                 padding-right: 5 * @spacing;
+                text-align: right;
                 & > img {
                     right: -26px;
                 }
@@ -56,17 +57,39 @@
                 box-shadow: none;
                 padding: 4px;
             }
+            time {
+                display: block;
+            }
             .content {
-                .card;
+                .card(@hover: false);
+                text-align: left;
                 margin: @spacing 0;
                 font-size: 14px;
-                img {
+                width: auto;
+                max-width: 70%;
+                div > img {
+                    display: block;
+                    margin: 0 auto;
                     box-sizing: border-box;
                     border-radius: 2px;
                     max-width: 100%;
-                    width: auto;
+                    width: 100%;
                     height: auto;
                     margin-top: @spacing;
+                }
+
+                li {
+                    img {
+                        vertical-align: middle;
+                        .circle(7px);
+                        padding: 1px;
+                        margin-right: @spacing / 2;
+                    }
+
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+
                 }
             }
         }

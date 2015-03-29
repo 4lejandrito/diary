@@ -25,6 +25,7 @@ var bundle = function(path, dest, debug) {
     });
     if (debug) b = watchify(b);
     b.transform(reactify);
+    b.transform('require-globify');
 
     function bundle() {
         return b.bundle()

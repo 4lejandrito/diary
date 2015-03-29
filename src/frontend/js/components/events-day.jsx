@@ -3,22 +3,29 @@ var api = require('api');
 var Loading = require('components/loading');
 var ReaderImage = require('components/reader-image');
 var moment = require('moment');
-var Link = require('react-router').Link;
+var Link = require('components/link');
 var _ = require('underscore');
 var Icon = require('components/icon');
+var eventComponents = require('./events/*', {hash: true});
 
 var Event = React.createClass({
     render: function() {
+        var Component = eventComponents[this.props.event.type];
+
         return <li className="event">
             <ReaderImage type={this.props.event.type}/>
             <time>
                 <Icon name="clock-o"/>{' '}
                 {moment(this.props.event.date).format('HH:mm')}
             </time>
-            <a href={this.props.event.url} className="content">
-                {this.props.event.type}
-                {this.props.event.image ? <img src={this.props.event.image}/> : null}
-            </a>
+            <div className="content">
+                {Component ? <Component event={this.props.event}/> : <div>
+                    <header>
+                        {this.props.event.description || this.props.event.type}
+                    </header>
+                    {this.props.event.image ? <img src={this.props.event.image}/> : null}
+                </div>}
+            </div>
         </li>;
     }
 });
