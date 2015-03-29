@@ -22,7 +22,11 @@ var Day = React.createClass({
             </div>;
         }) : <h4>No data</h4>;
 
-        return <Link to='/#' className={className} disabled={_.isEmpty(this.props.view)}>
+        return <Link to='day' params={{
+                year: this.props.moment.year(),
+                month: this.props.moment.month(),
+                day: this.props.moment.date()
+            }} className={className} disabled={_.isEmpty(this.props.view)}>
             <header>
                 <h4>{this.props.moment.format('dddd')}</h4>
                 <h2>{this.props.moment.date()}</h2>
