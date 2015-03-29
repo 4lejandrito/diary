@@ -56,5 +56,10 @@ var api = module.exports = extend(true, new EventEmitter2(), {
         return rest.get('/api/user/event/' + year + '/' + month, function(res) {
             cb(res.body);
         });
+    },
+    viewDay: function(year, month, day, cb) {
+        return rest.get('/api/user/event/' + year + '/' + month + '/' + day, function(res) {
+            cb(res.body);
+        });
     }
 });

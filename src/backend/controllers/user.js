@@ -97,5 +97,20 @@ module.exports = {
         }], function(err, data) {
             res.send(data);
         });
-    }
+    },
+
+    getDayView: function(req, res) {
+        var events = req.app.db.get('events');
+        var start = moment().year(parseInt(req.params.year))
+        .month(parseInt(req.params.month))
+        .date(parseInt(req.params.day)).startOf('day');
+        var end = moment(start).endOf('day');
+
+        events.find({
+            user: req.user._id,
+            date: {$gte: start.toDate(), $lte: end.toDate()}
+        }, {sort : {date : -1}}).on('success', function(events) {
+            res.send(events);
+        });
+    },
 };
