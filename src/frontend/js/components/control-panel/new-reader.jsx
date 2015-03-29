@@ -5,6 +5,7 @@ var Icon = require('components/icon');
 var Navigation = require('react-router').Navigation;
 var Router = require('react-router');
 var _ = require('underscore');
+var ReaderImage = require('components/reader-image');
 
 module.exports = React.createClass({
     mixins: [Navigation, Router.State],
@@ -28,7 +29,7 @@ module.exports = React.createClass({
         return <article className="new-reader">
             <h2>{this.state.reader.type}</h2>
             <h4>{this.state.reader.description}</h4>
-            <img src={'/api/reader/' + this.state.reader.type + '/picture'}/>
+            <ReaderImage type={this.state.reader.type}/>
             {
                 _.mapObject(this.state.reader.schema, function(val, key) {
                     return <div className="param">
