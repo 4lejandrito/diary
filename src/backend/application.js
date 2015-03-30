@@ -59,6 +59,8 @@ var Application = module.exports = function() {
                 user: user._id,
                 loggedAt: new Date()
             }));
+            user.readers[type].lastSync = new Date();
+            app.db.get('users').updateById(user._id, user);
         });
 
         app.db.get('users').find().each(function(user) {
