@@ -27,7 +27,7 @@ var api = module.exports = extend(true, new EventEmitter2(), {
         });
     },
     removeReader: function(reader, cb) {
-        return rest.del('/api/user/reader/' + reader.type, function(res) {
+        return rest.del('/api/user/reader/' + reader.id, function(res) {
             api.emit('reader.removed', reader);
             if (cb) cb(res.body);
         });

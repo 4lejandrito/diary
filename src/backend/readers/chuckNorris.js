@@ -10,7 +10,7 @@ module.exports = {
     getChuckNorrisFact: function() {
 
     },
-    instance: function(user, emit) {
+    instance: function(emit, settings) {
         var interval, dailyJob = new CronJob({
           cronTime: '00 00 08 * * 1-7',
           onTick: function() {

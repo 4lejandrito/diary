@@ -14,20 +14,14 @@ module.exports = {
             scope: 'repo'
         }
     },
-    instance: function(user, emit) {
+    instance: function(emit, settings) {
         var interval;
         return {
             start: function() {
-                var client = github.client(user.readers.github.token);
+                var client = github.client(settings.token);
                 client.me().info(function(err, info) {
                     var ghuser = client.user(info.login);
                     interval = setInterval(function() {
-                        if (user.readers.github.lastSync) {
-                            var date = moment(user.readers.github.lastSync);
-                            client.requestDefaults.headers = {
-                                'If-Modified-Since': date.format('ddd, DD MMM YYYY HH:mm:ss ZZ')
-                            };
-                        }
                         function processEvents(err, data, headers) {
                             if (data) {
                                 data.map(function(event) {

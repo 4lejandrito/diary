@@ -26,7 +26,7 @@ var Application = module.exports = function() {
 
     app.get   ('/api/user/reader'                 , controllers.user.getReaders);
     app.post  ('/api/user/reader/:type'           , controllers.user.addReader);
-    app.delete('/api/user/reader/:type'           , controllers.user.deleteReader);
+    app.delete('/api/user/reader/:id'             , controllers.user.deleteReader);
     app.get   ('/api/user/event'                  , controllers.user.getEvents);
     app.get   ('/api/user/event/:year'            , controllers.user.getYearView);
     app.get   ('/api/user/event/:year/:month'     , controllers.user.getMonthView);
@@ -41,7 +41,7 @@ var Application = module.exports = function() {
         passport.use(reader.type, new OAuth2Strategy(extend(true, reader.schema.oauth2, {
             passReqToCallback: true
         }), function(req, accessToken, refreshToken, profile, done) {
-            controllers.user.addReaderOAuth2(req, accessToken, reader, done);
+            controllers.user.addReaderOAuth2(req, accessToken, reader.type, done);
         }));
         app.get('/auth/' + reader.type, passport.authenticate(reader.type));
         app.get('/auth/' + reader.type + '/callback', passport.authenticate(reader.type, {
@@ -51,16 +51,8 @@ var Application = module.exports = function() {
     });
 
     app.db.on('open', function() {
-        readers.on('event', function(type, data, user) {
-            app.db.get('events').insert(extend({
-                date: new Date(),
-            }, data, {
-                type: type,
-                user: user._id,
-                loggedAt: new Date()
-            }));
-            user.readers[type].lastSync = new Date();
-            app.db.get('users').updateById(user._id, user);
+        readers.on('event', function(event) {
+            app.db.get('events').insert(event);
         });
 
         app.db.get('users').find().each(function(user) {

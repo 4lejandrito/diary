@@ -22,32 +22,35 @@ readers.forType = function(type) {
 readers.forUser = function(user) {
     if (!readersForUser[user._id]) {
         readersForUser[user._id] = [];
-        Object.keys(user.readers || {}).map(function(key) {
-            readers.create(key, user);
-        });
+        (user.readers || []).map(function(reader) {
+            return this.create(reader, user);
+        }, this);
     }
     return readersForUser[user._id];
 };
 
-readers.forUserType = function(type, user) {
-    return _.findWhere(readersForUser[user._id], {type: type});
+readers.createInstance = function(reader, user) {
+    return this.forType(reader.type).instance(function(data) {
+        readers.emit('event', extend(true, {
+            date: new Date(),
+        }, data, {
+            type: reader.type,
+            user: user._id,
+            loggedAt: new Date()
+        }));
+    }, reader.settings);
 };
 
-readers.create = function(type, user) {
-    var timestamp = new Date();
-    var instance = this.forType(type).instance(user, function(data) {
-        readers.emit('event', type, data, user);
-    });
-
-    var wrapper = readerWrapper(instance, type, user.readers[type]);
+readers.create = function(reader, user) {
+    var wrapper = readerWrapper(reader, this.createInstance(reader, user));
     readersForUser[user._id].push(wrapper);
     return wrapper;
 };
 
-readers.delete = function(type, user) {
-    var reader = this.forUserType(type, user);
+readers.delete = function(user, id) {
+    var readers = readersForUser[user._id];
+    var reader = _.findWhere(readers, {id: id});
     reader.stop();
-    var indexReader = _.findIndex(readersForUser[user._id], {type: type});
-    readersForUser[user._id].splice(indexReader,1);
+    readersForUser[user._id] = _.without(readers, reader);
     return reader;
 };

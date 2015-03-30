@@ -5,7 +5,7 @@ module.exports = {
     image: 'http://icons.iconarchive.com/icons/martz90/circle/128/gmail-icon.png',
     description: 'Add your gmail to Diary',
     schema: {},
-    instance: function(user, emit) {
+    instance: function(emit, settings) {
         var interval;
         return {
             start: function() {

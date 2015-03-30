@@ -7,7 +7,7 @@ module.exports = {
     schema: {
         interval: 500
     },
-    instance: function(user, emit) {
+    instance: function(emit, settings) {
         var interval;
         return {
             start: function() {
@@ -20,9 +20,9 @@ module.exports = {
                                 .toDate(),
                         image: 'http://lorempixel.com/400/200?r=' + Math.random(),
                         url: 'http://lorempixel.com/400/200',
-                        value: Math.random()
+                        description: 'A random image :)'
                     });
-                }, user.readers.random.interval);
+                }, settings.interval);
             },
             stop: function() {
                 clearInterval(interval);

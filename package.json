@@ -45,6 +45,7 @@
     "imap-client": "^0.11.1",
     "moment": "^2.9.0",
     "monk": "^0.9",
+    "node-uuid": "^1.4.3",
     "octonode": "^0.6.16",
     "passport": "^0.2.1",
     "passport-http": "^0.2.2",

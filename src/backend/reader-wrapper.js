@@ -1,15 +1,15 @@
-module.exports = function(reader, type, settings) {
-    return {
-        type: type,
+var extend = require('extend');
+
+module.exports = function(reader, instance) {
+    return extend(true, {}, reader, {
         running: this.running,
-        settings: settings,
         start: function() {
             this.running = true;
-            reader.start();
+            instance.start();
         },
         stop: function() {
             this.running = false;
-            reader.stop();
+            instance.stop();
         }
-    };
+    });
 };

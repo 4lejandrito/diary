@@ -1,6 +1,8 @@
 var readers = require('../readers');
 var moment = require('moment');
 var _ = require('underscore');
+var extend = require('extend');
+var uuid = require('node-uuid');
 
 module.exports = {
 
@@ -31,36 +33,42 @@ module.exports = {
     },
 
     addReader: function(req, res) {
-        if(!req.user.readers) req.user.readers = {};
-        req.user.readers[req.params.type] = req.body;
-        req.app.db.get('users').updateById(req.user._id, req.user)
-        .on('success', function(n) {
-            var reader = readers.create(req.params.type, req.user);
-            reader.start();
-            res.send(reader);
+        var reader = {
+            id: uuid.v4(),
+            type: req.params.type,
+            settings: req.body
+        };
+        req.app.db.get('users').updateById(req.user._id, {
+            $push: {readers: reader}
+        }).on('success', function() {
+            var wrapper = readers.create(reader, req.user);
+            wrapper.start();
+            res.send(wrapper);
         });
     },
 
-    addReaderOAuth2: function(req, accessToken, reader, done) {
-        if(!req.user.readers) req.user.readers = {};
-        if (!req.user.readers[reader.type] || req.user.readers[reader.type].token !== accessToken) {
-            req.user.readers[reader.type] = {token: accessToken};
-            req.app.db.get('users').updateById(req.user._id, req.user)
-            .on('success', function() {
-                readers.create(reader.type, req.user).start();
-                done(null, req.user);
-            });
-        } else {
+    addReaderOAuth2: function(req, accessToken, type, done) {
+        var reader = {
+            id: uuid.v4(),
+            type: type,
+            settings: {
+                token: accessToken
+            }
+        };
+        req.app.db.get('users').updateById(req.user._id, {
+            $push: {readers: reader}
+        }).on('success', function() {
+            var wrapper = readers.create(reader, req.user);
+            wrapper.start();
             done(null, req.user);
-        }
+        });
     },
 
     deleteReader: function(req, res) {
-        delete req.user.readers[req.params.type];
-        req.app.db.get('users').updateById(req.user._id, req.user)
-        .on('success', function(n) {
-            var reader = readers.delete(req.params.type, req.user);
-            res.send(reader);
+        req.app.db.get('users').updateById(req.user._id, {
+            $pull : {readers : {id: req.params.id}}
+        }).on('success', function() {
+            res.send(readers.delete(req.user, req.params.id));
         });
     },
 
