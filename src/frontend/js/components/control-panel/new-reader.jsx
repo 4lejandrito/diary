@@ -31,6 +31,10 @@ module.exports = React.createClass({
             <h4>{this.state.reader.description}</h4>
             <ReaderImage type={this.state.reader.type}/>
             {
+                this.state.reader.schema.oauth2 ?
+                <a className="button" href={'/auth/' + this.state.reader.type}>
+                    <Icon name="plus"/> Add
+                </a> :
                 _.mapObject(this.state.reader.schema, function(val, key) {
                     return <div className="param">
                         <label>{key}</label>
@@ -38,7 +42,9 @@ module.exports = React.createClass({
                     </div>;
                 })
             }
-            <button onClick={this.addReader}><Icon name="plus"/> Add</button>
+            {!this.state.reader.schema.oauth2 ?
+                <button onClick={this.addReader}><Icon name="plus"/> Add</button> : null
+            }
         </article>;
     }
 });

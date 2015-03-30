@@ -41,6 +41,20 @@ module.exports = {
         });
     },
 
+    addReaderOAuth2: function(req, accessToken, reader, done) {
+        if(!req.user.readers) req.user.readers = {};
+        if (!req.user.readers[reader.type] || req.user.readers[reader.type].token !== accessToken) {
+            req.user.readers[reader.type] = {token: accessToken};
+            req.app.db.get('users').updateById(req.user._id, req.user)
+            .on('success', function() {
+                readers.create(reader.type, req.user).start();
+                done(null, req.user);
+            });
+        } else {
+            done(null, req.user);
+        }
+    },
+
     deleteReader: function(req, res) {
         delete req.user.readers[req.params.type];
         req.app.db.get('users').updateById(req.user._id, req.user)

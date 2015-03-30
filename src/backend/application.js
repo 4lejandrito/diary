@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var config = require('config');
 var extend = require('extend');
 var readers = require('./readers');
+var OAuth2Strategy  = require('passport-oauth').OAuth2Strategy;
 
 var Application = module.exports = function() {
     var app = express();
@@ -20,6 +21,7 @@ var Application = module.exports = function() {
     app.post('/api/user', controllers.user.create);
     app.use ('/api/*'   , passport.authenticate('basic'));
     app.get ('/api/user', controllers.user.get);
+    app.use ('/auth/*'  , passport.authenticate('basic'));
     app.use ('/'        , express.static('src/public'));
 
     app.get   ('/api/user/reader'                 , controllers.user.getReaders);
@@ -33,6 +35,20 @@ var Application = module.exports = function() {
     app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 
     app.db = monk(config.db.url);
+
+    readers.all().map(function(reader) {
+        if (!reader.schema.oauth2) return;
+        passport.use(reader.type, new OAuth2Strategy(extend(true, reader.schema.oauth2, {
+            passReqToCallback: true
+        }), function(req, accessToken, refreshToken, profile, done) {
+            controllers.user.addReaderOAuth2(req, accessToken, reader, done);
+        }));
+        app.get('/auth/' + reader.type, passport.authenticate(reader.type));
+        app.get('/auth/' + reader.type + '/callback', passport.authenticate(reader.type, {
+            successRedirect: '/#/services',
+            failureRedirect: '/#/services/new'
+        }));
+    });
 
     app.db.on('open', function() {
         readers.on('event', function(type, data, user) {

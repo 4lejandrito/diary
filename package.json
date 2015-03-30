@@ -47,6 +47,7 @@
     "monk": "^0.9",
     "passport": "^0.2.1",
     "passport-http": "^0.2.2",
+    "passport-oauth": "^1.0.0",
     "react": "^0.12.2",
     "react-gravatar": "^1.0.0",
     "react-router": "^0.12.4",
