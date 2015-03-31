@@ -86,6 +86,14 @@ module.exports = {
         var end = moment(start).endOf('year');
 
         events.col.aggregate([{
+            $project: {
+                date:{
+                    $add: ["$date", moment().utcOffset() * 60 * 1000]
+                },
+                type: 1,
+                user: 1
+            }
+        },{
             $match: {
                 user: req.user._id,
                 date: {$gte: start.toDate(), $lte: end.toDate()}
@@ -107,6 +115,14 @@ module.exports = {
         var end = moment(start).endOf('month');
 
         events.col.aggregate([{
+            $project: {
+                date:{
+                    $add: ["$date", moment().utcOffset() * 60 * 1000]
+                },
+                type: 1,
+                user: 1
+            }
+        },{
             $match: {
                 user: req.user._id,
                 date: {$gte: start.toDate(), $lte: end.toDate()}
