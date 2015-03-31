@@ -1,20 +1,4 @@
 .events-day {
-    text-align: center;
-    box-sizing: border-box;
-
-    & > h2, & > h4 {
-        margin: 0 @spacing;
-        display: inline-block;
-        box-sizing: border-box;
-    }
-
-    & > h4 {
-        opacity: .6;
-        a {
-            text-decoration: none;
-        }
-    }
-
     .events {
         list-style: none;
         margin: 0;
@@ -24,7 +8,6 @@
 
         .event {
             color: white;
-            box-sizing: border-box;
             position: relative;
             margin: 0 0;
             padding: 2 * @spacing @spacing;
@@ -37,7 +20,7 @@
                 right: 4px;
                 padding-left: 5 * @spacing;
                 & > img {
-                    left: -26px;
+                    left: -27px;
                 }
             }
             &:nth-child(2n+1) {
@@ -46,11 +29,11 @@
                 padding-right: 5 * @spacing;
                 text-align: right;
                 & > img {
-                    right: -26px;
+                    right: -27px;
                 }
             }
             & > img {
-                .circle(20px);
+                .circle(25px);
                 position: absolute;
                 top: 42%;
                 border: none;
@@ -70,7 +53,6 @@
                 div > img {
                     display: block;
                     margin: 0 auto;
-                    box-sizing: border-box;
                     border-radius: 2px;
                     max-width: 100%;
                     width: 100%;
@@ -81,7 +63,7 @@
                 li {
                     img {
                         vertical-align: middle;
-                        .circle(7px);
+                        .circle(9px);
                         padding: 1px;
                         margin-right: @spacing / 2;
                     }

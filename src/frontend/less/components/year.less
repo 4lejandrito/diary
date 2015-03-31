@@ -1,35 +1,18 @@
 .events-year {
-    text-align: center;
-
-    & > h2, & > h4 {
-        display: inline-block;
-        margin: 0 @spacing;
-    }
-
-    & > h4 {
-        opacity: .6;
-        a {
-            text-decoration: none;
-        }
-    }
-
     .year {
         @distanceBetweenMonths: @spacing / 2;
-
-        margin: @spacing auto;
         text-align: center;
         background: @main-color;
-        box-sizing: border-box;
         padding: @distanceBetweenMonths;
         box-shadow: 0 2px 10px -5px black inset;
-
+        margin: 0 auto;
+        @media(min-width: 480px) {
+            padding: @distanceBetweenMonths 10%;
+        }
         .month {
             text-decoration: none;
             display: inline-block;
-            box-sizing: border-box;
             width: 25%;
-            max-width: 200px;
-            min-width: 110px;
             @media(max-width: 480px) {
                 width: 33.33%;
             }
@@ -55,7 +38,7 @@
             }
 
             img {
-                .circle(10px);
+                .circle(12px);
                 padding: 2px;
                 display: inline-block;
                 color: red;

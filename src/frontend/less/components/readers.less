@@ -1,59 +1,73 @@
 .active-readers, .available-readers {
 
+    header > h2 {
+        display: block !important;
+    }
+
     .search, .button {
         display: inline-block;
-        margin: 0 @spacing;
-        margin-bottom: @spacing;
+        margin: 2 * @spacing @spacing @spacing;
+    }
+
+    @distanceBetweenReaders: @spacing / 2;
+
+    text-align: center;
+    ul {
+        padding: @distanceBetweenReaders;
     }
 
     .active-reader, .available-reader {
-        position: relative;
-        text-decoration: none;
-        color: @text-color;
-        &:hover {
-            & > strong {
-                color: @main-color;
-            }
-        }
-        cursor: pointer;
-        box-sizing: border-box;
-        border: solid 1px transparent;
-        padding: @spacing;
         display: inline-block;
-        width: 33.33%;
+        width: 25%;
         vertical-align: top;
-        @media(max-width: 480px) {
+        @media(max-width: 990px) {
+            width: 33.33%;
+        }
+        @media(max-width: 680px) {
             width: 50%;
         }
         @media(max-width: 300px) {
             width: 100%;
         }
-        margin-bottom: @spacing;
-        img {
-            .circle(40px);
-            display: block;
-            margin: 0 auto @spacing auto;
-        }
+        margin: 0;
+        padding: @distanceBetweenReaders;
+        position: relative;
         button {
             display: none;
-        }
-        p {
-            margin-top: @spacing / 2;
-            margin-bottom: 0;
-            font-weight: normal;
-            font-size: 15px;
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
         &:hover button {
             display: block;
             position: absolute;
             border: none;
-            top: -21px;
-            left: -30px;
+            padding: 8px 15px;
+            top: 0px;
+            left: 0px;
             color: lighten(red, 10%);
+        }
+        a {
+            .card(@hover: false);
+            margin: 0;
+            color: @text-color;
+            &:hover {
+                & > strong {
+                    color: @main-color;
+                }
+            }
+            img {
+                .circle(40px);
+                display: block;
+                margin: 0 auto @spacing auto;
+            }
+            p {
+                margin-top: @spacing / 2;
+                margin-bottom: 0;
+                font-weight: normal;
+                font-size: 15px;
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
     }
 }

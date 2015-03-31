@@ -26,9 +26,11 @@ module.exports = React.createClass({
     },
     render: function() {
         if (!this.state) return <Loading/>;
-        return <article className="new-reader">
-            <h2>{this.state.reader.type}</h2>
-            <h4>{this.state.reader.description}</h4>
+        return <section className="new-reader">
+            <header>
+                <h2>{this.state.reader.type}</h2>
+                <h4>{this.state.reader.description}</h4>
+            </header>
             <ReaderImage type={this.state.reader.type}/>
             {
                 this.state.reader.schema.oauth2 ?
@@ -45,6 +47,6 @@ module.exports = React.createClass({
             {!this.state.reader.schema.oauth2 ?
                 <button onClick={this.addReader}><Icon name="plus"/> Add</button> : null
             }
-        </article>;
+        </section>;
     }
 });

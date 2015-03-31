@@ -19,13 +19,13 @@ var Month = React.createClass({
             return <ReaderImage type={e._id.type}/>;
         }) : <img src="http://upload.wikimedia.org/wikipedia/commons/a/aa/Empty_set.svg"/>;
 
-        return <div className="month">
+        return <li className="month">
             <Link to="month" params={params} disabled={!totalNumberOfEvents}>
                 <h4>{this.props.moment.format('MMMM')}</h4>
                 {top}
                 <strong>{totalNumberOfEvents || 'No data'}</strong>
             </Link>
-        </div>;
+        </li>;
     }
 });
 
@@ -45,7 +45,7 @@ var Year = React.createClass({
             months.push(<Month view={this.props.view.filter(filter)} moment={moment(now)}/>);
         } while (now.add(1, 'months').year() == year);
 
-        return <div className="year">{months}</div>;
+        return <ol className="year">{months}</ol>;
     }
 });
 
@@ -67,17 +67,19 @@ module.exports = React.createClass({
         var day = moment().year(this.props.year || moment().year());
 
         return <section className="events-year">
-            <h4>
-                <Link to="year" params={{year: day.year() - 1}}>
-                    {moment(day).subtract(1, 'years').format('gggg')}
-                </Link>
-            </h4>
-            <h2>{day.format('gggg')}</h2>
-            <h4>
-                <Link to="year" params={{year: day.year() + 1}}>
-                    {moment(day).add(1, 'years').format('gggg')}
-                </Link>
-            </h4>
+            <header>
+                <h4>
+                    <Link to="year" params={{year: day.year() - 1}}>
+                        {moment(day).subtract(1, 'years').format('gggg')}
+                    </Link>
+                </h4>
+                <h2>{day.format('gggg')}</h2>
+                <h4>
+                    <Link to="year" params={{year: day.year() + 1}}>
+                        {moment(day).add(1, 'years').format('gggg')}
+                    </Link>
+                </h4>
+            </header>
             <Year view={this.state.view || []} moment={day}/>
         </section>;
     }

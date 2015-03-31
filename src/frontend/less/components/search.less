@@ -1,7 +1,6 @@
 .search {
+    @color: white;
     cursor: pointer;
-    @color: @main-color;
-    font-weight: bold;
     border: solid 2px @color;
     border-radius: 200px;
     background: transparent;
@@ -14,12 +13,13 @@
 
     input {
         width: 80%;
+        background: transparent;
         margin-left: @spacing;
         border: none;
         padding: 0;
         &::-webkit-input-placeholder {
-            color: @main-color;
-            opacity: .7;
+            color: @color;
+            opacity: .9;
         }
     }
 }

@@ -22,17 +22,19 @@ var Day = React.createClass({
             </div>;
         }) : <h4>No data</h4>;
 
-        return <Link to='day' params={{
+        return <li className={className}>
+            <Link to='day' params={{
                 year: this.props.moment.year(),
                 month: this.props.moment.month(),
                 day: this.props.moment.date()
-            }} className={className} disabled={_.isEmpty(this.props.view)}>
-            <header>
-                <h4>{this.props.moment.format('dddd')}</h4>
-                <h2>{this.props.moment.date()}</h2>
-            </header>
-            {top}
-        </Link>;
+            }} disabled={_.isEmpty(this.props.view)}>
+                <header>
+                    <h4>{this.props.moment.format('dddd')}</h4>
+                    <h2>{this.props.moment.date()}</h2>
+                </header>
+                {top}
+            </Link>
+        </li>;
     }
 });
 
@@ -50,9 +52,9 @@ var Month = React.createClass({
             days.push(<Day view={this.props.view.filter(filter)} moment={moment(now)}/>);
         } while (now.add(1, 'days').month() == month);
 
-        return <div className="month">
+        return <ol className="month">
             {days}
-        </div>;
+        </ol>;
     }
 });
 
@@ -80,18 +82,20 @@ module.exports = React.createClass({
         var next = moment(day).add(1, 'months');
 
         return <section className="events-month">
-            <h4>
-                <Link to="month" params={{year: previous.year(), month: previous.month()}}>
-                    {moment(day).subtract(1, 'months').format('MMM')}
-                </Link>
-            </h4>
-            <h2>{day.format('MMMM')}</h2>
-            <h4>
-                <Link to="month" params={{year: next.year(), month: next.month()}}>
-                    {moment(day).add(1, 'months').format('MMM')}
-                </Link>
-            </h4>
-            <div><h4>{day.format('gggg')}</h4></div>
+            <header>
+                <h4>
+                    <Link to="month" params={{year: previous.year(), month: previous.month()}}>
+                        {moment(day).subtract(1, 'months').format('MMM')}
+                    </Link>
+                </h4>
+                <h2>{day.format('MMMM')}</h2>
+                <h4>
+                    <Link to="month" params={{year: next.year(), month: next.month()}}>
+                        {moment(day).add(1, 'months').format('MMM')}
+                    </Link>
+                </h4>
+                <div><h4>{day.format('gggg')}</h4></div>
+            </header>
             <Month view={this.state.view || []} moment={moment(day)}/>
         </section>;
     }

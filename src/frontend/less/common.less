@@ -1,10 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
 html {
     height: 100%;
 }
 
 body {
     font-family: @font-family;
-    color: @text-color;
+    color: white;
+    background: @main-color;
     font-size: 20px;
     margin: 0 auto;
     height: 100%;
@@ -34,10 +39,6 @@ article {
     text-align: center;
 }
 
-.content {
-    padding: 2 * @spacing 0;
-}
-
 .circle(@radius: 40px) {
     width: @radius * 2;
     height: @radius * 2;
@@ -55,4 +56,5 @@ img {
 ul, ol {
     list-style: none;
     padding-left: @spacing;
+    margin: 0;
 }

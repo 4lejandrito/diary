@@ -57,26 +57,28 @@ module.exports = React.createClass({
         if (!this.state.events) return <Loading/>;
 
         return <section className="events-day">
-            <h4>
-                <Link to="day" params={{
-                    year: previous.year(),
-                    month: previous.month(),
-                    day: previous.date()
-                }}>
-                    {previous.format('ddd')}
-                </Link>
-            </h4>
-            <h2>{day.format('dddd')}</h2>
-            <h4>
-                <Link to="day" params={{
-                    year: next.year(),
-                    month: next.month(),
-                    day: next.date()
-                }}>
-                    {next.format('ddd')}
-                </Link>
-            </h4>
-            <div><h4>{day.format('MMMM Do gggg')}</h4></div>
+            <header>
+                <h4>
+                    <Link to="day" params={{
+                        year: previous.year(),
+                        month: previous.month(),
+                        day: previous.date()
+                    }}>
+                        {previous.format('ddd')}
+                    </Link>
+                </h4>
+                <h2>{day.format('dddd')}</h2>
+                <h4>
+                    <Link to="day" params={{
+                        year: next.year(),
+                        month: next.month(),
+                        day: next.date()
+                    }}>
+                        {next.format('ddd')}
+                    </Link>
+                </h4>
+                <div><h4>{day.format('MMMM Do gggg')}</h4></div>
+            </header>
             <ol className="events">
                 {this.state.events.map(function(e) {
                     return <Event event={e}/>;

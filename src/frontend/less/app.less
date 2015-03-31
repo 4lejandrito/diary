@@ -8,16 +8,12 @@
         font-size: 30px;
         font-weight: bold;
         color: white;
-        height: 60px;
+        height: 80px;
         text-align: left;
         padding-top: 2 * @spacing;
         padding-left: 3 * @spacing;
         padding-right: 3 * @spacing;
         background: @main-color;
-        margin-bottom: 2.5 * @spacing;
-        @media(max-width: 480px) {
-            margin-bottom: 0;
-        }
         a {
             text-decoration: none;
             color: white;
@@ -25,6 +21,7 @@
         .face {
             img {
                 background: white;
+                .circle(44px);
             }
             display: block;
             position: relative;
@@ -38,7 +35,7 @@
                 right: 3 * @spacing;
                 top: @spacing;
                 img {
-                    .circle(25px);
+                    .circle(30px);
                 }
             }
         }
@@ -46,15 +43,32 @@
 
     & > .content {
         padding-bottom: @footer-height;
+        & > section {
+            text-align: center;
+            & > header {
+                padding-top: 4 * @spacing;
+                padding-bottom: @spacing;
+                background: white;
+                color: @text-color;
+                text-align: center;
+                h2, h4 {
+                    margin: 0 @spacing;
+                    display: inline-block;
+                }
+                @media(max-width: 480px) {
+                    padding-top: @spacing;
+                }
+            }
+        }
     }
 
     & > footer {
         height: @footer-height;
         position: absolute;
-        box-sizing: border-box;
         bottom: 0;
         left: 0;
         width: 100%;
+        background: white;
         color: grey;
         font-size: .7em;
         padding: 2 * @spacing;

@@ -20,12 +20,14 @@ module.exports = React.createClass({
         this.setState({filter: value});
     },
     render: function() {
-        return <article className="available-readers">
-            <h2>New service</h2>
-            <h4>Add a new service integration</h4>
+        return <section className="available-readers">
+            <header>
+                <h2>New service</h2>
+                <h4>Add a new service integration</h4>
+            </header>
             {this.state.readers ? <div>
                 <Search placeholder="Find a service" onChange={this.filter}/>
-                <div>
+                <ul>
                     {
                         _.filter(this.state.readers, function(reader) {
                             return reader.type.indexOf(this.state.filter) != -1;
@@ -33,8 +35,8 @@ module.exports = React.createClass({
                             return <AvailableReader reader={reader}/>;
                         })
                     }
-                </div>
+                </ul>
             </div> : <Loading/>}
-        </article>;
+        </section>;
     }
 });

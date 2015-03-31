@@ -34,13 +34,15 @@ module.exports = React.createClass({
         this.setState({filter: value});
     },
     render: function() {
-        return <article className="active-readers">
-            <h2>Services</h2>
-            <h4>Manage your services</h4>
+        return <section className="active-readers">
+            <header>
+                <h2>Services</h2>
+                <h4>Manage your services</h4>
+            </header>
             {this.state.readers ? <div>
                 <Search placeholder="Search your services" onChange={this.filter}/>
                 <Link className="button" to="/services/new"><Icon name="plus"/></Link>
-                <div>
+                <ul>
                     {
                         _.filter(this.state.readers, function(reader) {
                             return reader.type.indexOf(this.state.filter) != -1;
@@ -48,8 +50,8 @@ module.exports = React.createClass({
                             return <ActiveReader reader={reader}/>;
                         })
                     }
-                </div>
+                </ul>
             </div> : <Loading/>}
-        </article>;
+        </section>;
     }
 });
