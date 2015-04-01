@@ -7,6 +7,7 @@ var Link = require('components/link');
 var _ = require('underscore');
 var Icon = require('components/icon');
 var eventComponents = require('./events/*', {hash: true});
+var Sticky = require('react-sticky');
 
 var Event = React.createClass({
     render: function() {
@@ -57,7 +58,7 @@ module.exports = React.createClass({
         if (!this.state.events) return <Loading/>;
 
         return <section className="events-day">
-            <header>
+            <Sticky type={React.DOM.header}>
                 <h4>
                     <Link to="day" params={{
                         year: previous.year(),
@@ -78,7 +79,7 @@ module.exports = React.createClass({
                     </Link>
                 </h4>
                 <div><h4>{day.format('MMMM Do gggg')}</h4></div>
-            </header>
+            </Sticky>
             <ol className="events">
                 {this.state.events.map(function(e) {
                     return <Event event={e}/>;
