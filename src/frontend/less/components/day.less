@@ -13,23 +13,27 @@
             padding: 2 * @spacing @spacing;
             min-height: 64px;
             display: block;
-            &:nth-child(2n) {
-                margin-left: 50%;
-                border-left: solid 4px white;
-                text-align: left;
-                right: 4px;
-                padding-left: 5 * @spacing;
-                & > img {
-                    left: -27px;
+
+            @media(min-width: 700px) {
+                &:nth-child(2n) {
+                    margin-left: 50%;
+                    border-left: solid 4px white;
+                    text-align: left;
+                    right: 4px;
+                    padding-left: 5 * @spacing;
+                    & > img {
+                        left: -27px;
+                    }
                 }
-            }
-            &:nth-child(2n+1) {
-                margin-right: 50%;
-                border-right: solid 4px white;
-                padding-right: 5 * @spacing;
-                text-align: right;
-                & > img {
-                    right: -27px;
+
+                &:nth-child(2n+1) {
+                    margin-right: 50%;
+                    border-right: solid 4px white;
+                    padding-right: 5 * @spacing;
+                    text-align: right;
+                    & > img {
+                        right: -27px;
+                    }
                 }
             }
             & > img {
@@ -67,12 +71,26 @@
                         padding: 1px;
                         margin-right: @spacing / 2;
                     }
-
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
                 }
+            }
+            @media(max-width: 700px) {
+                .content {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                }
+                & > img {
+                    .circle(15px) !important;
+                    position: static !important;
+                    float: left;
+                }
+                time {
+                    display: inline-block !important;
+                    float: right;
+                }
+                padding: @spacing;
             }
         }
     }
