@@ -29,10 +29,10 @@ var Day = React.createClass({
                 month: this.props.moment.month(),
                 day: this.props.moment.date()
             }} disabled={_.isEmpty(this.props.view)}>
-                <Sticky type={React.DOM.header}>
+                <header>
                     <h4>{this.props.moment.format('dddd')}</h4>
                     <h2>{this.props.moment.date()}</h2>
-                </Sticky>
+                </header>
                 {top}
             </Link>
         </li>;
@@ -86,7 +86,7 @@ module.exports = React.createClass({
         var next = moment(day).add(1, 'months');
 
         return <section className="events-month">
-            <header>
+            <Sticky type={React.DOM.header}>
                 <h4>
                     <Link to="month" params={{year: previous.year(), month: previous.month()}}>
                         {moment(day).subtract(1, 'months').format('MMM')}
@@ -99,7 +99,7 @@ module.exports = React.createClass({
                     </Link>
                 </h4>
                 <div><h4>{day.format('gggg')}</h4></div>
-            </header>
+            </Sticky>
             <Month view={this.state.view} moment={moment(day)}/>
         </section>;
     }
