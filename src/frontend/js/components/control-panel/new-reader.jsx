@@ -6,6 +6,7 @@ var Navigation = require('react-router').Navigation;
 var Router = require('react-router');
 var _ = require('underscore');
 var ReaderImage = require('components/reader-image');
+var Sticky = require('react-sticky');
 
 module.exports = React.createClass({
     mixins: [Navigation, Router.State],
@@ -27,10 +28,10 @@ module.exports = React.createClass({
     render: function() {
         if (!this.state) return <Loading/>;
         return <section className="new-reader">
-            <header>
+            <Sticky type={React.DOM.header}>
                 <h2>{this.state.reader.type}</h2>
                 <h4>{this.state.reader.description}</h4>
-            </header>
+            </Sticky>
             <ReaderImage type={this.state.reader.type}/>
             {
                 this.state.reader.schema.oauth2 ?

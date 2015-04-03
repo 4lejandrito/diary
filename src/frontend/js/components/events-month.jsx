@@ -5,6 +5,7 @@ var ReaderImage = require('components/reader-image');
 var moment = require('moment');
 var Link = require('react-router').Link;
 var _ = require('underscore');
+var Sticky = require('react-sticky');
 
 var Day = React.createClass({
     render: function() {
@@ -28,10 +29,10 @@ var Day = React.createClass({
                 month: this.props.moment.month(),
                 day: this.props.moment.date()
             }} disabled={_.isEmpty(this.props.view)}>
-                <header>
+                <Sticky type={React.DOM.header}>
                     <h4>{this.props.moment.format('dddd')}</h4>
                     <h2>{this.props.moment.date()}</h2>
-                </header>
+                </Sticky>
                 {top}
             </Link>
         </li>;

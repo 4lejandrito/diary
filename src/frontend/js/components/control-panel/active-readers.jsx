@@ -6,6 +6,7 @@ var Loading = require('components/loading');
 var Icon = require('components/icon');
 var Link = require('react-router').Link;
 var Search = require('components/search');
+var Sticky = require('react-sticky');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -35,10 +36,10 @@ module.exports = React.createClass({
     },
     render: function() {
         return <section className="active-readers">
-            <header>
+            <Sticky type={React.DOM.header}>
                 <h2>Services</h2>
                 <h4>Manage your services</h4>
-            </header>
+            </Sticky>
             {this.state.readers ? <div>
                 <Search placeholder="Search your services" onChange={this.filter}/>
                 <Link className="button" to="/services/new"><Icon name="plus"/></Link>

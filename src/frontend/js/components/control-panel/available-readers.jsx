@@ -5,6 +5,7 @@ var _ = require('underscore');
 var Loading = require('components/loading');
 var Icon = require('components/icon');
 var Search = require('components/search');
+var Sticky = require('react-sticky');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -21,10 +22,10 @@ module.exports = React.createClass({
     },
     render: function() {
         return <section className="available-readers">
-            <header>
+            <Sticky type={React.DOM.header}>
                 <h2>New service</h2>
                 <h4>Add a new service integration</h4>
-            </header>
+            </Sticky>
             {this.state.readers ? <div>
                 <Search placeholder="Find a service" onChange={this.filter}/>
                 <ul>

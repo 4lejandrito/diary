@@ -5,6 +5,7 @@ var ReaderImage = require('components/reader-image');
 var moment = require('moment');
 var Link = require('react-router').Link;
 var _ = require('underscore');
+var Sticky = require('react-sticky');
 
 var Month = React.createClass({
     render: function() {
@@ -69,7 +70,7 @@ module.exports = React.createClass({
         var day = moment().year(this.props.year || moment().year());
 
         return <section className="events-year">
-            <header>
+            <Sticky type={React.DOM.header}>
                 <h4>
                     <Link to="year" params={{year: day.year() - 1}}>
                         {moment(day).subtract(1, 'years').format('gggg')}
@@ -81,7 +82,7 @@ module.exports = React.createClass({
                         {moment(day).add(1, 'years').format('gggg')}
                     </Link>
                 </h4>
-            </header>
+            </Sticky>
             <Year view={this.state.view} moment={day}/>
         </section>;
     }
