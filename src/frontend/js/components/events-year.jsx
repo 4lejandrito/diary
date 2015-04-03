@@ -23,7 +23,9 @@ var Month = React.createClass({
             <Link to="month" params={params} disabled={!totalNumberOfEvents}>
                 <h4>{this.props.moment.format('MMMM')}</h4>
                 {top}
-                <strong>{totalNumberOfEvents || 'No data'}</strong>
+                <strong>
+                    {!this.props.view ? <Loading/> : (totalNumberOfEvents || 'No data')}
+                </strong>
             </Link>
         </li>;
     }
@@ -31,8 +33,6 @@ var Month = React.createClass({
 
 var Year = React.createClass({
     render: function() {
-        if (!this.props.view) return <Loading/>;
-
         var year = this.props.moment.year();
         var now = moment(this.props.moment).dayOfYear(1);
         var months = [];
@@ -42,7 +42,9 @@ var Year = React.createClass({
         }
 
         do {
-            months.push(<Month view={this.props.view.filter(filter)} moment={moment(now)}/>);
+            months.push(<Month view={
+                this.props.view && this.props.view.filter(filter)
+            } moment={moment(now)}/>);
         } while (now.add(1, 'months').year() == year);
 
         return <ol className="year">{months}</ol>;
@@ -80,7 +82,7 @@ module.exports = React.createClass({
                     </Link>
                 </h4>
             </header>
-            <Year view={this.state.view || []} moment={day}/>
+            <Year view={this.state.view} moment={day}/>
         </section>;
     }
 });

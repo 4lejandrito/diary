@@ -20,7 +20,7 @@ var Day = React.createClass({
                 <ReaderImage type={e._id.type}/>
                 {e.count}
             </div>;
-        }) : <h4>No data</h4>;
+        }) : (this.props.view ? <h4>No data</h4> : <Loading/>);
 
         return <li className={className}>
             <Link to='day' params={{
@@ -49,7 +49,9 @@ var Month = React.createClass({
         }
 
         do {
-            days.push(<Day view={this.props.view.filter(filter)} moment={moment(now)}/>);
+            days.push(<Day view={
+                this.props.view && this.props.view.filter(filter)
+            } moment={moment(now)}/>);
         } while (now.add(1, 'days').month() == month);
 
         return <ol className="month">
@@ -73,6 +75,7 @@ module.exports = React.createClass({
         api.viewMonth(year, month, function(view) {
             self.setState({view: view});
         });
+        this.replaceState({});
     },
     render: function() {
         var day = moment()
@@ -96,7 +99,7 @@ module.exports = React.createClass({
                 </h4>
                 <div><h4>{day.format('gggg')}</h4></div>
             </header>
-            <Month view={this.state.view || []} moment={moment(day)}/>
+            <Month view={this.state.view} moment={moment(day)}/>
         </section>;
     }
 });
