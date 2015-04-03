@@ -1,15 +1,17 @@
 .events-month {
     .month {
-        @distanceBetweenDays: @spacing / 2;
+        @distanceBetweenDays: @spacing / 2    ;
 
         overflow-x: scroll;
         overflow-y: hidden;
         white-space: nowrap;
         background: @main-color;
-        height: 52vh;
+        height: 53.5vh;
         padding: 2 * @distanceBetweenDays @distanceBetweenDays;
         box-shadow: 0 2px 10px -5px black inset;
-
+        @media(max-width: 480px) {
+            height: 62vh;
+        }
         .day {
             height: 100%;
             display: inline-block;
