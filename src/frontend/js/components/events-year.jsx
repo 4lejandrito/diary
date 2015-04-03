@@ -22,7 +22,7 @@ var Month = React.createClass({
         return <li className="month">
             <Link to="month" params={params} disabled={!totalNumberOfEvents}>
                 <h4>{this.props.moment.format('MMMM')}</h4>
-                {top}
+                {this.props.view ? top : null}
                 <strong>
                     {!this.props.view ? <Loading/> : (totalNumberOfEvents || 'No data')}
                 </strong>

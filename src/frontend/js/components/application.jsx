@@ -7,16 +7,18 @@ var Gravatar = require('react-gravatar');
 var RouteHandler = require('react-router').RouteHandler;
 var Link = require('react-router').Link;
 var Author = require('components/author');
+var Logo = require('components/logo');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {authors: []};
+        return {authors: [], loading: true};
     },
     componentWillMount: function() {
         var self = this;
         api.user(function(user) {
             self.setState({
-                user: user
+                user: user,
+                loading: false
             });
         });
         api.authors(function(authors) {
@@ -28,13 +30,13 @@ module.exports = React.createClass({
     render: function() {
         return <div className="app">
             <header>
-                <Link to="/"><Icon name="pencil"/> Diary</Link>
+                <Link to="/"><Logo/> Diary</Link>
                 {this.state.user ? <Link className="face" to="/services" title="Services">
                     <Gravatar email={this.state.user.email} size={200}/>
                 </Link> : false}
             </header>
             <Content>
-                <RouteHandler {...this.props.params}/>
+                {this.state.loading ? <Loading/> : <RouteHandler {...this.props.params}/>}
             </Content>
             <footer>
                 <div>
