@@ -3,7 +3,6 @@ var api = require('api');
 var AvailableReader = require('./available-reader');
 var _ = require('underscore');
 var Loading = require('components/loading');
-var Icon = require('components/icon');
 var Search = require('components/search');
 var Sticky = require('react-sticky');
 
@@ -21,10 +20,10 @@ module.exports = React.createClass({
         this.setState({filter: value});
     },
     render: function() {
-        return <section className="available-readers">
+        return <article className="available-readers">
             <Sticky type={React.DOM.header}>
                 <h2>New service</h2>
-                <h4>Add a new service integration</h4>
+                <h3>Add a new service integration</h3>
             </Sticky>
             {this.state.readers ? <div>
                 <Search placeholder="Find a service" onChange={this.filter}/>
@@ -38,6 +37,6 @@ module.exports = React.createClass({
                     }
                 </ul>
             </div> : <Loading/>}
-        </section>;
+        </article>;
     }
 });

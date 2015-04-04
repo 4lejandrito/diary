@@ -1,5 +1,4 @@
 var React = require('react');
-var rest = require('superagent');
 var Gravatar = require('react-gravatar');
 
 module.exports = React.createClass({

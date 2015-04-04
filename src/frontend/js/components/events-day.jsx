@@ -4,7 +4,6 @@ var Loading = require('components/loading');
 var ReaderImage = require('components/reader-image');
 var moment = require('moment');
 var Link = require('components/link');
-var _ = require('underscore');
 var Icon = require('components/icon');
 var eventComponents = require('./events/*', {hash: true});
 var Sticky = require('react-sticky');
@@ -46,6 +45,7 @@ module.exports = React.createClass({
         api.viewDay(year, month, day, function(events) {
             self.setState({events: events});
         });
+        this.replaceState({});
     },
     render: function() {
         var day = moment()
@@ -55,36 +55,38 @@ module.exports = React.createClass({
         var previous = moment(day).subtract(1, 'days');
         var next = moment(day).add(1, 'days');
 
-        if (!this.state.events) return <Loading/>;
-
-        return <section className="events-day">
+        return <article className="events-day">
             <Sticky type={React.DOM.header}>
-                <h4>
-                    <Link to="day" params={{
-                        year: previous.year(),
-                        month: previous.month(),
-                        day: previous.date()
-                    }}>
-                        {previous.format('ddd')}
-                    </Link>
-                </h4>
+                <Link to="day" params={{
+                    year: previous.year(),
+                    month: previous.month(),
+                    day: previous.date()
+                }}>
+                    {previous.format('ddd')}
+                </Link>
                 <h2>{day.format('dddd')}</h2>
-                <h4>
-                    <Link to="day" params={{
-                        year: next.year(),
-                        month: next.month(),
-                        day: next.date()
-                    }}>
-                        {next.format('ddd')}
-                    </Link>
-                </h4>
-                <div><h4>{day.format('MMMM Do gggg')}</h4></div>
+                <Link to="day" params={{
+                    year: next.year(),
+                    month: next.month(),
+                    day: next.date()
+                }}>
+                    {next.format('ddd')}
+                </Link>
+                <h3>{day.format('MMMM Do gggg')}</h3>
             </Sticky>
-            <ol className="events">
+            {!this.state.events ? <Loading/> :
+            (this.state.events.length ? <ol className="events">
                 {this.state.events.map(function(e) {
                     return <Event event={e}/>;
                 })}
-            </ol>
-        </section>;
+            </ol> : <div className="nothing">No data</div>)}
+            {this.state.events ? <Link className="button" to="day" params={{
+                year: next.year(),
+                month: next.month(),
+                day: next.date()
+            }}>
+                {next.format('dddd')}  <Icon name="forward"/>
+            </Link> : null}
+        </article>;
     }
 });

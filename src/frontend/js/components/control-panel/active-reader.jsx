@@ -15,8 +15,8 @@ module.exports = React.createClass({
     render: function() {
         return <li className="active-reader">
             <Link to="new" params={{type: this.props.reader.type}}>
+                <h4>{this.props.reader.type}</h4>
                 <img src={'/api/reader/' + this.props.reader.type + '/picture'}/>
-                <strong>{this.props.reader.type}</strong>
                 {
                     _.mapObject(this.props.reader.settings, function(value, key) {
                         return <p><strong>{key}</strong>: {value}</p>;

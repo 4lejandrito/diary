@@ -72,10 +72,10 @@ module.exports = React.createClass({
     render: function() {
         return <Year moment={moment()}/>;
         if (!this.state) return <Loading/>;
-        return <section className="events">
+        return <article className="events">
             {this.state.events.map(function(event) {
                 return <div><ReaderImage type={event.type}/></div>;
             })}
-        </section>;
+        </article>;
     }
 });

@@ -35,10 +35,10 @@ module.exports = React.createClass({
         this.setState({filter: value});
     },
     render: function() {
-        return <section className="active-readers">
+        return <article className="active-readers">
             <Sticky type={React.DOM.header}>
                 <h2>Services</h2>
-                <h4>Manage your services</h4>
+                <h3>Manage your services</h3>
             </Sticky>
             {this.state.readers ? <div>
                 <Search placeholder="Search your services" onChange={this.filter}/>
@@ -53,6 +53,6 @@ module.exports = React.createClass({
                     }
                 </ul>
             </div> : <Loading/>}
-        </section>;
+        </article>;
     }
 });

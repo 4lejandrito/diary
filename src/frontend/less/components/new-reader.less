@@ -11,22 +11,21 @@
         margin-top: @spacing / 2;
         margin-bottom: 2 * @spacing;
         font-weight: normal;
-        font-size: 15px;
         display: block;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
     .param {
-        max-width: 400px;
+        max-width: 200px;
         margin: 2 * @spacing auto;
-        label {
-            display: inline-block;
-            font-weight: bold;
-        }
+        text-align: left;
         input {
-            margin-left: @spacing * 2;
-            display: inline-block;
+            display: block;
+            width: 100%;
         }
+    }
+    button {
+        margin-bottom: 2 * @spacing;
     }
 }

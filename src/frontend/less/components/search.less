@@ -1,25 +1,20 @@
 .search {
-    @color: white;
-    cursor: pointer;
-    border: solid 2px @color;
-    border-radius: 200px;
-    background: transparent;
-    padding: @spacing / 2 @spacing * 2;
-    padding-bottom: @spacing / 1.6;
-    color: @color;
-    outline: none;
-    display: inline-block;
-    text-decoration: none;
+    .button;
 
     input {
         width: 80%;
-        background: transparent;
         margin-left: @spacing;
         border: none;
         padding: 0;
-        &::-webkit-input-placeholder {
-            color: @color;
-            opacity: .9;
+    }
+
+    &:hover {
+        input::-webkit-input-placeholder {
+            color: @main-color;
+        }
+        input {
+            background: white;
+            color: @main-color;
         }
     }
 }

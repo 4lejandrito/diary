@@ -30,7 +30,7 @@ module.exports = React.createClass({
     render: function() {
         return <div className="app">
             <header>
-                <Link to="/"><Logo/> Diary</Link>
+                <h1><Link to="/"><Logo/> Diary</Link></h1>
                 {this.state.user ? <Link className="face" to="/services" title="Services">
                     <Gravatar email={this.state.user.email} size={200}/>
                 </Link> : false}

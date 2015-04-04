@@ -22,7 +22,7 @@ var Month = React.createClass({
 
         return <li className="month">
             <Link to="month" params={params} disabled={!totalNumberOfEvents}>
-                <h4>{this.props.moment.format('MMMM')}</h4>
+                <h3>{this.props.moment.format('MMMM')}</h3>
                 {this.props.view ? top : null}
                 <strong>
                     {!this.props.view ? <Loading/> : (totalNumberOfEvents || 'No data')}
@@ -69,21 +69,19 @@ module.exports = React.createClass({
     render: function() {
         var day = moment().year(this.props.year || moment().year());
 
-        return <section className="events-year">
+        return <article className="events-year">
             <Sticky type={React.DOM.header}>
-                <h4>
-                    <Link to="year" params={{year: day.year() - 1}}>
-                        {moment(day).subtract(1, 'years').format('gggg')}
-                    </Link>
-                </h4>
-                <h2>{day.format('gggg')}</h2>
-                <h4>
-                    <Link to="year" params={{year: day.year() + 1}}>
-                        {moment(day).add(1, 'years').format('gggg')}
-                    </Link>
-                </h4>
+                <Link to="year" params={{year: day.year() - 1}}>
+                    {moment(day).subtract(1, 'years').format('gggg')}
+                </Link>
+                <h2>
+                    {day.format('gggg')}
+                </h2>
+                <Link to="year" params={{year: day.year() + 1}}>
+                    {moment(day).add(1, 'years').format('gggg')}
+                </Link>
             </Sticky>
             <Year view={this.state.view} moment={day}/>
-        </section>;
+        </article>;
     }
 });

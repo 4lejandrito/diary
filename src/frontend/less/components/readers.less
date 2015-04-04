@@ -1,19 +1,13 @@
 .active-readers, .available-readers {
 
-    header > h2 {
-        display: block !important;
-    }
-
     .search, .button {
         display: inline-block;
         margin: 2 * @spacing @spacing @spacing;
     }
 
-    @distanceBetweenReaders: @spacing / 2;
-
     text-align: center;
     ul {
-        padding: @distanceBetweenReaders;
+        padding: @spacing / 2;
     }
 
     .active-reader, .available-reader {
@@ -30,8 +24,9 @@
             width: 100%;
         }
         margin: 0;
-        padding: @distanceBetweenReaders;
+        padding: @spacing / 2;
         position: relative;
+        h4:extend(.text-m all) {}
         button {
             display: none;
         }
@@ -45,24 +40,17 @@
             color: lighten(red, 10%);
         }
         a {
-            .card(@hover: false);
+            .card;
             margin: 0;
             color: @text-color;
-            &:hover {
-                & > strong {
-                    color: @main-color;
-                }
-            }
             img {
                 .circle(40px);
                 display: block;
-                margin: 0 auto @spacing auto;
+                margin: @spacing auto;
             }
             p {
-                margin-top: @spacing / 2;
-                margin-bottom: 0;
+                margin: 0;
                 font-weight: normal;
-                font-size: 15px;
                 display: block;
                 white-space: nowrap;
                 overflow: hidden;

@@ -1,13 +1,10 @@
 .events-year {
     .year {
-        @distanceBetweenMonths: @spacing / 2;
         text-align: center;
-        background: @main-color;
-        padding: @distanceBetweenMonths;
-        box-shadow: 0 2px 10px -5px black inset;
+        padding: @spacing / 2;
         margin: 0 auto;
         @media(min-width: 480px) {
-            padding: @distanceBetweenMonths 10%;
+            padding: @spacing / 2 10%;
         }
         .month {
             text-decoration: none;
@@ -17,7 +14,7 @@
                 width: 33.33%;
             }
             margin: 0;
-            padding: @distanceBetweenMonths;
+            padding: @spacing / 2;
             vertical-align: top;
 
             a {
@@ -25,22 +22,21 @@
                 margin: 0;
             }
 
-            h4 {
+            h3 {
                 margin-bottom: @spacing;
-                padding: 0;
-                text-overflow: ellipsis;
-                overflow: hidden;
             }
 
             strong {
+                .text-m;
                 display: block;
                 margin-bottom: @spacing;
+                margin-top: 2px;
             }
 
             img {
                 .circle(12px);
                 &.loading {
-                    .circle(25px);
+                    .circle(25.5px);
                 }
                 padding: 2px;
                 display: inline-block;
