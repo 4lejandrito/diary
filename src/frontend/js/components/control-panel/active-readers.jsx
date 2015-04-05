@@ -10,29 +10,29 @@ var Sticky = require('react-sticky');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {filter: '', readers: undefined};
+        return {readers: undefined};
     },
     componentWillMount: function() {
         var self = this;
         api.on('reader.new', this.onReaderCreated = function(reader) {
             self.state.readers.push(reader);
-            self.setState({readers: self.state.readers});
+            self.setReaders(self.state.readers);
         });
         api.on('reader.removed', this.onReaderRemoved = function(reader) {
-            self.setState({
-                readers: _.without(self.state.readers, reader)
-            });
+            self.setReaders(_.without(self.state.readers, reader));
         });
-        api.activeReaders(function(readers) {
-            self.setState({readers: readers});
-        });
+        api.activeReaders(this.setReaders);
     },
     componentWillUnmount: function() {
         api.off('reader.new', this.onReaderCreated);
         api.off('reader.removed', this.onReaderRemoved);
     },
-    filter: function(value) {
-        this.setState({filter: value});
+    setReaders: function(readers) {
+        this.filter(readers);
+        this.setState({readers: readers});
+    },
+    filter: function(readers) {
+        this.setState({filteredReaders: readers});
     },
     render: function() {
         return <article className="active-readers">
@@ -41,13 +41,11 @@ module.exports = React.createClass({
                 <h3>Manage your services</h3>
             </Sticky>
             {this.state.readers ? <div>
-                <Search placeholder="Search your services" onChange={this.filter}/>
+                <Search placeholder="Search your services" list={this.state.readers} onChange={this.filter}/>
                 <Link className="button" to="/services/new"><Icon name="plus"/></Link>
                 <ul>
                     {
-                        _.filter(this.state.readers, function(reader) {
-                            return reader.type.indexOf(this.state.filter) != -1;
-                        }, this).map(function(reader) {
+                        this.state.filteredReaders.map(function(reader) {
                             return <ActiveReader reader={reader}/>;
                         })
                     }

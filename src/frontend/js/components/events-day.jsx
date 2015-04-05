@@ -7,6 +7,7 @@ var Link = require('components/link');
 var Icon = require('components/icon');
 var eventComponents = require('./events/*', {hash: true});
 var Sticky = require('react-sticky');
+var Search = require('components/search');
 
 var Event = React.createClass({
     render: function() {
@@ -43,9 +44,15 @@ module.exports = React.createClass({
     refresh: function(year, month, day) {
         var self = this;
         api.viewDay(year, month, day, function(events) {
-            self.setState({events: events});
+            self.setState({
+                events: events,
+                filteredEvents: events
+            });
         });
         this.replaceState({});
+    },
+    filter: function(events) {
+        this.setState({filteredEvents: events});
     },
     render: function() {
         var day = moment()
@@ -74,19 +81,39 @@ module.exports = React.createClass({
                 </Link>
                 <h3>{day.format('MMMM Do gggg')}</h3>
             </Sticky>
-            {!this.state.events ? <Loading/> :
-            (this.state.events.length ? <ol className="events">
-                {this.state.events.map(function(e) {
-                    return <Event event={e}/>;
-                })}
-            </ol> : <div className="nothing">No data</div>)}
-            {this.state.events ? <Link className="button" to="day" params={{
-                year: next.year(),
-                month: next.month(),
-                day: next.date()
-            }}>
-                {next.format('dddd')}  <Icon name="forward"/>
-            </Link> : null}
+            <Search placeholder="Search this timeline" list={this.state.events} onChange={this.filter}/>
+            {
+                !this.state.events && <Loading/>
+            }
+            {
+                this.state.events && !!this.state.events.length &&
+                <ol className="events">
+                    {this.state.filteredEvents.map(function(e) {
+                        return <Event event={e}/>;
+                    })}
+                </ol>
+            }
+            {
+                this.state.events &&
+                !this.state.events.length &&
+                <div className="nothing">No data</div>
+            }
+            {
+                this.state.events &&
+                !!this.state.events.length &&
+                !this.state.filteredEvents.length &&
+                <div className="nothing">No results found</div>
+            }
+            {
+                this.state.events &&
+                <Link className="button" to="day" params={{
+                    year: next.year(),
+                    month: next.month(),
+                    day: next.date()
+                }}>
+                    {next.format('dddd')}  <Icon name="forward"/>
+                </Link>
+            }
         </article>;
     }
 });
