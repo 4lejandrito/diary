@@ -1,7 +1,5 @@
 var readers = require('../readers');
 var moment = require('moment');
-var _ = require('underscore');
-var extend = require('extend');
 var uuid = require('node-uuid');
 
 module.exports = {
@@ -28,8 +26,13 @@ module.exports = {
         });
     },
 
+    logout: function(req, res) {
+        req.logout();
+        res.send('awesome');
+    },
+
     getReaders: function(req, res) {
-        res.send(readers.forUser(req.user));
+        res.send(req.user.readers || []);
     },
 
     addReader: function(req, res) {

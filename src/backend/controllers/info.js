@@ -1,5 +1,3 @@
-var config = require('config');
-
 var package_json = require(process.cwd() + '/package.json');
 
 module.exports.get = function(req, res) {

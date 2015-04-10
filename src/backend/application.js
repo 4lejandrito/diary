@@ -7,22 +7,26 @@ var config = require('config');
 var extend = require('extend');
 var readers = require('./readers');
 var OAuth2Strategy  = require('passport-oauth').OAuth2Strategy;
+var session = require('express-session');
 
-var Application = module.exports = function() {
+module.exports = function() {
     var app = express();
 
     var passport = auth(app);
 
-    app.use(passport.initialize());
+    app.use(session({secret: 'kfkljdlkjsfls', resave: true, saveUninitialized: true}));
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
+    app.use(passport.initialize());
+    app.use(passport.session());
 
-    app.get ('/api'     , controllers.info.get);
-    app.post('/api/user', controllers.user.create);
-    app.use ('/api/*'   , passport.authenticate('basic'));
-    app.get ('/api/user', controllers.user.get);
-    app.use ('/auth/*'  , passport.authenticate('basic'));
-    app.use ('/'        , express.static('src/public'));
+    app.get ('/api'            , controllers.info.get);
+    app.post('/api/user'       , controllers.user.create);
+    app.use ('/api/*'          , passport.authenticate('diary'));
+    app.get ('/api/user'       , controllers.user.get);
+    app.post('/api/user/logout', controllers.user.logout);
+    app.use ('/auth/*'         , passport.authenticate('diary'));
+    app.use ('/'               , express.static('src/public'));
 
     app.get   ('/api/user/reader'                 , controllers.user.getReaders);
     app.post  ('/api/user/reader/:type'           , controllers.user.addReader);

@@ -1,5 +1,37 @@
-var Passport        = require('passport').Passport;
-var BasicStrategy   = require('passport-http').BasicStrategy;
+var Passport = require('passport').Passport;
+var Strategy = require('passport').Strategy;
+var util = require('util');
+
+function DiaryStrategy(verify) {
+    Strategy.call(this);
+    this.name = 'diary';
+    this._verify = verify;
+}
+util.inherits(DiaryStrategy, Strategy);
+
+DiaryStrategy.prototype.authenticate = function(req) {
+    if (req.user) {
+        this.success(req.user);
+    } else {
+        var username = req.query.username;
+        var password = req.query.password;
+        var self = this;
+
+        if (!username || !password) {
+            return this.fail();
+        }
+
+        try {
+            this._verify(username, password, function(err, user, info) {
+                if (err) return self.error(err);
+                if (!user) return self.fail(info);
+                self.success(user, info);
+            });
+        } catch (ex) {
+            return self.error(ex);
+        }
+    }
+};
 
 module.exports = function(app) {
     var passport = new Passport();
@@ -14,7 +46,7 @@ module.exports = function(app) {
         });
     });
 
-    passport.use(new BasicStrategy(function(username, password, done) {
+    passport.use(new DiaryStrategy(function(username, password, done) {
         app.db.get('users').findOne({ email: username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
