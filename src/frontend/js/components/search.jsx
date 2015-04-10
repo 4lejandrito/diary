@@ -13,6 +13,11 @@ module.exports = React.createClass({
         this.setState({toggle: !this.state.toggle});
         this.props.onChange(this.props.list);
     },
+    onBlur: function() {
+        if (!this.refs.input.getDOMNode().value) {
+            this.toggle();
+        }
+    },
     containsTerm: function(object, term) {
         if (_.isString(object)) {
             return object.toLowerCase().indexOf(term.toLowerCase()) !== -1;
@@ -34,8 +39,8 @@ module.exports = React.createClass({
     },
     render: function() {
         return <span className="search" data-toggle={this.state.toggle} onClick={this.toggle}>
-            <Icon name="search"/>
-            {this.state.toggle && <input onClick={this.stopPropagation} autoFocus={true} type="text" placeholder={this.props.placeholder} onChange={this.filter}/>}
+            <Icon name={this.state.toggle ? 'arrow-left' : 'search'}/>
+            {this.state.toggle && <input ref="input" onBlur={this.onBlur} onClick={this.stopPropagation} autoFocus={true} type="text" placeholder={this.props.placeholder} onChange={this.filter}/>}
         </span>;
     }
 });

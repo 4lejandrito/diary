@@ -1,0 +1,23 @@
+.error {
+    .card(@hover: false);
+    background: #FF6961;
+    color: white;
+}
+
+.login {
+    & > header {
+        padding-top: @spacing !important;
+        margin-bottom: 2 * @spacing;
+    }
+    & > form {
+        width: 300px;
+        max-width: 90%;
+        margin: 0 auto;
+        & > .input-group, & > .error {
+            width: 100%;
+            margin: 0 auto;
+            display: block;
+            margin-bottom: 2 * @spacing;
+        }
+    }
+}

@@ -8,6 +8,7 @@ var RouteHandler = require('react-router').RouteHandler;
 var Link = require('react-router').Link;
 var Author = require('components/author');
 var Logo = require('components/logo');
+var Login = require('components/login');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -15,7 +16,7 @@ module.exports = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        api.user(function(user) {
+        api.user(function(err, user) {
             self.setState({
                 user: user,
                 loading: false
@@ -24,6 +25,19 @@ module.exports = React.createClass({
         api.authors(function(authors) {
             self.setState({
                 authors: authors
+            });
+        });
+    },
+    login: function(user) {
+        this.setState({
+            user: user
+        });
+    },
+    logout: function() {
+        var self = this;
+        api.logout(function() {
+            self.setState({
+                user: undefined
             });
         });
     },
@@ -36,7 +50,9 @@ module.exports = React.createClass({
                 </Link> : false}
             </header>
             <Content>
-                {this.state.loading ? <Loading/> : <RouteHandler {...this.props.params}/>}
+                {this.state.loading && <Loading/>}
+                {this.state.user && <RouteHandler {...this.props.params}/>}
+                {!this.state.user && !this.state.loading && <Login onLogin={this.login}/>}
             </Content>
             <footer>
                 <div>

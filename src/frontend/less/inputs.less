@@ -1,46 +1,73 @@
-button, .button, input {
-    @color: white;
+button, .button {
+    border-color: white;
+    background: transparent;
+    color: white;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: @spacing / 2 @spacing * 2;
+    padding-bottom: @spacing / 1.6;
+    &:hover, &:active, &:focus, &[data-toggle='true'] {
+        outline: none;
+        text-decoration: none;
+        background: white;
+        color: @main-color;
+        border-color: white;
+    }
+}
+
+.inverse {
+    color: white;
+    background: @main-color;
+    border-color: @main-color;
+    &:hover, &:active, &:focus, &[data-toggle='true'] {
+        background: lighten(@main-color, 5%);
+    }
+}
+
+button, .button, input, .input {
     font-size: 1.25em;
     font-weight: normal;
-    border: solid 4px @color;
-    background: transparent;
-    color: @color;
+    border: solid 3px;
     outline: none;
     text-decoration: none;
     display: inline-block;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
     -webkit-tap-highlight-color: transparent;
-    &:hover, &:active, &:focus, &[data-toggle='true'] {
-        outline: none;
-        text-decoration: none;
-        background: white;
-        border-color: lighten(@main-color, 20%);
-        color: @main-color;
-    }
 }
 
-input {
+input, .input {
     font-size: 1.25rem;
     padding: @spacing / 2;
     border-radius: 2px;
-
+    border-color: white !important;
+    background: white;
+    color: @main-color;
     &::-webkit-input-placeholder {
-        color: white;
         opacity: .9;
-    }
-
-    &:hover, &:active, &:focus {
-        &::-webkit-input-placeholder {
-            color: @main-color;
-        }
     }
 }
 
-button, .button {
-    cursor: pointer;
-    border-radius: 200px;
-    padding: @spacing / 2 @spacing * 2;
-    padding-bottom: @spacing / 1.6;
+.input-group {
+    font-size: 1.25em;
+    position: relative;
+    input {
+        border-left: solid 35px;
+        width: 100%;
+    }
+
+    .icon {
+        text-align: center;
+        top: 4px;
+        left: 4px;
+        position: absolute;
+        display: inline-block;
+        height: 35px;
+        width: 32px;
+        background: transparent;
+        vertical-align: middle;
+        color: @main-color;
+        padding: 8px;
+    }
 }
 
 label {

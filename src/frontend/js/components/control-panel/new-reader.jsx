@@ -24,7 +24,7 @@ module.exports = React.createClass({
     },
     componentWillMount: function() {
         var self = this;
-        api.getAvailableReader(this.props.type, function(reader) {
+        api.getAvailableReader(this.props.type, function(err, reader) {
             self.setState({reader: reader});
         });
     },

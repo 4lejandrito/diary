@@ -12,7 +12,7 @@ module.exports = React.createClass({
     componentWillMount: function() {
         api.availableReaders(this.setReaders);
     },
-    setReaders: function(readers) {
+    setReaders: function(err, readers) {
         this.filter(readers);
         this.setState({readers: readers});
     },

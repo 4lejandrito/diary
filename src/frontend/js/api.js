@@ -3,21 +3,32 @@ var EventEmitter2 = require('eventemitter2').EventEmitter2;
 var extend = require('extend');
 var _ = require('underscore');
 
+var response = function(cb) {
+    return function(err, res) {
+        setTimeout(function() {
+            cb(err, res && res.body);
+        }, 0);
+    };
+};
+
 var api = module.exports = extend(true, new EventEmitter2(), {
+    auth: function(username, password, cb) {
+        return rest.get('/api/user').query({
+            username: username,
+            password: password
+        }).end(response(cb));
+    },
+    logout: function(cb) {
+        return rest.post('/api/user/logout').end(response(cb));
+    },
     user: function(cb) {
-        return rest.get('/api/user', function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/user').end(response(cb));
     },
     availableReaders: function(cb) {
-        return rest.get('/api/reader', function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/reader').end(response(cb));
     },
     activeReaders: function(cb) {
-        return rest.get('/api/user/reader', function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/user/reader').end(response(cb));
     },
     addReader: function(type, config, cb) {
         return rest.post('/api/user/reader/' + type)
@@ -27,14 +38,14 @@ var api = module.exports = extend(true, new EventEmitter2(), {
         });
     },
     removeReader: function(reader, cb) {
-        return rest.del('/api/user/reader/' + reader.id, function(res) {
+        return rest.del('/api/user/reader/' + reader.id).end(function(err, res) {
             api.emit('reader.removed', reader);
             if (cb) cb(res.body);
         });
     },
     getAvailableReader: function(type, cb) {
-        return rest.get('/api/reader', function(res) {
-            if (cb) cb(_.findWhere(res.body, {type: type}));
+        return rest.get('/api/reader').end(function(err, res) {
+            if (cb) cb(err, _.findWhere(res.body, {type: type}));
         });
     },
     authors: function(cb) {
@@ -43,23 +54,15 @@ var api = module.exports = extend(true, new EventEmitter2(), {
         });
     },
     events: function(cb) {
-        return rest.get('/api/user/event', function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/user/event', response(cb));
     },
     viewYear: function(year, cb) {
-        return rest.get('/api/user/event/' + year, function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/user/event/' + year).end(response(cb));
     },
     viewMonth: function(year, month, cb) {
-        return rest.get('/api/user/event/' + year + '/' + month, function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/user/event/' + year + '/' + month, response(cb));
     },
     viewDay: function(year, month, day, cb) {
-        return rest.get('/api/user/event/' + year + '/' + month + '/' + day, function(res) {
-            cb(res.body);
-        });
+        return rest.get('/api/user/event/' + year + '/' + month + '/' + day, response(cb));
     }
 });

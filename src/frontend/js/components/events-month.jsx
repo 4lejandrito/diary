@@ -73,7 +73,7 @@ module.exports = React.createClass({
     },
     refresh: function(year, month) {
         var self = this;
-        api.viewMonth(year, month, function(view) {
+        api.viewMonth(year, month, function(err, view) {
             self.setState({view: view});
         });
         this.replaceState({});

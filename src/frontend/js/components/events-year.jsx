@@ -61,7 +61,7 @@ module.exports = React.createClass({
     },
     refresh: function(year) {
         var self = this;
-        api.viewYear(year || moment().year(), function(view) {
+        api.viewYear(year || moment().year(), function(err, view) {
             self.setState({view: view});
         });
         this.replaceState({});

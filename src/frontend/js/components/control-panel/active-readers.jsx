@@ -27,7 +27,7 @@ module.exports = React.createClass({
         api.off('reader.new', this.onReaderCreated);
         api.off('reader.removed', this.onReaderRemoved);
     },
-    setReaders: function(readers) {
+    setReaders: function(err, readers) {
         this.filter(readers);
         this.setState({readers: readers});
     },

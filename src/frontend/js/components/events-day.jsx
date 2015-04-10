@@ -43,7 +43,7 @@ module.exports = React.createClass({
     },
     refresh: function(year, month, day) {
         var self = this;
-        api.viewDay(year, month, day, function(events) {
+        api.viewDay(year, month, day, function(err, events) {
             self.setState({
                 events: events,
                 filteredEvents: events
