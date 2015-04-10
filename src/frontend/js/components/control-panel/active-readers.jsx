@@ -19,7 +19,7 @@ module.exports = React.createClass({
             self.setReaders(self.state.readers);
         });
         api.on('reader.removed', this.onReaderRemoved = function(reader) {
-            self.setReaders(_.without(self.state.readers, reader));
+            self.setReaders(null, _.without(self.state.readers, reader));
         });
         api.activeReaders(this.setReaders);
     },
