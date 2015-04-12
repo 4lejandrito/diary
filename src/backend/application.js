@@ -8,13 +8,18 @@ var extend = require('extend');
 var readers = require('./readers');
 var OAuth2Strategy  = require('passport-oauth').OAuth2Strategy;
 var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 module.exports = function() {
     var app = express();
-
     var passport = auth(app);
 
-    app.use(session({secret: 'kfkljdlkjsfls', resave: true, saveUninitialized: true}));
+    app.use(session({
+        secret: config.secret,
+        resave: true,
+        saveUninitialized: true,
+        store: new MongoStore({url: config.db.url})
+    }));
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
     app.use(passport.initialize());
@@ -38,8 +43,6 @@ module.exports = function() {
     app.get   ('/api/reader'                      , controllers.reader.getAvailable);
     app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 
-    app.db = monk(config.db.url);
-
     readers.all().map(function(reader) {
         if (!reader.schema.oauth2) return;
         passport.use(reader.type, new OAuth2Strategy(extend(true, reader.schema.oauth2, {
@@ -53,6 +56,8 @@ module.exports = function() {
             failureRedirect: '/#/services/new'
         }));
     });
+
+    app.db = monk(config.db.url);
 
     app.db.on('open', function() {
         readers.on('event', function(event) {
