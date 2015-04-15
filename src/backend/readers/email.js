@@ -10,26 +10,41 @@ module.exports = {
         password: ''
     },
     instance: function(emit, settings) {
-        var client;
+        var client, lastMessage, interval;
         return {
             start: function() {
                 client = inbox.createConnection(false, settings.server, {
                     secureConnection: true,
-                    auth:{
+                    auth: {
                         user: settings.address,
                         pass: settings.password
                     }
                 });
 
+                function emitMessages(messages) {
+                    if (messages && messages.length) {
+                        messages.forEach(emit);
+                        lastMessage = messages[messages.length - 1];
+                    }
+                }
+
                 client.on("connect", function() {
-                    client.openMailbox("INBOX", function(error, info) {
-                        client.listMessages(0, {readOnly: true}, function(err, messages) {
-                            messages.forEach(emit);
+                    interval = setInterval(function() {
+                        client.openMailbox("INBOX", {readOnly: true}, function() {
+                            if (lastMessage) {
+                                client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
+                                    messages.shift();
+                                    emitMessages(messages);
+                                });
+                            } else {
+                                client.listMessages(0, function(err, messages) {
+                                    emitMessages(messages);
+                                });
+                            }
                         });
-                    });
+                    }, 5000);
                 });
 
-                client.on('new', emit);
                 client.connect();
             },
             stop: function() {
