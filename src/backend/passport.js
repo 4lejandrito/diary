@@ -1,6 +1,7 @@
 var Passport = require('passport').Passport;
 var Strategy = require('passport').Strategy;
 var util = require('util');
+var db = require('./db');
 
 function DiaryStrategy(verify) {
     Strategy.call(this);
@@ -33,27 +34,23 @@ DiaryStrategy.prototype.authenticate = function(req) {
     }
 };
 
-module.exports = function(app) {
-    var passport = new Passport();
+var passport = module.exports = new Passport();
 
-    passport.serializeUser(function(user, done) {
-        done(null, user._id);
+passport.serializeUser(function(user, done) {
+    done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+    db.get('users').findById(id, function(err, user) {
+        done(err, user);
     });
+});
 
-    passport.deserializeUser(function(id, done) {
-        app.db.get('users').findById(id, function(err, user) {
-            done(err, user);
-        });
+passport.use(new DiaryStrategy(function(username, password, done) {
+    db.get('users').findOne({ email: username }, function (err, user) {
+        if (err) { return done(err); }
+        if (!user) { return done(null, false); }
+        if (user.password !== password) { return done(null, false); }
+        return done(null, user);
     });
-
-    passport.use(new DiaryStrategy(function(username, password, done) {
-        app.db.get('users').findOne({ email: username }, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            if (user.password !== password) { return done(null, false); }
-            return done(null, user);
-        });
-    }));
-
-    return passport;
-};
+}));

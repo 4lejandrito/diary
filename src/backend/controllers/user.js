@@ -1,6 +1,8 @@
 var readers = require('../readers');
 var moment = require('moment');
 var uuid = require('node-uuid');
+var users = require('../db').get('users');
+var events = require('../db').get('events');
 
 module.exports = {
 
@@ -9,7 +11,6 @@ module.exports = {
     },
 
     create: function(req, res) {
-        var users = req.app.db.get('users');
         var email = req.body.email;
         var password = req.body.password;
 
@@ -41,7 +42,7 @@ module.exports = {
             type: req.params.type,
             settings: req.body
         };
-        req.app.db.get('users').updateById(req.user._id, {
+        users.updateById(req.user._id, {
             $push: {readers: reader}
         }).on('success', function() {
             var wrapper = readers.create(reader, req.user);
@@ -58,7 +59,7 @@ module.exports = {
                 token: accessToken
             }
         };
-        req.app.db.get('users').updateById(req.user._id, {
+        users.updateById(req.user._id, {
             $push: {readers: reader}
         }).on('success', function() {
             var wrapper = readers.create(reader, req.user);
@@ -68,7 +69,7 @@ module.exports = {
     },
 
     deleteReader: function(req, res) {
-        req.app.db.get('users').updateById(req.user._id, {
+        users.updateById(req.user._id, {
             $pull : {readers : {id: req.params.id}}
         }).on('success', function() {
             res.send(readers.delete(req.user, req.params.id));
@@ -76,7 +77,7 @@ module.exports = {
     },
 
     getEvents: function(req, res) {
-        req.app.db.get('events').find({
+        events.find({
             user: req.user._id
         }, '-user').on('success', function(events) {
             res.send(events);
@@ -84,7 +85,6 @@ module.exports = {
     },
 
     getYearView: function(req, res) {
-        var events = req.app.db.get('events');
         var start = moment().year(parseInt(req.params.year)).startOf('year');
         var end = moment(start).endOf('year');
 
@@ -112,7 +112,6 @@ module.exports = {
     },
 
     getMonthView: function(req, res) {
-        var events = req.app.db.get('events');
         var start = moment().year(parseInt(req.params.year))
         .month(parseInt(req.params.month)).startOf('month');
         var end = moment(start).endOf('month');
@@ -141,7 +140,6 @@ module.exports = {
     },
 
     getDayView: function(req, res) {
-        var events = req.app.db.get('events');
         var start = moment().year(parseInt(req.params.year))
         .month(parseInt(req.params.month))
         .date(parseInt(req.params.day)).startOf('day');
