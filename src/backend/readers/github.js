@@ -1,5 +1,5 @@
-var moment = require('moment');
 var github = require('octonode');
+var db = require('../db');
 
 module.exports = {
     type: 'github',
@@ -14,21 +14,28 @@ module.exports = {
             scope: 'repo'
         }
     },
-    instance: function(emit, settings) {
+    instance: function(emit, reader) {
         var interval;
         return {
             start: function() {
-                var client = github.client(settings.token);
+                var client = github.client(reader.settings.token);
                 client.me().info(function(err, info) {
                     var ghuser = client.user(info.login);
                     interval = setInterval(function() {
-                        function processEvents(err, data, headers) {
+                        function processEvents(err, data) {
                             if (data) {
                                 data.map(function(event) {
                                     if (event.type === 'PushEvent') {
-                                        emit({
-                                            date: new Date(event.created_at),
-                                            data: event
+                                        db.get('events').findOne({
+                                            reader_id: reader.id,
+                                            'data.id': event.id
+                                        }).on('success', function (lastMessage) {
+                                            if (!lastMessage) {
+                                                emit({
+                                                    date: new Date(event.created_at),
+                                                    data: event
+                                                });
+                                            }
                                         });
                                     }
                                 });
