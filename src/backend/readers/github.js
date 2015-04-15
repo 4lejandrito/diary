@@ -1,5 +1,6 @@
 var github = require('octonode');
 var db = require('../db');
+var config = require('config');
 
 module.exports = {
     type: 'github',
@@ -9,8 +10,8 @@ module.exports = {
         oauth2: {
             authorizationURL: 'https://github.com/login/oauth/authorize',
             tokenURL: 'https://github.com/login/oauth/access_token',
-            clientID: '581238a03e96209edc2a',
-            clientSecret: '0cf68d19c58c8550c27c837346a3e8a2d85e8fe3',
+            clientID: config.github.clientID,
+            clientSecret: config.github.clientSecret,
             scope: 'repo'
         }
     },
