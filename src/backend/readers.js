@@ -11,7 +11,7 @@ var availableReaders = fs.readdirSync(config.readers).map(function(file) {
     return require(config.readers + '/' + file);
 });
 
-readers.all = function(type) {
+readers.all = function() {
     return availableReaders;
 };
 
@@ -32,13 +32,14 @@ readers.forUser = function(user) {
 readers.createInstance = function(reader, user) {
     return this.forType(reader.type).instance(function(data) {
         readers.emit('event', extend(true, {
-            date: new Date(),
+            date: new Date()
         }, data, {
             type: reader.type,
             user: user._id,
-            loggedAt: new Date()
+            loggedAt: new Date(),
+            reader_id: reader.id
         }));
-    }, reader.settings);
+    }, reader);
 };
 
 readers.create = function(reader, user) {

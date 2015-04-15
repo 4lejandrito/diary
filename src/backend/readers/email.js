@@ -1,4 +1,5 @@
 var inbox = require("inbox");
+var db = require('../db');
 
 module.exports = {
     type: 'email',
@@ -9,38 +10,43 @@ module.exports = {
         address: 'me@example.com',
         password: ''
     },
-    instance: function(emit, settings) {
-        var client, lastMessage, interval;
+    instance: function(emit, reader) {
+        var client, interval;
         return {
             start: function() {
-                client = inbox.createConnection(false, settings.server, {
+                client = inbox.createConnection(false, reader.settings.server, {
                     secureConnection: true,
                     auth: {
-                        user: settings.address,
-                        pass: settings.password
+                        user: reader.settings.address,
+                        pass: reader.settings.password
                     }
                 });
 
                 function emitMessages(messages) {
                     if (messages && messages.length) {
                         messages.forEach(emit);
-                        lastMessage = messages[messages.length - 1];
                     }
                 }
 
                 client.on("connect", function() {
                     interval = setInterval(function() {
                         client.openMailbox("INBOX", {readOnly: true}, function() {
-                            if (lastMessage) {
-                                client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
-                                    messages.shift();
-                                    emitMessages(messages);
-                                });
-                            } else {
-                                client.listMessages(0, function(err, messages) {
-                                    emitMessages(messages);
-                                });
-                            }
+                            db.get('events').findOne({
+                                reader_id: reader.id
+                            }, {
+                                sort: {date: -1}
+                            }).on('success', function (lastMessage) {
+                                if (lastMessage) {
+                                    client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
+                                        messages.shift();
+                                        emitMessages(messages);
+                                    });
+                                } else {
+                                    client.listMessages(0, function(err, messages) {
+                                        emitMessages(messages);
+                                    });
+                                }
+                            });
                         });
                     }, 5000);
                 });

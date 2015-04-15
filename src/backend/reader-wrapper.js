@@ -1,7 +1,7 @@
 var extend = require('extend');
 
 module.exports = function(reader, instance) {
-    return extend(true, {}, reader, {
+    return extend(reader, {
         running: this.running,
         start: function() {
             this.running = true;
