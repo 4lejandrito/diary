@@ -10,8 +10,8 @@ module.exports = {
     getChuckNorrisFact: function() {
 
     },
-    instance: function(emit, settings) {
-        var interval, dailyJob = new CronJob({
+    instance: function(emit) {
+        var dailyJob = new CronJob({
           cronTime: '00 00 08 * * 1-7',
           onTick: function() {
             rest.get('http://api.icndb.com/jokes/random', function(response){

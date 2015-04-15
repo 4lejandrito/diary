@@ -7,11 +7,10 @@ module.exports = {
     schema: {
         directory: '.'
     },
-    instance: function(emit, settings) {
-        var interval;
+    instance: function(emit, reader) {
         return {
             start: function() {
-                watch.watchTree(settings.directory, function (f, curr, prev) {
+                watch.watchTree(reader.settings.directory, function (f, curr, prev) {
                     if (!(typeof f == "object" && prev === null && curr === null)) {
                         emit({
                             action: (prev === null) ? 'new' : (curr.nlink === 0 ? 'removed' : 'changed'),
@@ -21,7 +20,7 @@ module.exports = {
                 });
             },
             stop: function() {
-                watch.unwatchTree(settings.directory);
+                watch.unwatchTree(reader.settings.directory);
             }
         };
     }
