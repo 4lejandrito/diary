@@ -1,4 +1,5 @@
 module.exports = {
+    url: 'https://diary-stage.herokuapp.com',
     port: process.env.PORT,
     secret: process.env.SECRET,
     db: {

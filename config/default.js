@@ -1,4 +1,5 @@
 module.exports = {
+    url: 'http://localhost:8000',
     port: 8000,
     secret: 'theappsecret',
     db: {

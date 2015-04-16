@@ -9,7 +9,6 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('./passport');
 var db = require('./db');
-
 var app = module.exports = express();
 
 app.use(session({
@@ -44,11 +43,16 @@ app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 readers.all().map(function(reader) {
     if (!reader.schema.oauth2) return;
     passport.use(reader.type, new OAuth2Strategy(extend(true, reader.schema.oauth2, {
-        passReqToCallback: true
+        passReqToCallback: true,
+        callbackURL: config.url + '/auth/' + reader.type + '/callback'
     }), function(req, accessToken, refreshToken, profile, done) {
         controllers.user.addReaderOAuth2(req, accessToken, reader.type, done);
     }));
-    app.get('/auth/' + reader.type, passport.authenticate(reader.type));
+    app.get('/auth/' + reader.type, function(req, res) {
+        passport.authenticate(reader.type, {
+            state: new Buffer(JSON.stringify(req.query)).toString('base64')
+        })(req, res);
+    });
     app.get('/auth/' + reader.type + '/callback', passport.authenticate(reader.type, {
         successRedirect: '/#/services',
         failureRedirect: '/#/services/new'

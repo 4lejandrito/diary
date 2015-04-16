@@ -3,6 +3,7 @@ var moment = require('moment');
 var uuid = require('node-uuid');
 var users = require('../db').get('users');
 var events = require('../db').get('events');
+var extend = require('extend');
 
 module.exports = {
 
@@ -52,12 +53,13 @@ module.exports = {
     },
 
     addReaderOAuth2: function(req, accessToken, type, done) {
+        var state = JSON.parse(new Buffer(req.query.state, 'base64').toString('ascii'));
         var reader = {
             id: uuid.v4(),
             type: type,
-            settings: {
+            settings: extend(true, state, {
                 token: accessToken
-            }
+            })
         };
         users.updateById(req.user._id, {
             $push: {readers: reader}

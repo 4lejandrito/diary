@@ -13,14 +13,24 @@ module.exports = React.createClass({
     getInitialState: function() {
         return {};
     },
-    addReader: function() {
-        var self = this;
-        api.addReader(this.state.reader.type, _.mapObject(this.refs, function(ref) {
+    getSettings: function() {
+        return _.mapObject(this.refs, function(ref) {
             var value = ref.getDOMNode().value;
             return !isNaN(value) ? parseFloat(value) : value;
-        }), function() {
-            self.context.router.transitionTo('/services');
         });
+    },
+    addReader: function() {
+        var self = this;
+        if (this.state.reader.schema.oauth2) {
+            window.location.replace('/auth/' + this.state.reader.type + '?' +
+            _.pairs(this.getSettings()).map(function(pair) {
+                return encodeURIComponent(pair[0]) + "=" + encodeURIComponent(pair[1]);
+            }).join('&'));
+        } else {
+            api.addReader(this.state.reader.type, this.getSettings(), function() {
+                self.context.router.transitionTo('/services');
+            });
+        }
     },
     componentWillMount: function() {
         var self = this;
@@ -36,22 +46,18 @@ module.exports = React.createClass({
             </Sticky>
             {this.state.reader && <ReaderImage type={this.state.reader.type}/>}
             {
-                this.state.reader && this.state.reader.schema.oauth2 &&
-                <a className="button" href={'/auth/' + this.state.reader.type}>
-                    <Icon name="plus"/> Add
-                </a>
-            }
-            {
-                this.state.reader && !this.state.reader.schema.oauth2 &&
+                this.state.reader &&
                 _.mapObject(this.state.reader.schema, function(val, key) {
-                    return <div className="param">
-                        <label>{key}</label>
-                        <input ref={key} defaultValue={val}/>
-                    </div>;
+                    if (!_.isObject(val)) {
+                        return <div className="param">
+                            <label>{key}</label>
+                            <input ref={key} placeholder={val}/>
+                        </div>;
+                    }
                 })
             }
-            {this.state.reader && !this.state.reader.schema.oauth2 ?
-                <button onClick={this.addReader}><Icon name="plus"/> Add</button> : null
+            {this.state.reader &&
+                <button onClick={this.addReader}><Icon name="plus"/> Add</button>
             }
             {!this.state.reader && <Loading/>}
         </article>;
