@@ -74,6 +74,7 @@ module.exports = {
         users.updateById(req.user._id, {
             $pull : {readers : {id: req.params.id}}
         }).on('success', function() {
+            events.remove({reader_id: req.params.id});
             res.send(readers.delete(req.user, req.params.id));
         });
     },
