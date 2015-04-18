@@ -60,10 +60,6 @@ readers.all().map(function(reader) {
 });
 
 db.on('open', function() {
-    readers.on('event', function(event) {
-        db.get('events').insert(event);
-    });
-
     db.get('users').find().each(function(user) {
         readers.forUser(user).map(function(reader) {
             reader.start();

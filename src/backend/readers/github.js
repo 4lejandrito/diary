@@ -15,8 +15,8 @@ module.exports = {
             scope: 'repo'
         }
     },
-    instance: function(emit, reader) {
-        var interval;
+    instance: function(emit) {
+        var interval, reader = this;
         return {
             start: function() {
                 var client = github.client(reader.settings.token);

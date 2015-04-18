@@ -7,7 +7,8 @@ module.exports = {
     schema: {
         directory: '.'
     },
-    instance: function(emit, reader) {
+    instance: function(emit) {
+        var reader = this;
         return {
             start: function() {
                 watch.watchTree(reader.settings.directory, function (f, curr, prev) {

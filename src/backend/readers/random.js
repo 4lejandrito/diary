@@ -7,8 +7,8 @@ module.exports = {
     schema: {
         interval: 500
     },
-    instance: function(emit, reader) {
-        var interval;
+    instance: function(emit) {
+        var interval, reader = this;
         return {
             start: function() {
                 interval = setInterval(function() {

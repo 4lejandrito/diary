@@ -10,8 +10,8 @@ module.exports = {
         address: 'me@example.com',
         password: ''
     },
-    instance: function(emit, reader) {
-        var client, interval;
+    instance: function(emit) {
+        var client, interval, reader = this;
         return {
             start: function() {
                 client = inbox.createConnection(false, reader.settings.server, {

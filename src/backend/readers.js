@@ -1,4 +1,3 @@
-var extend = require('extend');
 var fs     = require('fs');
 var config = require('config');
 var _      = require('underscore');
@@ -29,21 +28,8 @@ readers.forUser = function(user) {
     return readersForUser[user._id];
 };
 
-readers.createInstance = function(reader, user) {
-    return this.forType(reader.type).instance(function(data) {
-        readers.emit('event', extend(true, {
-            date: new Date()
-        }, data, {
-            type: reader.type,
-            user: user._id,
-            loggedAt: new Date(),
-            reader_id: reader.id
-        }));
-    }, reader);
-};
-
-readers.create = function(reader, user) {
-    var wrapper = readerWrapper(reader, this.createInstance(reader, user));
+readers.create = function(options, user) {
+    var wrapper = readerWrapper(options, user, this.forType(options.type));
     readersForUser[user._id].push(wrapper);
     return wrapper;
 };

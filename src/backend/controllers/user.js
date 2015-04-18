@@ -34,7 +34,7 @@ module.exports = {
     },
 
     getReaders: function(req, res) {
-        res.send(req.user.readers || []);
+        res.send(readers.forUser(req.user));
     },
 
     addReader: function(req, res) {
