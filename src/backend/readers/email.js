@@ -34,7 +34,7 @@ module.exports = {
                             db.get('events').findOne({
                                 reader_id: reader.id
                             }, {
-                                sort: {date: -1}
+                                sort: {UID: -1}
                             }).on('success', function (lastMessage) {
                                 if (lastMessage) {
                                     client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
