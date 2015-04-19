@@ -5,7 +5,11 @@ module.exports = {
     image: 'http://blogs.mccombs.utexas.edu/the-most/files/2009/06/corrupted-excel-file.png',
     description: 'Tracks changes in the file system, also useless',
     schema: {
-        directory: '.'
+        directory: {
+            type: 'text',
+            description: 'Directory to watch',
+            example: '.'
+        }
     },
     instance: function(emit) {
         var reader = this;

@@ -6,11 +6,22 @@ module.exports = {
     image: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQbu7qdF0VAvO3exNZj7Aw6C5I0IVPlGRqX-b-Tt92WPcVQBrc7',
     description: 'Tracks your emails',
     schema: {
-        server: 'imap.gmail.com',
-        address: 'me@example.com',
-        password: ''
+        server: {
+            type: 'text',
+            description: 'IMAP Server address',
+            example: 'imap.google.com'
+        },
+        address: {
+            type: 'text',
+            description: 'Your email address',
+            example: 'me@example.com'
+        },
+        password: {
+            type: 'password',
+            description: 'Your password'
+        }
     },
-    instance: function(emit) {
+    instance: function(emit, error) {
         var client, interval, reader = this;
         return {
             start: function() {
@@ -50,6 +61,8 @@ module.exports = {
                         });
                     }, 5000);
                 });
+
+                client.on('error', error);
 
                 client.connect();
             },

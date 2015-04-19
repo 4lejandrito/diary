@@ -7,7 +7,11 @@ module.exports = {
     image: 'http://upload.wikimedia.org/wikipedia/commons/thumb/4/45/New_Logo_Gmail.svg/1000px-New_Logo_Gmail.svg.png',
     description: 'Tracks your Gmail account',
     schema: {
-        address: 'Your Gmail address',
+        address: {
+            type: 'text',
+            description: 'Your Gmail address',
+            example: 'me@gmail.com'
+        },
         oauth2: {
             authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
             tokenURL: 'https://accounts.google.com/o/oauth2/token',

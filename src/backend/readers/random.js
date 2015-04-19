@@ -5,7 +5,11 @@ module.exports = {
     image: 'https://www.random.org/analysis/randbitmap-rdo-section.png',
     description: 'Generate random events, very useful for testing',
     schema: {
-        interval: 500
+        interval: {
+            type: 'number',
+            description: 'Events frequency',
+            example: 500
+        }
     },
     instance: function(emit) {
         var interval, reader = this;

@@ -48,10 +48,10 @@ module.exports = React.createClass({
             {
                 this.state.reader &&
                 _.mapObject(this.state.reader.schema, function(val, key) {
-                    if (!_.isObject(val)) {
+                    if (key != 'oauth2') {
                         return <div className="param">
-                            <label>{key}</label>
-                            <input ref={key} placeholder={val}/>
+                            <label>{val.description}</label>
+                            <input type={val.type} ref={key} placeholder={val.example}/>
                         </div>;
                     }
                 })
