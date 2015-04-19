@@ -6,6 +6,7 @@ button, .button {
     border-radius: 2px;
     padding: @spacing / 2 @spacing * 2;
     padding-bottom: @spacing / 1.6;
+    transition: all .1s ease;
     &:hover, &:active, &:focus, &[data-toggle='true'] {
         outline: none;
         text-decoration: none;
@@ -16,12 +17,27 @@ button, .button {
 }
 
 .inverse {
-    color: white;
-    background: @main-color;
+    color: @main-color;
     border-color: @main-color;
+    background: white;
     &:hover, &:active, &:focus, &[data-toggle='true'] {
-        background: lighten(@main-color, 5%);
+        color: white;
+        background: @main-color;
     }
+
+    &.danger {
+        color: @danger-color;
+        border-color: @danger-color;
+        &:hover, &:active, &:focus, &[data-toggle='true'] {
+            color: white;
+            background: @danger-color;
+        }
+    }
+}
+
+.small {
+    font-size: 1em;
+    padding: @spacing / 3 @spacing;
 }
 
 button, .button, input, .input {

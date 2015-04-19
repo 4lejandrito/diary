@@ -9,16 +9,13 @@
     text-align: center;
     margin: @spacing;
     text-decoration: none;
-    transition: background-color 100ms linear;
+    border-top: solid 4px darken(@main-color, 20%);
+    padding-top: @spacing - 4px;
 
     & when (@hover = true) {
+        transition: border .1s ease;
         &:not([disabled]):hover {
-            box-shadow: none;
-            background: @main-color;
-            color: white;
-            * {
-                color: white;
-            }
+            border-color: @main-color-b;
         }
     }
 
@@ -26,4 +23,15 @@
         opacity: .2;
         pointer-events: none;
     }
+
+    button, .button {
+        &:extend(.inverse all, .small all);
+    }
+
+    /* & > h4 {
+        background: @main-color-b;
+        color: white !important;
+        margin: -@spacing -@spacing @spacing -@spacing;
+        padding: @spacing / 2;
+    } */
 }

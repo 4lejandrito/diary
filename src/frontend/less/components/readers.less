@@ -1,13 +1,17 @@
 .active-readers, .available-readers {
 
-    .search, .button {
+    & > header {
+        margin-bottom: @grid-spacing;
+    }
+
+    .search, .button, button {
         display: inline-block;
-        margin: 2 * @spacing @spacing @spacing;
+        margin: 0 @spacing / 2;
     }
 
     text-align: center;
     ul {
-        padding: @spacing / 2;
+        padding: @grid-spacing / 2;
     }
 
     .active-reader, .available-reader {
@@ -24,22 +28,10 @@
             width: 100%;
         }
         margin: 0;
-        padding: @spacing / 2;
+        padding: @grid-spacing / 2;
         position: relative;
         h4:extend(.text-m all) {}
-        button {
-            display: none;
-        }
-        &:hover button {
-            display: block;
-            position: absolute;
-            border: none;
-            padding: 8px 15px;
-            top: 0px;
-            left: 0px;
-            color: lighten(red, 10%);
-        }
-        a {
+        & > a {
             .card;
             margin: 0;
             color: @text-color;
@@ -56,6 +48,10 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+        }
+
+        & > a.error {
+            background: @danger-color !important;
         }
     }
 }
