@@ -70,6 +70,7 @@ module.exports = {
                 client.connect();
             },
             stop: function() {
+                clearInterval(interval);
                 client.close();
             }
         };

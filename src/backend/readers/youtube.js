@@ -15,8 +15,8 @@ module.exports = {
             scope: 'https://gdata.youtube.com'
         }
     },
-    instance: function(emit) {
-        var reader = this;
+    instance: function(emit, error) {
+        var reader = this, interval;
 
         return {
             start: function() {
@@ -25,12 +25,13 @@ module.exports = {
                     token: reader.settings.token
                 });
 
-                setInterval(function() {
+                interval = setInterval(function() {
                     Youtube.channels.list({
                         part: "contentDetails",
                         mine: true,
                         maxResults: 50
                     }, function (err, data) {
+                        if (err) return error(err);
                         var id = data.items[0].contentDetails.relatedPlaylists.watchHistory;
                         Youtube.playlistItems.list({
                             part: 'contentDetails,snippet',
@@ -58,7 +59,7 @@ module.exports = {
                 }, 60000);
             },
             stop: function() {
-
+                clearInterval(interval);
             }
         };
     }
