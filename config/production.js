@@ -8,5 +8,9 @@ module.exports = {
     github: {
         clientID: process.env.GITHUB_KEY,
         clientSecret: process.env.GITHUB_SECRET
+    },
+    google: {
+        clientID: process.env.GOOGLE_KEY,
+        clientSecret: process.env.GOOGLE_SECRET
     }
 };
