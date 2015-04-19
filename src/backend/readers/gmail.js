@@ -15,8 +15,8 @@ module.exports = {
         oauth2: {
             authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
             tokenURL: 'https://accounts.google.com/o/oauth2/token',
-            clientID: config.gmail.clientID,
-            clientSecret: config.gmail.clientSecret,
+            clientID: config.google.clientID,
+            clientSecret: config.google.clientSecret,
             scope: 'https://mail.google.com/'
         }
     },
