@@ -15,7 +15,9 @@ app.use(session({
     secret: config.secret,
     resave: true,
     saveUninitialized: true,
-    store: new MongoStore({url: config.db.url})
+    rolling: true,
+    store: new MongoStore({url: config.db.url}),
+    cookie: {maxAge: 31*24*60*60*1000, httpOnly: true}
 }));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
