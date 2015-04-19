@@ -35,7 +35,13 @@ module.exports = React.createClass({
     componentWillMount: function() {
         var self = this;
         api.getAvailableReader(this.props.type, function(err, reader) {
-            self.setState({reader: reader});
+            var length = Object.keys(reader.schema).length;
+            if (length === 0 || (length === 1 && reader.schema.oauth2)) {
+                self.state.reader = reader;
+                self.addReader();
+            } else {
+                self.setState({reader: reader});
+            }
         });
     },
     render: function() {
