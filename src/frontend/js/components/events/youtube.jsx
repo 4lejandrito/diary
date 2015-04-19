@@ -9,7 +9,7 @@ module.exports = React.createClass({
                 You watched the following video
             </header>
             <iframe type="text/html"
-                src={'http://www.youtube.com/embed/' + this.props.event.videoId}
+                src={'//www.youtube.com/embed/' + this.props.event.videoId}
                 frameborder="0"/>
         </div>;
     }
