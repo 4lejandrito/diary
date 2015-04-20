@@ -52,14 +52,15 @@ module.exports = {
         });
     },
 
-    addReaderOAuth2: function(req, accessToken, type, done) {
+    addReaderOAuth2: function(req, accessToken, refreshToken, profile, type, done) {
         var state = JSON.parse(new Buffer(req.query.state, 'base64').toString('ascii'));
         var reader = {
             id: uuid.v4(),
             type: type,
-            settings: extend(true, state, {
-                token: accessToken
-            })
+            token: accessToken,
+            refreshToken: refreshToken,
+            profile: profile,
+            settings: state
         };
         users.updateById(req.user._id, {
             $push: {readers: reader}

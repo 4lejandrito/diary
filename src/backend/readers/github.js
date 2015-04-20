@@ -1,6 +1,5 @@
 var github = require('octonode');
 var db = require('../db');
-var config = require('config');
 
 module.exports = {
     type: 'github',
@@ -8,18 +7,18 @@ module.exports = {
     description: 'Tracks your github commits',
     schema: {
         oauth2: {
-            authorizationURL: 'https://github.com/login/oauth/authorize',
-            tokenURL: 'https://github.com/login/oauth/access_token',
-            clientID: config.github.clientID,
-            clientSecret: config.github.clientSecret,
-            scope: 'repo'
+            provider: 'github',
+            strategy: require('passport-github').Strategy,
+            params: {
+                scope: 'repo'
+            }
         }
     },
     instance: function(emit) {
         var interval, reader = this;
         return {
             start: function() {
-                var client = github.client(reader.settings.token);
+                var client = github.client(reader.token);
                 client.me().info(function(err, info) {
                     var ghuser = client.user(info.login);
                     interval = setInterval(function() {

@@ -1,6 +1,5 @@
 var inbox = require("inbox");
 var db = require('../db');
-var config = require('config');
 
 module.exports = {
     type: 'gmail',
@@ -13,14 +12,18 @@ module.exports = {
             example: 'me@gmail.com'
         },
         oauth2: {
-            authorizationURL: 'https://accounts.google.com/o/oauth2/auth',
-            tokenURL: 'https://accounts.google.com/o/oauth2/token',
-            clientID: config.google.clientID,
-            clientSecret: config.google.clientSecret,
-            scope: 'https://mail.google.com/'
+            provider: 'google',
+            strategy: require('passport-google-oauth').OAuth2Strategy,
+            params: {
+                scope: ['https://mail.google.com/', 'profile']
+            },
+            authParams: {
+                approvalPrompt: 'force',
+                accessType: 'offline'
+            }
         }
     },
-    instance: function(emit, error) {
+    instance: function(emit, error, refresh) {
         var client, interval, reader = this;
         return {
             start: function() {
@@ -31,7 +34,7 @@ module.exports = {
                             user: reader.settings.address,
                             clientId: module.exports.schema.oauth2.clientID,
                             clientSecret: module.exports.schema.oauth2.clientSecret,
-                            accessToken: reader.settings.token
+                            accessToken: reader.token
                         }
                     }
                 });
@@ -62,10 +65,10 @@ module.exports = {
                                 }
                             });
                         });
-                    }, 5000);
+                    }, 60000);
                 });
 
-                client.on('error', error);
+                client.on('error', refresh);
 
                 client.connect();
             },

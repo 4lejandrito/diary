@@ -2,14 +2,13 @@ var express = require('express');
 var controllers = require('require-directory')(module, 'controllers');
 var bodyParser = require('body-parser');
 var config = require('config');
-var extend = require('extend');
 var readers = require('./readers');
-var OAuth2Strategy  = require('passport-oauth').OAuth2Strategy;
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('./passport');
 var db = require('./db');
 var app = module.exports = express();
+var oauth = require('./oauth');
 
 app.use(session({
     secret: config.secret,
@@ -43,22 +42,9 @@ app.get   ('/api/reader'                      , controllers.reader.getAvailable)
 app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 
 readers.all().map(function(reader) {
-    if (!reader.schema.oauth2) return;
-    passport.use(reader.type, new OAuth2Strategy(extend(true, reader.schema.oauth2, {
-        passReqToCallback: true,
-        callbackURL: config.url + '/auth/' + reader.type + '/callback'
-    }), function(req, accessToken, refreshToken, profile, done) {
-        controllers.user.addReaderOAuth2(req, accessToken, reader.type, done);
-    }));
-    app.get('/auth/' + reader.type, function(req, res) {
-        passport.authenticate(reader.type, {
-            state: new Buffer(JSON.stringify(req.query)).toString('base64')
-        })(req, res);
-    });
-    app.get('/auth/' + reader.type + '/callback', passport.authenticate(reader.type, {
-        successRedirect: '/#/services',
-        failureRedirect: '/#/services/new'
-    }));
+    if (reader.schema.oauth2) {
+        oauth.register(app, reader, controllers.user.addReaderOAuth2);
+    }
 });
 
 db.on('open', function() {

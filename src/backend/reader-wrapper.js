@@ -1,5 +1,7 @@
 var extend = require('extend');
 var events = require('./db').get('events');
+var users = require('./db').get('users');
+var oauth = require('./oauth');
 
 module.exports = function(options, user, clazz) {
 
@@ -19,7 +21,32 @@ module.exports = function(options, user, clazz) {
         wrapper.error = err;
     }
 
-    var instance = clazz.instance.apply(options, [onEvent, onError]),
+    var refreshAttempts = 3;
+    function refresh() {
+        if (refreshAttempts-- > 0) {
+            oauth.refreshToken(options, function(err, newToken) {
+                if (err) {
+                    wrapper.error = err;
+                } else {
+                    users.update({
+                        id: user._id,
+                        'readers.id': options.id
+                    }, {
+                        $set: {
+                            "readers.$.token": newToken
+                        }
+                    }).on('success', function() {
+                        refreshAttempts = 3;
+                        options.token = newToken;
+                        instance.stop();
+                        instance.start();
+                    });
+                }
+            });
+        }
+    }
+
+    var instance = clazz.instance.apply(options, [onEvent, onError, refresh]),
         wrapper = extend(true, options, {
             running: false,
             start: function() {
