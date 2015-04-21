@@ -28,7 +28,8 @@
                 .card;
                 height: 100%;
                 width: 250px;
-                overflow-x: scroll;
+                white-space: initial;
+                vertical-align: top;
                 margin: 0 @grid-spacing / 2;
 
                 hgroup {
@@ -46,13 +47,21 @@
                 }
 
                 .top {
-                    text-align: left;
-                    width: 100%;
-                    padding: @spacing / 2 25%;
+                    text-align: center;
+                    width: 33%;
+                    display: inline-block;
+                    padding: @spacing / 2;
+                    position: relative;
+
+                    strong:extend(.badge) {
+                        vertical-align: middle;
+                        position: absolute;
+                        top: 0px;
+                        right: @spacing;
+                    }
 
                     img {
                         .circle(25px);
-                        margin-right: 3 * @spacing;
                         display: inline-block;
                         vertical-align: middle;
                     }
