@@ -1,8 +1,8 @@
 var React = require('react');
 var api = require('api');
 var Icon = require('components/icon');
-var _ = require('underscore');
 var Link = require('components/link');
+var Gravatar = require('react-gravatar');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -20,13 +20,22 @@ module.exports = React.createClass({
             className += 'error';
         }
         return <li className="active-reader">
-            <Link className={className} to="new" params={{type: this.props.reader.type}}>
+            <div className={className}>
                 <h4>{this.props.reader.type}</h4>
                 <img src={'/api/reader/' + this.props.reader.type + '/picture'}/>
-                <button className="danger" onClick={this.remove}>
-                    <Icon name="close"/> Remove
-                </button>
-            </Link>
+                <footer>
+                    {this.props.reader.profile &&
+                    <span className="info">
+                        {this.props.reader.profile.photos ?
+                        <img src={this.props.reader.profile.photos[0].value}/> :
+                        <Gravatar email={this.props.reader.profile.emails[0].value} size={200}/>}
+                        {this.props.reader.profile.displayName}
+                    </span>}
+                    <button className="danger" onClick={this.remove}>
+                        <Icon name="close"/>
+                    </button>
+                </footer>
+            </div>
         </li>;
     }
 });

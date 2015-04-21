@@ -31,7 +31,7 @@
         padding: @grid-spacing / 2;
         position: relative;
         h4:extend(.text-m all) {}
-        & > a {
+        & > *:first-child {
             .card;
             margin: 0;
             color: @text-color;
@@ -44,14 +44,45 @@
                 margin: 0;
                 font-weight: normal;
                 display: block;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                .ellipsis;
+            }
+            &.error {
+                background: @danger-color !important;
             }
         }
 
-        & > a.error {
-            background: @danger-color !important;
+        footer {
+            padding-top: @spacing / 2;
+            .info {
+                .small;
+                border: solid 3px @main-color;
+                text-align: left;
+                font-weight: normal;
+                background: @main-color;
+                color: white;
+                border-radius: 2px;
+                margin: 0;
+                display: inline-block;
+                padding: 0;
+                padding-right: @spacing;
+                vertical-align: middle;
+                .ellipsis;
+                max-width: 60%;
+                img {
+                    .circle(13.5px);
+                    box-shadow: none;
+                    padding: 2px;
+                    border: none;
+                    border-radius: 0;
+                    margin: 0;
+                    margin-right: @spacing / 2;
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+            button {
+                vertical-align: middle;
+            }
         }
     }
 }
