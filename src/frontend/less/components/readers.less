@@ -16,42 +16,45 @@
 
     .active-reader, .available-reader {
         display: inline-block;
-        width: 25%;
+        width: 100%;
         vertical-align: top;
-        @media(max-width: 990px) {
-            width: 33.33%;
-        }
-        @media(max-width: 680px) {
-            position: relative;
-            width: 100%;
+        position: relative;
+        margin: 0;
+        padding: @grid-spacing / 2;
+        .bp-s({
             text-align: left;
             * {
                 text-align: left;
             }
-        }
-        @media(max-width: 300px) {
-            width: 100%;
-        }
-        margin: 0;
-        padding: @grid-spacing / 2;
-        position: relative;
+        });
+        .bp-m({
+            width: 50%;
+        });
+        .bp-l({
+            width: 33.33%;
+        });
+        .bp-x({
+            width: 25%;
+        });
         h4:extend(.text-m all) {}
         & > *:first-child {
             .card;
             margin: 0;
             color: @text-color;
             & > img {
-                .circle(40px);
-                display: block;
-                margin: @spacing auto;
-                @media(max-width: 680px) {
+                .bp-s({
+                    .circle(25px);
                     position: absolute;
                     top: 0;
                     left: 0;
                     margin: @spacing / 2 @spacing;
                     margin-top: @spacing / 1.5;
-                    .circle(25px);
-                }
+                });
+                .bp-m({
+                    .circle(40px);
+                    display: block;
+                    margin: @spacing auto;
+                });
             }
             p {
                 margin: 0;
@@ -62,62 +65,57 @@
             &.error {
                 background: @danger-color !important;
             }
-            @media(max-width: 680px) {
+            .bp-s({
                 position: relative;
                 h4, p, .info {
                     margin-left: 60px;
                 }
-            }
+            });
         }
 
         footer {
-            padding-top: @spacing / 2;
+            .bp-m({
+                padding-top: @spacing / 2;
+            });
             .info {
-                .small;
-                border: solid 3px @main-color;
-                text-align: left;
-                font-weight: normal;
-                background: @main-color;
-                color: white;
-                border-radius: 2px;
-                margin: 0;
-                display: inline-block;
-                padding: 0;
-                padding-right: @spacing;
-                vertical-align: middle;
                 .ellipsis;
-                max-width: 60%;
-                img {
-                    .circle(13.5px);
-                    box-shadow: none;
-                    padding: 2px;
-                    border: none;
-                    border-radius: 0;
+                font-weight: normal;
+                .bp-m({
+                    .small;
+                    border: solid 3px @main-color;
+                    text-align: left;
+                    background: @main-color;
+                    color: white;
+                    border-radius: 2px;
                     margin: 0;
-                    margin-right: @spacing / 2;
                     display: inline-block;
+                    padding: 0;
+                    padding-right: @spacing;
                     vertical-align: middle;
-                    @media(max-width: 680px) {
-                        display: none;
-                    }
-                }
-                @media(max-width: 680px) {
-                    background: none;
-                    border: none;
-                    color: @text-color;
-                    margin: 0;
+                    max-width: 60%;
+                });
+                img {
+                    display: none;
+                    .bp-m({
+                        .circle(13.5px);
+                        box-shadow: none;
+                        padding: 2px;
+                        border: none;
+                        border-radius: 0;
+                        margin: 0;
+                        margin-right: @spacing / 2;
+                        display: inline-block;
+                        vertical-align: middle;
+                    });
                 }
             }
             button {
                 vertical-align: middle;
-            }
-            @media(max-width: 680px) {
-                padding: 0;
-                button {
+                .bp-s({
                     position: absolute;
                     right: @spacing / 2;
                     top: @spacing;
-                }
+                });
             }
         }
     }

@@ -1,0 +1,15 @@
+.bp-s(@rules) {
+  @media screen and (max-width: 480px) { @rules(); }
+}
+
+.bp-m(@rules) {
+  @media screen and (min-width: 480px) { @rules(); }
+}
+
+.bp-l(@rules) {
+  @media screen and (min-width: 680px) { @rules(); }
+}
+
+.bp-x(@rules) {
+  @media screen and (min-width: 980px) { @rules(); }
+}
