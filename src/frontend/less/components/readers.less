@@ -22,7 +22,12 @@
             width: 33.33%;
         }
         @media(max-width: 680px) {
-            width: 50%;
+            position: relative;
+            width: 100%;
+            text-align: left;
+            * {
+                text-align: left;
+            }
         }
         @media(max-width: 300px) {
             width: 100%;
@@ -35,10 +40,18 @@
             .card;
             margin: 0;
             color: @text-color;
-            img {
+            & > img {
                 .circle(40px);
                 display: block;
                 margin: @spacing auto;
+                @media(max-width: 680px) {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    margin: @spacing / 2 @spacing;
+                    margin-top: @spacing / 1.5;
+                    .circle(25px);
+                }
             }
             p {
                 margin: 0;
@@ -48,6 +61,12 @@
             }
             &.error {
                 background: @danger-color !important;
+            }
+            @media(max-width: 680px) {
+                position: relative;
+                h4, p, .info {
+                    margin-left: 60px;
+                }
             }
         }
 
@@ -78,10 +97,27 @@
                     margin-right: @spacing / 2;
                     display: inline-block;
                     vertical-align: middle;
+                    @media(max-width: 680px) {
+                        display: none;
+                    }
+                }
+                @media(max-width: 680px) {
+                    background: none;
+                    border: none;
+                    color: @text-color;
+                    margin: 0;
                 }
             }
             button {
                 vertical-align: middle;
+            }
+            @media(max-width: 680px) {
+                padding: 0;
+                button {
+                    position: absolute;
+                    right: @spacing / 2;
+                    top: @spacing;
+                }
             }
         }
     }
