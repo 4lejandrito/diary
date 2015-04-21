@@ -52,8 +52,7 @@ module.exports = {
                                         emit({
                                             date: new Date(item.snippet.publishedAt),
                                             description: item.snippet.title,
-                                            videoId: item.contentDetails.videoId,
-                                            image: item.snippet.thumbnails.high.url
+                                            videoId: item.contentDetails.videoId
                                         });
                                     }
                                 });
