@@ -27,24 +27,25 @@
             color: white;
         }
         .face {
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+            position: absolute;
+            width: 60px;
+            right: 3 * @spacing;
+            top: @spacing;
+            .bp-m({
+                width: 100px;
+                position: relative;
+                left: 0;
+                top: -30px;
+            });
             img {
                 background: white;
-                .circle(44px);
-            }
-            display: block;
-            position: relative;
-            top: -30px;
-            text-align: center;
-            width: 100px;
-            margin: 0 auto;
-            @media(max-width: 480px) {
-                position: absolute;
-                width: 60px;
-                right: 3 * @spacing;
-                top: @spacing;
-                img {
-                    .circle(30px);
-                }
+                .circle(30px);
+                .bp-m({
+                    .circle(44px);
+                })
             }
         }
     }
@@ -53,26 +54,31 @@
         text-align: center;
         & > article {
             & > header {
-                padding: 4 * @spacing @spacing @spacing @spacing;
+                padding: @spacing;
                 background: white;
                 color: @text-color;
-                //box-shadow: 0 5px 5px -5px #333;
+                .bp-m({
+                    padding-top: 4 * @spacing;
+                });
                 h2 {
                     display: inline-block;
-                    .text-xl;
+                    .text-l;
+                    .bp-m({
+                        .text-xl;
+                    });
+                }
+                h3 {
+                    .text-s;
+                    .bp-m({
+                        .text-m;
+                    });
                 }
                 a {
-                    .text-m;
+                    .text-s;
                     margin: 0 2 * @spacing;
-                }
-                @media(max-width: 480px) {
-                    padding-top: @spacing;
-                    h2 {
-                        .text-l;
-                    }
-                    h3, a {
-                        .text-s;
-                    }
+                    .bp-m({
+                        .text-m;
+                    });
                 }
                 &.sticky {
                     z-index: 99999;
@@ -92,7 +98,6 @@
         }
     }
     & > footer {
-        //box-shadow: 0 -5px 5px -5px #333;
         height: @footer-height;
         position: absolute;
         bottom: 0;

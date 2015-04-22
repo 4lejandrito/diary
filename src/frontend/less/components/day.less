@@ -25,11 +25,11 @@
             color: white;
             position: relative;
             margin: 0 0;
-            padding: 2 * @spacing @spacing;
             min-height: 64px;
             display: block;
-
-            @media(min-width: 700px) {
+            padding: @spacing;
+            .bp-m({
+                padding: 2 * @spacing @spacing;
                 &:nth-child(2n) {
                     margin-left: 50%;
                     border-left: solid @timelineWidth white;
@@ -51,18 +51,28 @@
                         right: -27px;
                     }
                 }
-            }
+            });
             & > img {
-                .circle(25px);
-                position: absolute;
-                top: 42%;
-                border: none;
-                box-shadow: none;
-                padding: @timelineWidth;
+                .circle(15px);
+                float: left;
+                .bp-m({
+                    padding: @timelineWidth;
+                    border: none;
+                    box-shadow: none;
+                    float: none;
+                    .circle(25px);
+                    position: absolute;
+                    top: 42%;
+                });
             }
             time {
                 .text-m;
-                display: block;
+                display: inline-block;
+                float: right;
+                .bp-m({
+                    display: block;
+                    float: none;
+                });
             }
             iframe {
                 width: 100%;
@@ -71,10 +81,18 @@
             }
             .content {
                 .card(@hover: false);
+                width: 100%;
+                max-width: 100%;
                 text-align: left;
                 margin: @spacing 0;
-                width: auto;
-                max-width: 70%;
+                .bp-m({
+                    width: auto;
+                    max-width: 100%;
+                });
+                .bp-l({
+                    width: auto;
+                    max-width: 70%;
+                });
                 div > img {
                     display: block;
                     margin: 0 auto;
@@ -96,22 +114,6 @@
                     text-overflow: ellipsis;
                     white-space: nowrap;
                 }
-            }
-            @media(max-width: 700px) {
-                .content {
-                    width: 100% !important;
-                    max-width: 100% !important;
-                }
-                & > img {
-                    .circle(15px) !important;
-                    position: static !important;
-                    float: left;
-                }
-                time {
-                    display: inline-block !important;
-                    float: right;
-                }
-                padding: @spacing;
             }
         }
     }
