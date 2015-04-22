@@ -94,18 +94,21 @@
                     vertical-align: middle;
                     max-width: 60%;
                 });
+                & > * {
+                    vertical-align: middle;
+                }
                 img {
-                    display: none;
+                    .square(18px);
+                    padding: 0;
+                    margin-right: @spacing / 2;
                     .bp-m({
-                        .circle(13.5px);
-                        box-shadow: none;
+                        .square(27px);
                         padding: 2px;
+                        box-shadow: none;
                         border: none;
-                        border-radius: 0;
                         margin: 0;
                         margin-right: @spacing / 2;
                         display: inline-block;
-                        vertical-align: middle;
                     });
                 }
             }

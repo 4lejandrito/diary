@@ -18,9 +18,14 @@ article {
     text-align: center;
 }
 
+.square(@size: 40px) {
+    width: @size;
+    height: @size;
+    border-radius: 0;
+}
+
 .circle(@radius: 40px) {
-    width: @radius * 2;
-    height: @radius * 2;
+    .square(@radius * 2);
     border-radius: 50%;
 }
 
