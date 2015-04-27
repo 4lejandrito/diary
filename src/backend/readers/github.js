@@ -1,5 +1,7 @@
 var github = require('octonode');
 var db = require('../db');
+var Promise = require('promise');
+var async = require('async');
 
 module.exports = {
     type: 'github',
@@ -14,42 +16,43 @@ module.exports = {
             }
         }
     },
-    instance: function(emit) {
-        var interval, reader = this;
-        return {
-            start: function() {
-                var client = github.client(reader.token);
-                client.me().info(function(err, info) {
-                    var ghuser = client.user(info.login);
-                    interval = setInterval(function() {
-                        function processEvents(err, data) {
-                            if (data) {
-                                data.map(function(event) {
-                                    if (event.type === 'PushEvent') {
-                                        db.get('events').findOne({
-                                            reader_id: reader.id,
-                                            'data.id': event.id
-                                        }).on('success', function (lastMessage) {
-                                            if (!lastMessage) {
-                                                emit({
-                                                    date: new Date(event.created_at),
-                                                    data: event
-                                                });
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+    tick: function(reader) {
+        var client = github.client(reader.token),
+        ghuser = client.user(reader.profile.username),
+        ghEvents = Promise.denodeify(ghuser.events.bind(ghuser)),
+        getPage = function(page) {
+            return ghEvents(page, 100)
+            .then(function(events) {
+                return new Promise(function(resolve) {
+                    async.filter(events, function(event, ok) {
+                        if (event.type === 'PushEvent') {
+                            db.get('events').findOne({
+                                reader_id: reader.id,
+                                'data.id': event.id
+                            }).on('success', function (existingEvent) {
+                                ok(!existingEvent);
+                            });
+                        } else {
+                            ok(false);
                         }
-                        ghuser.events(1, 100, processEvents);
-                        ghuser.events(2, 100, processEvents);
-                        ghuser.events(3, 100, processEvents);
-                    }, 60000);
+                    }, resolve);
                 });
-            },
-            stop: function() {
-                clearInterval(interval);
-            }
+            }).then(function(events) {
+                return events.map(function(event) {
+                    return {
+                        date: new Date(event.created_at),
+                        data: event
+                    };
+                });
+            });
         };
+
+        return Promise.all([
+            getPage(1),
+            getPage(2),
+            getPage(3)
+        ]).then(function(results) {
+            return Array.prototype.concat.apply([], results);
+        });
     }
 };

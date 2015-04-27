@@ -1,29 +1,42 @@
 var extend = require('extend');
-var events = require('./db').get('events');
+var db = require('./db');
 var users = require('./db').get('users');
 var oauth = require('./oauth');
 
 module.exports = function(options, user, clazz) {
 
-    function onEvent(event) {
-        events.insert(extend(true, {
-            date: new Date()
-        }, event, {
-            type: options.type,
-            user: user._id,
-            loggedAt: new Date(),
-            reader_id: options.id
-        }));
-        delete wrapper.error;
+    var wrapper = extend(true, options, {
+        running: false,
+        start: function() {
+            this.running = true;
+            getEvents();
+        },
+        stop: function() {
+            this.running = false;
+            clearTimeout(timeout);
+        }
+    }), refreshAttempts = 3, timeout;
+
+    function getEvents() {
+        clazz.tick(options).then(function(events) {
+            db.get('events').insert(events.map(function(event) {
+                return extend(true, {
+                    date: new Date()
+                }, event, {
+                    type: options.type,
+                    user: user._id,
+                    loggedAt: new Date(),
+                    reader_id: options.id
+                });
+            }));
+            if (wrapper.running) {
+                timeout = setTimeout(getEvents, options.settings.interval || 1000);
+            }
+        }).catch(onError);
     }
 
-    function onError(err) {
-        wrapper.error = err;
-    }
-
-    var refreshAttempts = 3;
-    function refresh() {
-        if (refreshAttempts-- > 0) {
+    function onError(error) {
+        if (options.token && refreshAttempts-- > 0) {
             oauth.refreshToken(options, function(err, newToken) {
                 if (err) {
                     wrapper.error = err;
@@ -38,26 +51,13 @@ module.exports = function(options, user, clazz) {
                     }).on('success', function() {
                         refreshAttempts = 3;
                         options.token = newToken;
-                        instance.stop();
-                        instance.start();
                     });
                 }
             });
+        } else {
+            wrapper.error = error;
         }
     }
-
-    var instance = clazz.instance.apply(options, [onEvent, onError, refresh]),
-        wrapper = extend(true, options, {
-            running: false,
-            start: function() {
-                this.running = true;
-                instance.start();
-            },
-            stop: function() {
-                this.running = false;
-                instance.stop();
-            }
-        });
 
     return wrapper;
 };

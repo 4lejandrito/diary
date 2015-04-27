@@ -1,4 +1,5 @@
 var moment = require('moment');
+var Promise = require('promise');
 
 module.exports = {
     type: 'random',
@@ -11,26 +12,14 @@ module.exports = {
             example: 500
         }
     },
-    instance: function(emit) {
-        var interval, reader = this;
-        return {
-            start: function() {
-                interval = setInterval(function() {
-                    emit({
-                        date: moment()
-                                .dayOfYear(Math.random() * 365)
-                                .hour(Math.random() * 24)
-                                .minute(Math.random() * 60)
-                                .toDate(),
-                        image: 'http://lorempixel.com/400/200?r=' + Math.random(),
-                        url: 'http://lorempixel.com/400/200',
-                        description: 'A random image :)'
-                    });
-                }, reader.settings.interval);
-            },
-            stop: function() {
-                clearInterval(interval);
-            }
-        };
+    tick: function() {
+        return Promise.resolve([{
+            date: moment()
+                .subtract(Math.random() * 365, 'day')
+                .toDate(),
+            image: 'http://lorempixel.com/400/200?r=' + Math.random(),
+            url: 'http://lorempixel.com/400/200',
+            description: 'A random image :)'
+        }]);
     }
 };
