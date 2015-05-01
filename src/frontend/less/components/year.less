@@ -9,10 +9,13 @@
         .month {
             text-decoration: none;
             display: inline-block;
-            width: 33.33%;
+            width: 100%;
             margin: 0;
             padding: @grid-spacing / 2;
             vertical-align: top;
+            .bp-m({
+                width: 33.33%;
+            });
             .bp-l({
                 width: 25%;
             });
@@ -34,14 +37,17 @@
             }
 
             img {
-                .circle(12px);
-                &.loading {
-                    .circle(25.5px);
-                }
+                .circle(16px);
                 padding: 2px;
                 display: inline-block;
                 color: red;
                 margin: 0 1px;
+                .bp-m({
+                    .circle(12px);
+                });
+                &.loading {
+                    .circle(25.5px);
+                }
             }
         }
     }
