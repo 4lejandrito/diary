@@ -28,7 +28,7 @@ module.exports = {
 
         auth.setCredentials({
             access_token: reader.token,
-            refresh_token: reader.refresh_token
+            refresh_token: reader.refreshToken
         });
 
         return channels({
