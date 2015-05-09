@@ -38,6 +38,7 @@
     "express-session": "^1.10.4",
     "extend": "^2.0.0",
     "glob": "^4.5.3",
+    "googleapis": "^2.0.3",
     "gulp": "^3.8.11",
     "gulp-if": "^1.2.5",
     "gulp-jshint": "^1.9.2",
@@ -73,8 +74,7 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.0.0",
     "watch": "^0.14.0",
-    "watchify": "^2.6.2",
-    "youtube-api": "^0.3.2"
+    "watchify": "^2.6.2"
   },
   "devDependencies": {
     "chai-as-promised": "^4.2.0",

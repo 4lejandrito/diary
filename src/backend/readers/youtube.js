@@ -1,7 +1,7 @@
 var events = require('../db').get('events');
-var Youtube = require("youtube-api");
 var Promise = require('promise');
 var async = require('async');
+var google = require('googleapis');
 
 module.exports = {
     type: 'youtube',
@@ -21,21 +21,25 @@ module.exports = {
         }
     },
     tick: function(reader) {
-        var channels = Promise.denodeify(Youtube.channels.list),
-        playListItems = Promise.denodeify(Youtube.playlistItems.list);
+        var youtube = google.youtube('v3'),
+        auth = new google.auth.OAuth2(),
+        channels = Promise.denodeify(youtube.channels.list),
+        playListItems = Promise.denodeify(youtube.playlistItems.list);
 
-        Youtube.authenticate({
-            type: "oauth",
-            token: reader.token
+        auth.setCredentials({
+            access_token: reader.token,
+            refresh_token: reader.refresh_token
         });
 
         return channels({
+            auth: auth,
             part: "contentDetails",
             mine: true,
             maxResults: 50
         }).then(function(data) {
             var id = data.items[0].contentDetails.relatedPlaylists.watchHistory;
             return playListItems({
+                auth: auth,
                 part: 'contentDetails,snippet',
                 playlistId: id,
                 maxResults: 50
