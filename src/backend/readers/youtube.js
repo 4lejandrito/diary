@@ -1,6 +1,4 @@
-var events = require('../db').get('events');
 var Promise = require('promise');
-var async = require('async');
 var google = require('googleapis');
 
 module.exports = {
@@ -27,8 +25,7 @@ module.exports = {
         playListItems = Promise.denodeify(youtube.playlistItems.list);
 
         auth.setCredentials({
-            access_token: reader.token,
-            refresh_token: reader.refreshToken
+            access_token: reader.token
         });
 
         return channels({
@@ -45,20 +42,9 @@ module.exports = {
                 maxResults: 50
             });
         }).then(function(data) {
-            return new Promise(function(resolve) {
-                async.filter(data.items, function(video, ok) {
-                    events.findOne({
-                        reader_id: reader.id,
-                        date: new Date(video.snippet.publishedAt),
-                        videoId: video.contentDetails.videoId
-                    }).on('success', function(existingEvent) {
-                        ok(!existingEvent);
-                    });
-                }, resolve);
-            });
-        }).then(function(videos) {
-            return videos.map(function(video) {
+            return data.items.map(function(video) {
                 return {
+                    id: video.id,
                     date: new Date(video.snippet.publishedAt),
                     description: video.snippet.title,
                     videoId: video.contentDetails.videoId

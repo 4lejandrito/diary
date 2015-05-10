@@ -12,6 +12,7 @@ var reactify = require('reactify');
 var watchify = require('watchify');
 var less = require('gulp-less');
 var jshint = require('gulp-jshint');
+var mocha = require('gulp-mocha');
 
 var bundle = function(path, dest, debug) {
     var b = browserify({
@@ -80,8 +81,13 @@ gulp.task('backend:watch', function () {
         ignore: ['src/frontend/**', 'src/public/**']
     });
 });
+gulp.task('backend:test', function () {
+    return gulp.src('test/backend/**/*.js', {read: false})
+    .pipe(mocha({reporter: 'spec'}));
+});
 
 gulp.task('watch', ['frontend:watch', 'backend:watch']);
+gulp.task('test', ['backend:test']);
 
 gulp.task('editor', function() {
     return gulp.src('.').pipe(shell('atom'));

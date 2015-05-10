@@ -43,6 +43,7 @@
     "gulp-if": "^1.2.5",
     "gulp-jshint": "^1.9.2",
     "gulp-less": "^3.0.1",
+    "gulp-mocha": "^2.0.1",
     "gulp-nodemon": "^1.0.5",
     "gulp-plumber": "^0.6.6",
     "gulp-shell": "^0.3.0",
@@ -50,6 +51,7 @@
     "inbox": "^1.1.59",
     "moment": "^2.9.0",
     "monk": "^0.9.1",
+    "nock": "^2.0.1",
     "node-uuid": "^1.4.3",
     "octonode": "^0.6.16",
     "passport": "^0.2.1",
@@ -90,7 +92,7 @@
     "start": "node src/diary",
     "watch": "gulp watch",
     "debug": "node-debug src/diary.js",
-    "test": "export NODE_ENV=test && mocha -R spec --recursive",
+    "test": "export NODE_ENV=test && export NODE_PATH=./src && gulp test",
     "coverage": "export NODE_ENV=test && ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
   }
 }
