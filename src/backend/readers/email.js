@@ -1,5 +1,6 @@
 var inbox = require("inbox");
 var db = require('../db');
+var Promise = require('promise');
 
 module.exports = {
     type: 'email',
@@ -21,54 +22,52 @@ module.exports = {
             description: 'Your password'
         }
     },
-    instance: function(emit, error) {
-        var client, interval, reader = this;
-        return {
-            start: function() {
-                client = inbox.createConnection(false, reader.settings.server, {
-                    secureConnection: true,
-                    auth: {
-                        user: reader.settings.address,
-                        pass: reader.settings.password
-                    }
-                });
-
-                function emitMessages(messages) {
-                    if (messages && messages.length) {
-                        messages.forEach(emit);
-                    }
+    tick: function(reader) {
+        return new Promise(function (resolve, reject) {
+            var client = inbox.createConnection(false, reader.settings.server, {
+                secureConnection: true,
+                auth: {
+                    user: reader.settings.address,
+                    pass: reader.settings.password
                 }
+            });
 
-                client.on("connect", function() {
-                    interval = setInterval(function() {
-                        client.openMailbox("INBOX", {readOnly: true}, function() {
-                            db.get('events').findOne({
-                                reader_id: reader.id
-                            }, {
-                                sort: {UID: -1}
-                            }).on('success', function (lastMessage) {
-                                if (lastMessage) {
-                                    client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
-                                        messages.shift();
-                                        emitMessages(messages);
-                                    });
-                                } else {
-                                    client.listMessages(0, function(err, messages) {
-                                        emitMessages(messages);
-                                    });
-                                }
-                            });
-                        });
-                    }, 5000);
-                });
-
-                client.on('error', error);
-
-                client.connect();
-            },
-            stop: function() {
-                client.close();
+            function emitMessages(messages) {
+                if (messages && messages.length) {
+                    resolve(messages.map(function(message) {
+                        return {
+                            date: message.date,
+                            source_id: message.UID,
+                            source: message
+                        };
+                    }));
+                }
             }
-        };
+
+            client.on("connect", function() {
+                client.openMailbox("INBOX", {readOnly: true}, function() {
+                    db.get('events').findOne({
+                        reader_id: reader.id
+                    }, {
+                        sort: {UID: -1}
+                    }).on('success', function (lastMessage) {
+                        if (lastMessage) {
+                            client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
+                                if (messages) messages.shift();
+                                emitMessages(messages);
+                            });
+                        } else {
+                            client.listMessages(0, function(err, messages) {
+                                emitMessages(messages);
+                            });
+                        }
+                    });
+                });
+            });
+
+            client.on('error', reject);
+
+            client.connect();
+        });
     }
 };
