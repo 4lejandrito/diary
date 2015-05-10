@@ -1,5 +1,6 @@
 var inbox = require("inbox");
 var db = require('../db');
+var Promise = require('promise');
 
 module.exports = {
     type: 'gmail',
@@ -23,59 +24,54 @@ module.exports = {
             }
         }
     },
-    instance: function(emit, error, refresh) {
-        var client, interval, reader = this;
-        return {
-            start: function() {
-                client = inbox.createConnection(false, "imap.gmail.com", {
-                    secureConnection: true,
-                    auth:{
-                        XOAuth2: {
-                            user: reader.settings.address,
-                            clientId: module.exports.schema.oauth2.clientID,
-                            clientSecret: module.exports.schema.oauth2.clientSecret,
-                            accessToken: reader.token
-                        }
-                    }
-                });
-
-                function emitMessages(messages) {
-                    if (messages && messages.length) {
-                        messages.forEach(emit);
+    tick: function(reader) {
+        return new Promise(function (resolve, reject) {
+            var client = inbox.createConnection(false, "imap.gmail.com", {
+                secureConnection: true,
+                auth:{
+                    XOAuth2: {
+                        user: reader.settings.address,
+                        accessToken: reader.token
                     }
                 }
+            });
 
-                client.on("connect", function() {
-                    interval = setInterval(function() {
-                        client.openMailbox("INBOX", {readOnly: true}, function() {
-                            db.get('events').findOne({
-                                reader_id: reader.id
-                            }, {
-                                sort: {UID: -1}
-                            }).on('success', function (lastMessage) {
-                                if (lastMessage) {
-                                    client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
-                                        messages.shift();
-                                        emitMessages(messages);
-                                    });
-                                } else {
-                                    client.listMessages(0, function(err, messages) {
-                                        emitMessages(messages);
-                                    });
-                                }
-                            });
-                        });
-                    }, 60000);
-                });
-
-                client.on('error', refresh);
-
-                client.connect();
-            },
-            stop: function() {
-                clearInterval(interval);
-                client.close();
+            function emitMessages(messages) {
+                if (messages && messages.length) {
+                    resolve(messages.map(function(message) {
+                        return {
+                            date: message.date,
+                            source_id: message.UID,
+                            source: message
+                        };
+                    }));
+                }
             }
-        };
+
+            client.on("connect", function() {
+                client.openMailbox("INBOX", {readOnly: true}, function() {
+                    db.get('events').findOne({
+                        reader_id: reader.id
+                    }, {
+                        sort: {UID: -1}
+                    }).on('success', function (lastMessage) {
+                        if (lastMessage) {
+                            client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
+                                if (messages) messages.shift();
+                                emitMessages(messages);
+                            });
+                        } else {
+                            client.listMessages(0, function(err, messages) {
+                                emitMessages(messages);
+                            });
+                        }
+                    });
+                });
+            });
+
+            client.on('error', reject);
+
+            client.connect();
+        });
     }
 };

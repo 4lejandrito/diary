@@ -8,11 +8,11 @@ module.exports = React.createClass({
         return <div>
             <header>
                 <Icon name="envelope"/>{' '}
-                You received an email from <Link href={'mailto:' + this.props.event.from.address}>
-                    {this.props.event.from.name}
+                You received an email from <Link href={'mailto:' + this.props.event.source.from.address}>
+                    {this.props.event.source.from.name}
                 </Link>
             </header>
-            <small>{this.props.event.title}</small>
+            <small>{this.props.event.source.title}</small>
         </div>;
     }
 });
