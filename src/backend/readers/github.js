@@ -22,9 +22,9 @@ module.exports = {
             return ghEvents(page, 100).then(function(events) {
                 return events.map(function(event) {
                     return {
-                        source_id: event.id,
                         date: new Date(event.created_at),
-                        data: event
+                        source_id: event.id,
+                        source: event
                     };
                 });
             });

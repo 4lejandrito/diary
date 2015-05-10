@@ -79,29 +79,31 @@ describe('Youtube', function() {
 
             describe('and a successfull call to playlistitems', function() {
 
+                var videos = [{
+                    id: '1',
+                    snippet: {
+                        publishedAt: '1989-12-09T08:00:00.0Z',
+                        title: 'video title'
+                    },
+                    contentDetails: {
+                        videoId: 'videoId'
+                    }
+                },{
+                    id: '2',
+                    snippet: {
+                        publishedAt: '1989-12-09T08:00:01.0Z',
+                        title: 'video title 2'
+                    },
+                    contentDetails: {
+                        videoId: 'videoId2'
+                    }
+                }];
+
                 beforeEach(function() {
                     api
                     .get('/playlistItems?part=contentDetails%2Csnippet&playlistId=watchhistoryid&maxResults=50')
                     .reply(200, {
-                        items: [{
-                            id: '1',
-                            snippet: {
-                                publishedAt: '1989-12-09T08:00:00.0Z',
-                                title: 'video title'
-                            },
-                            contentDetails: {
-                                videoId: 'videoId'
-                            }
-                        },{
-                            id: '2',
-                            snippet: {
-                                publishedAt: '1989-12-09T08:00:01.0Z',
-                                title: 'video title 2'
-                            },
-                            contentDetails: {
-                                videoId: 'videoId2'
-                            }
-                        }]
+                        items: videos
                     });
                 });
 
@@ -110,11 +112,13 @@ describe('Youtube', function() {
                         token: 'test-token'
                     })).to.eventually.deep.equal([{
                         source_id: '1',
+                        source: videos[0],
                         date: new Date('1989-12-09T08:00:00.0Z'),
                         description: 'video title',
                         videoId: "videoId"
                     },{
                         source_id: '2',
+                        source: videos[1],
                         date: new Date('1989-12-09T08:00:01.0Z'),
                         description: 'video title 2',
                         videoId: "videoId2"

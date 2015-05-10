@@ -6,7 +6,7 @@ var ghURL = 'https://github.com/';
 
 module.exports = React.createClass({
     render: function() {
-        var ghEvent = this.props.event.data;
+        var ghEvent = this.props.event.source;
         if (ghEvent.type !== 'PushEvent') return <div>
             <i>{ghEvent.type}</i> is not yet supported
         </div>;
