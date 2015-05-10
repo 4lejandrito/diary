@@ -1,4 +1,6 @@
 var rest = require('superagent');
+var Promise = require('promise');
+var async = require('async');
 
 module.exports = {
     type: 'facebook',
@@ -14,55 +16,43 @@ module.exports = {
             }
         }
     },
-    instance: function(emit) {
-        var reader = this;
+    tick: function(reader) {
+        return new Promise(function (resolve, reject) {
+            var events = [],
+                lastResponse = {},
+                url = 'https://graph.facebook.com/v2.3/me/feed?access_token=' + reader.token +
+                '&since=1&until=' + new Date().getTime();
 
-        function emitEvent(e) {
-            if (e.object_id) {
-                rest.get('https://graph.facebook.com/v2.3/' + e.object_id).query({
-                    access_token: reader.token
-                }).end(function(err, res) {
-                    emit({
-                        date: new Date(e.created_time),
-                        image: JSON.parse(res.text).images[0].source,
-                        description: e.message || e.caption || e.description,
-                        url: e.link
-                    });
+            async.doWhilst(function(cb) {
+                rest.get(url).end(function(err, res) {
+                    try {
+                        lastResponse = JSON.parse(res.text);
+                        if (lastResponse.data) {
+                            lastResponse.data.map(function(e) {
+                                events.push(e);
+                            });
+                        }
+                    } catch (error) {
+                        return cb(error);
+                    }
+                    cb(err);
                 });
-            } else {
-                emit({
+            }, function() {
+                return (url = lastResponse.paging && lastResponse.paging.next);
+            }, function(err) {
+                if (err) reject(err); else resolve(events);
+            });
+        }).then(function(events) {
+            return events.map(function(e) {
+                return {
                     date: new Date(e.created_time),
+                    source_id: e.id,
+                    source: e,
                     image: e.picture,
                     description: e.message || e.caption || e.description,
                     url: e.link
-                });
-            }
-        }
-
-        function getFeedPage(url, query) {
-            var request = rest.get(url);
-            if (query) request.query(query);
-            request.end(function(err, res) {
-                var response = JSON.parse(res.text);
-                if (response.data) {
-                    response.data.map(emitEvent);
-                }
-                if (response.paging && response.paging.next) {
-                    getFeedPage(response.paging.next);
-                }
+                };
             });
-        }
-
-        return {
-            start: function() {
-                getFeedPage('https://graph.facebook.com/v2.3/me/feed', {
-                    access_token: reader.token,
-                    since: 1,
-                    until: new Date().getTime()
-                });
-            },
-            stop: function() {
-            }
-        };
+        });
     }
 };
