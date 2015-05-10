@@ -1,4 +1,6 @@
 var rest = require('superagent');
+var moment = require('moment');
+var Promise = require('promise');
 
 module.exports = {
     type: 'Chuck Norris',
@@ -12,6 +14,7 @@ module.exports = {
             .end(function(err, response) {
                 if (response && response.body) {
                     resolve([{
+                        source_id: moment().startOf('day').toString(),
                         description: response.body.value.joke
                     }]);
                 } else {
