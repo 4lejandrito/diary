@@ -1,7 +1,5 @@
 var github = require('octonode');
-var db = require('../db');
 var Promise = require('promise');
-var async = require('async');
 
 module.exports = {
     type: 'github',
@@ -21,25 +19,10 @@ module.exports = {
         ghuser = client.user(reader.profile.username),
         ghEvents = Promise.denodeify(ghuser.events.bind(ghuser)),
         getPage = function(page) {
-            return ghEvents(page, 100)
-            .then(function(events) {
-                return new Promise(function(resolve) {
-                    async.filter(events, function(event, ok) {
-                        if (event.type === 'PushEvent') {
-                            db.get('events').findOne({
-                                reader_id: reader.id,
-                                'data.id': event.id
-                            }).on('success', function (existingEvent) {
-                                ok(!existingEvent);
-                            });
-                        } else {
-                            ok(false);
-                        }
-                    }, resolve);
-                });
-            }).then(function(events) {
+            return ghEvents(page, 100).then(function(events) {
                 return events.map(function(event) {
                     return {
+                        id: event.id,
                         date: new Date(event.created_at),
                         data: event
                     };
