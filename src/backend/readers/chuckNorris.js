@@ -7,6 +7,7 @@ module.exports = {
     image: 'http://s1.postimg.org/dhn0rp2un/9de9475b_92c7_4617_b27b_6d1025c0ff90.png',
     description: 'Get a random daily Chuck Norris joke',
     schema: {},
+    interval: 12 * 60 * 60 * 1000,
     tick: function() {
         return new Promise(function(resolve) {
             rest
