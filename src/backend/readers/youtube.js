@@ -44,7 +44,7 @@ module.exports = {
         }).then(function(data) {
             return data.items.map(function(video) {
                 return {
-                    id: video.id,
+                    source_id: video.id,
                     date: new Date(video.snippet.publishedAt),
                     description: video.snippet.title,
                     videoId: video.contentDetails.videoId

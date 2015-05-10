@@ -22,7 +22,7 @@ module.exports = {
             return ghEvents(page, 100).then(function(events) {
                 return events.map(function(event) {
                     return {
-                        id: event.id,
+                        source_id: event.id,
                         date: new Date(event.created_at),
                         data: event
                     };

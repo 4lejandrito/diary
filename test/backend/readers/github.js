@@ -77,15 +77,15 @@ describe('github', function() {
                     token: 'test-token',
                     profile: {username: '4lejandrito'}
                 })).to.eventually.deep.equal([{
-                    id: '1',
+                    source_id: '1',
                     date: new Date('1989-12-09T08:00:00.0Z'),
                     data: githubEvents[0]
                 },{
-                    id: '2',
+                    source_id: '2',
                     date: new Date('1989-12-09T08:00:01.0Z'),
                     data: githubEvents[1]
                 },{
-                    id: '3',
+                    source_id: '3',
                     date: new Date('1989-12-09T08:00:02.0Z'),
                     data: githubEvents[2]
                 }]);

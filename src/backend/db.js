@@ -1,4 +1,6 @@
 var config = require('config');
 var monk = require('monk');
 
-module.exports = monk(config.db.url);
+var db = module.exports = monk(config.db.url);
+
+db.get('events').index('reader_id source_id', {unique: true, sparse: true});

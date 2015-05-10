@@ -53,6 +53,10 @@ describe('Youtube', function() {
             }
         });
 
+        afterEach(function() {
+            api.done();
+        });
+
         it('returns a promise', function() {
             expect(youtube.tick({})).to.be.instanceOf(require('promise'));
         });
@@ -105,12 +109,12 @@ describe('Youtube', function() {
                     return expect(youtube.tick({
                         token: 'test-token'
                     })).to.eventually.deep.equal([{
-                        id: '1',
+                        source_id: '1',
                         date: new Date('1989-12-09T08:00:00.0Z'),
                         description: 'video title',
                         videoId: "videoId"
                     },{
-                        id: '2',
+                        source_id: '2',
                         date: new Date('1989-12-09T08:00:01.0Z'),
                         description: 'video title 2',
                         videoId: "videoId2"
