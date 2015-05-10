@@ -7,33 +7,34 @@ var uuid = require('node-uuid');
 module.exports = function(options, user, clazz) {
 
     var wrapper = extend(true, options, {
-        running: false,
+        state: 'stop',
         start: function() {
-            this.running = true;
             getEvents();
         },
         stop: function() {
-            this.running = false;
+            this.state = 'stop';
             clearTimeout(timeout);
         }
     }), refreshAttempts = 3, timeout;
 
     function getEvents() {
+        wrapper.state = 'running';
         clazz.tick(options).then(function(events) {
-            db.get('events').insert(events.map(function(event) {
-                return extend(true, {
-                    date: new Date(),
-                    source_id: uuid.v4()
-                }, event, {
-                    type: options.type,
-                    user: user._id,
-                    loggedAt: new Date(),
-                    reader_id: options.id
-                });
-            }));
-            if (wrapper.running) {
+            if (wrapper.state != 'stop') {
+                db.get('events').insert(events.map(function(event) {
+                    return extend(true, {
+                        date: new Date(),
+                        source_id: uuid.v4()
+                    }, event, {
+                        type: options.type,
+                        user: user._id,
+                        loggedAt: new Date(),
+                        reader_id: options.id
+                    });
+                }));
                 timeout = setTimeout(getEvents, options.settings.interval || 1000);
             }
+            wrapper.state = 'idle';
             delete wrapper.error;
         }).catch(onError);
     }
