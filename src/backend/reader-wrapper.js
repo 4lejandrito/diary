@@ -3,6 +3,7 @@ var db = require('./db');
 var users = require('./db').get('users');
 var oauth = require('./oauth');
 var uuid = require('node-uuid');
+var config = require('config');
 
 module.exports = function(options, user, clazz) {
 
@@ -32,7 +33,7 @@ module.exports = function(options, user, clazz) {
                         reader_id: options.id
                     });
                 }));
-                timeout = setTimeout(getEvents, options.settings.interval || 1000);
+                timeout = setTimeout(getEvents, clazz.interval || config.interval);
             }
             wrapper.state = 'idle';
             delete wrapper.error;

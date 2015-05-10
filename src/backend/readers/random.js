@@ -5,13 +5,8 @@ module.exports = {
     type: 'random',
     image: 'https://www.random.org/analysis/randbitmap-rdo-section.png',
     description: 'Generate random events, very useful for testing',
-    schema: {
-        interval: {
-            type: 'number',
-            description: 'Events frequency',
-            example: 500
-        }
-    },
+    interval: 10,
+    schema: {},
     tick: function() {
         return Promise.resolve([{
             date: moment()

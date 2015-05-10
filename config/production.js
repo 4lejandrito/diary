@@ -18,5 +18,6 @@ module.exports = {
             clientID: process.env.FACEBOOK_KEY,
             clientSecret: process.env.FACEBOOK_SECRET
         }
-    }
+    },
+    interval: 60 * 1000
 };

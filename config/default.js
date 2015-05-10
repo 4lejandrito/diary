@@ -19,5 +19,6 @@ module.exports = {
             clientID: '1390685244591617',
             clientSecret: '2014b120d9fb453766b64654f7ae9a44'
         }
-    }
+    },
+    interval: 1000
 };
