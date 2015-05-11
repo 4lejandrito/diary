@@ -34,18 +34,12 @@ module.exports = {
                         accessToken: reader.token
                     }
                 }
-            });
+            }), emails, error;
 
-            function emitMessages(messages) {
-                if (messages && messages.length) {
-                    resolve(messages.map(function(message) {
-                        return {
-                            date: message.date,
-                            source_id: message.UID,
-                            source: message
-                        };
-                    }));
-                }
+            function finish(err, messages) {
+                error = err;
+                emails = messages;
+                client.close();
             }
 
             client.on("connect", function() {
@@ -56,20 +50,36 @@ module.exports = {
                         sort: {'source.UID': -1}
                     }).on('success', function (lastMessage) {
                         if (lastMessage) {
-                            client.listMessagesByUID(lastMessage.source.UID, '*', function(err, messages) {
-                                if (messages) messages.shift();
-                                emitMessages(messages);
-                            });
+                            client.listMessagesByUID(
+                                lastMessage.source.UID,
+                                '*',
+                                function(err, messages) {
+                                    if (messages) messages.shift();
+                                    finish(err, messages);
+                                }
+                            );
                         } else {
-                            client.listMessages(0, function(err, messages) {
-                                emitMessages(messages);
-                            });
+                            client.listMessages(0, finish);
                         }
-                    });
+                    }).on('error', finish);
                 });
             });
 
-            client.on('error', reject);
+            client.on('close', function() {
+                if (emails && !error) {
+                    resolve(emails.map(function(email) {
+                        return {
+                            date: email.date,
+                            source_id: email.UID,
+                            source: email
+                        };
+                    }));
+                } else {
+                    reject(error || 'Unexpected error');
+                }
+            });
+
+            client.on('error', finish);
 
             client.connect();
         });
