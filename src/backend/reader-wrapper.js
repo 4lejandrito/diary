@@ -57,6 +57,7 @@ module.exports = function(options, user, clazz) {
                     }).on('success', function() {
                         refreshAttempts = 3;
                         options.token = newToken;
+                        getEvents();
                     });
                 }
             });
