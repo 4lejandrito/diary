@@ -1,6 +1,7 @@
 var inbox = require("inbox");
 var db = require('../db');
 var Promise = require('promise');
+var extend = require('extend');
 
 module.exports = {
     type: 'email',
@@ -26,10 +27,15 @@ module.exports = {
         return new Promise(function (resolve, reject) {
             var client = inbox.createConnection(false, reader.settings.server, {
                 secureConnection: true,
-                auth: {
-                    user: reader.settings.address,
-                    pass: reader.settings.password
-                }
+                auth: extend({
+                        user: reader.settings.address
+                    }, reader.token ? {
+                        XOAuth2: {
+                            accessToken: reader.token
+                        }
+                    } : {
+                        pass: reader.settings.password
+                    })
             }), emails, error;
 
             function finish(err, messages) {
