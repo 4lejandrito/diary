@@ -49,10 +49,10 @@ module.exports = {
                     db.get('events').findOne({
                         reader_id: reader.id
                     }, {
-                        sort: {UID: -1}
+                        sort: {'source.UID': -1}
                     }).on('success', function (lastMessage) {
                         if (lastMessage) {
-                            client.listMessagesByUID(lastMessage.UID, '*', function(err, messages) {
+                            client.listMessagesByUID(lastMessage.source.UID, '*', function(err, messages) {
                                 if (messages) messages.shift();
                                 emitMessages(messages);
                             });
