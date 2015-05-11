@@ -48,7 +48,7 @@ module.exports = function(options, user, clazz) {
                     wrapper.error = err;
                 } else {
                     users.update({
-                        id: user._id,
+                        _id: user._id,
                         'readers.id': options.id
                     }, {
                         $set: {
