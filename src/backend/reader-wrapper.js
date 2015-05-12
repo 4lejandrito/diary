@@ -21,6 +21,7 @@ module.exports = function(options, user, clazz) {
     function getEvents() {
         wrapper.state = 'running';
         clazz.tick(options).then(function(events) {
+            console.log('promise fullfilled: ' + options.type + ', ' + events.length);
             if (wrapper.state != 'stop') {
                 db.get('events').insert(events.map(function(event) {
                     return extend(true, {
@@ -37,30 +38,39 @@ module.exports = function(options, user, clazz) {
             }
             wrapper.state = 'idle';
             delete wrapper.error;
+            refreshAttempts = 3;
         }).catch(onError);
     }
 
     function onError(error) {
+        console.log('promise errored: ' + options.type + ', ' + error);
         wrapper.error = error;
-        if (options.token && refreshAttempts-- > 0) {
-            oauth.refreshToken(options, function(err, newToken) {
-                if (err) {
-                    wrapper.error = err;
-                } else {
-                    users.update({
-                        _id: user._id,
-                        'readers.id': options.id
-                    }, {
-                        $set: {
-                            "readers.$.token": newToken
-                        }
-                    }).on('success', function() {
-                        refreshAttempts = 3;
-                        options.token = newToken;
+        if (refreshAttempts-- > 0) {
+            console.log('trying to refresh: ' + refreshAttempts);
+            if (options.refreshToken) {
+                console.log('trying to refresh token');
+                oauth.refreshToken(options, function(err, newToken) {
+                    if (err) {
+                        console.log('error refreshing token: ' + err);
+                        wrapper.error = err;
                         getEvents();
-                    });
-                }
-            });
+                    } else {
+                        users.update({
+                            _id: user._id,
+                            'readers.id': options.id
+                        }, {
+                            $set: {
+                                "readers.$.token": newToken
+                            }
+                        }).on('success', function() {
+                            options.token = newToken;
+                            getEvents();
+                        });
+                    }
+                });
+            } else {
+                getEvents();
+            }
         } else {
             wrapper.error = error;
         }
