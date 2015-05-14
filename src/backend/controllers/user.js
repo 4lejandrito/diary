@@ -1,9 +1,7 @@
 var readers = require('../readers');
 var moment = require('moment');
-var uuid = require('node-uuid');
-var users = require('../db').get('users');
-var events = require('../db').get('events');
-var extend = require('extend');
+var User = require('../models/user');
+var Event = require('../models/event');
 
 module.exports = {
 
@@ -15,12 +13,12 @@ module.exports = {
         var email = req.body.email;
         var password = req.body.password;
 
-        users.findOne({email: email}, function(err, user) {
+        User.findOne({email: email}, function(err, user) {
             if (err) throw err;
             if (user) {
                 return res.status(400).send('Existing user');
             } else {
-                users.insert({email: email, password: password}, function(err, user) {
+                User.insert({email: email, password: password}, function(err, user) {
                     if (err) throw err;
                     res.send(user);
                 });
@@ -38,14 +36,12 @@ module.exports = {
     },
 
     addReader: function(req, res) {
-        var reader = {
-            id: uuid.v4(),
+        var reader = req.user.readers.create({
             type: req.params.type,
             settings: req.body
-        };
-        users.updateById(req.user._id, {
-            $push: {readers: reader}
-        }).on('success', function() {
+        });
+        req.user.readers.push(reader);
+        req.user.save(function() {
             var wrapper = readers.create(reader, req.user);
             wrapper.start();
             res.send(wrapper);
@@ -54,17 +50,15 @@ module.exports = {
 
     addReaderOAuth2: function(req, accessToken, refreshToken, profile, type, done) {
         var state = JSON.parse(new Buffer(req.query.state, 'base64').toString('ascii'));
-        var reader = {
-            id: uuid.v4(),
+        var reader = req.user.readers.create({
             type: type,
             token: accessToken,
             refreshToken: refreshToken,
             profile: profile,
             settings: state
-        };
-        users.updateById(req.user._id, {
-            $push: {readers: reader}
-        }).on('success', function() {
+        });
+        req.user.readers.push(reader);
+        req.user.save(function() {
             var wrapper = readers.create(reader, req.user);
             wrapper.start();
             done(null, req.user);
@@ -72,18 +66,19 @@ module.exports = {
     },
 
     deleteReader: function(req, res) {
-        users.updateById(req.user._id, {
-            $pull : {readers : {id: req.params.id}}
-        }).on('success', function() {
-            events.remove({reader_id: req.params.id});
-            res.send(readers.delete(req.user, req.params.id));
+        req.user.readers.pull(req.params.id);
+        req.user.save(function() {
+            var deleted = readers.delete(req.user, req.params.id);
+            Event.remove({reader_id: req.params.id}, function() {
+                res.send(deleted);
+            });
         });
     },
 
     getEvents: function(req, res) {
-        events.find({
-            user: req.user._id
-        }, '-user').on('success', function(events) {
+        Event.find({
+            user: req.user.id
+        }, '-user', function(err, events) {
             res.send(events);
         });
     },
@@ -92,7 +87,7 @@ module.exports = {
         var start = moment().year(parseInt(req.params.year)).startOf('year');
         var end = moment(start).endOf('year');
 
-        events.col.aggregate([{
+        Event.aggregate([{
             $project: {
                 date:{
                     $add: ["$date", moment().utcOffset() * 60 * 1000]
@@ -102,7 +97,7 @@ module.exports = {
             }
         },{
             $match: {
-                user: req.user._id,
+                user: req.user.id,
                 date: {$gte: start.toDate(), $lte: end.toDate()}
             }
         },{
@@ -120,7 +115,7 @@ module.exports = {
         .month(parseInt(req.params.month)).startOf('month');
         var end = moment(start).endOf('month');
 
-        events.col.aggregate([{
+        Event.aggregate([{
             $project: {
                 date:{
                     $add: ["$date", moment().utcOffset() * 60 * 1000]
@@ -130,7 +125,7 @@ module.exports = {
             }
         },{
             $match: {
-                user: req.user._id,
+                user: req.user.id,
                 date: {$gte: start.toDate(), $lte: end.toDate()}
             }
         },{
@@ -149,10 +144,10 @@ module.exports = {
         .date(parseInt(req.params.day)).startOf('day');
         var end = moment(start).endOf('day');
 
-        events.find({
-            user: req.user._id,
+        Event.find({
+            user: req.user.id,
             date: {$gte: start.toDate(), $lte: end.toDate()}
-        }, {sort : {date : -1}}).on('success', function(events) {
+        }).sort({date : -1}).exec(function(err, events) {
             res.send(events);
         });
     },

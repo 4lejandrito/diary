@@ -19,25 +19,27 @@ readers.forType = function(type) {
 };
 
 readers.forUser = function(user) {
-    if (!readersForUser[user._id]) {
-        readersForUser[user._id] = [];
-        (user.readers || []).map(function(reader) {
+    if (!readersForUser[user.id]) {
+        readersForUser[user.id] = [];
+        user.readers.map(function(reader) {
             return this.create(reader, user);
         }, this);
     }
-    return readersForUser[user._id];
+    return readersForUser[user.id];
 };
 
 readers.create = function(options, user) {
     var wrapper = readerWrapper(options, user, this.forType(options.type));
-    readersForUser[user._id].push(wrapper);
+    readersForUser[user.id].push(wrapper);
     return wrapper;
 };
 
 readers.delete = function(user, id) {
-    var readers = readersForUser[user._id];
-    var reader = _.findWhere(readers, {id: id});
+    var readers = readersForUser[user.id];
+    var reader = _.find(readers, function(r) {
+        return r.reader.id === id;
+    });
     reader.stop();
-    readersForUser[user._id] = _.without(readers, reader);
+    readersForUser[user.id] = _.without(readers, reader);
     return reader;
 };

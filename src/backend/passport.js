@@ -1,7 +1,7 @@
 var Passport = require('passport').Passport;
 var Strategy = require('passport').Strategy;
 var util = require('util');
-var db = require('./db');
+var User = require('./models/user');
 
 function DiaryStrategy(verify) {
     Strategy.call(this);
@@ -37,20 +37,20 @@ DiaryStrategy.prototype.authenticate = function(req) {
 var passport = module.exports = new Passport();
 
 passport.serializeUser(function(user, done) {
-    done(null, user._id);
+    done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    db.get('users').findById(id, function(err, user) {
+    User.findById(id, function(err, user) {
         done(err, user);
     });
 });
 
 passport.use(new DiaryStrategy(function(username, password, done) {
-    db.get('users').findOne({ email: username }, function (err, user) {
+    User.findOne({ email: username }, function (err, user) {
         if (err) { return done(err); }
         if (!user) { return done(null, false); }
-        if (user.password !== password) { return done(null, false); }
+        if (!user.isPasswordCorrect(password)) { return done(null, false); }
         return done(null, user);
     });
 }));

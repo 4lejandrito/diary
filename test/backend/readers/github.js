@@ -2,13 +2,13 @@ var chai = require("chai");
 chai.use(require("chai-as-promised"));
 var expect = chai.expect;
 var github = require('backend/readers/github');
-var db = require('backend/db');
+var mongoose = require('mongoose');
 var nock = require('nock');
 
 describe('github', function() {
 
     afterEach(function(done) {
-        db.close(done);
+        mongoose.connection.close(done);
     });
 
     it('specifies the type "github"', function() {

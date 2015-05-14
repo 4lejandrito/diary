@@ -1,7 +1,7 @@
 var inbox = require("inbox");
-var db = require('../db');
 var Promise = require('promise');
 var extend = require('extend');
+var Event = require('../models/event');
 
 module.exports = {
     type: 'email',
@@ -46,11 +46,11 @@ module.exports = {
 
             client.on("connect", function() {
                 client.openMailbox("INBOX", {readOnly: true}, function() {
-                    db.get('events').findOne({
+                    Event.collection.findOne({
                         reader_id: reader.id
                     }, {
                         sort: {'source.UID': -1}
-                    }).on('success', function (lastMessage) {
+                    }, function (err, lastMessage) {
                         if (lastMessage) {
                             client.listMessagesByUID(
                                 lastMessage.source.UID,
@@ -60,10 +60,12 @@ module.exports = {
                                     finish(err, messages);
                                 }
                             );
+                        } else if (err) {
+                            finish(err);
                         } else {
-                            client.listMessages(0, finish);
+                            client.listMessages(-10, finish);
                         }
-                    }).on('error', finish);
+                    });
                 });
             });
 

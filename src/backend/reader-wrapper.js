@@ -1,39 +1,46 @@
 var extend = require('extend');
-var db = require('./db');
-var users = require('./db').get('users');
 var oauth = require('./oauth');
-var uuid = require('node-uuid');
 var config = require('config');
+var Event = require('./models/event');
 
 module.exports = function(options, user, clazz) {
 
-    var wrapper = extend(true, options, {
+    var wrapper = extend({
         state: 'stop',
+        reader: options,
         start: function() {
             getEvents();
         },
         stop: function() {
             this.state = 'stop';
             clearTimeout(timeout);
+        },
+        toJSON: function() {
+            return extend(true, {}, options.toObject(), {
+                state: this.state,
+                error: this.error
+            });
         }
     }), refreshAttempts = 3, timeout;
 
     function getEvents() {
         wrapper.state = 'running';
         clazz.tick(options).then(function(events) {
-            console.log('promise fullfilled: ' + options.type + ', ' + events.length);
             if (wrapper.state != 'stop') {
-                db.get('events').insert(events.map(function(event) {
-                    return extend(true, {
-                        date: new Date(),
-                        source_id: uuid.v4()
-                    }, event, {
+                Event.insert(events.map(function(event) {
+                    return extend(event, {
                         type: options.type,
-                        user: user._id,
-                        loggedAt: new Date(),
+                        user: user.id,
                         reader_id: options.id
                     });
-                }));
+                }), function(created) {
+                    console.log(
+                        '%s events: %d/%d',
+                        options.type,
+                        created.length,
+                        events.length
+                    );
+                });
                 timeout = setTimeout(getEvents, clazz.interval || config.interval);
             }
             wrapper.state = 'idle';
@@ -55,16 +62,8 @@ module.exports = function(options, user, clazz) {
                         wrapper.error = err;
                         getEvents();
                     } else {
-                        users.update({
-                            _id: user._id,
-                            'readers.id': options.id
-                        }, {
-                            $set: {
-                                "readers.$.token": newToken
-                            }
-                        }).on('success', function() {
-                            options.token = newToken;
-                            getEvents();
+                        user.updateToken(options.id, newToken, function(err) {
+                            return err ? onError(err) : getEvents();
                         });
                     }
                 });

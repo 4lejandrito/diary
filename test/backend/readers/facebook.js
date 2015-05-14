@@ -2,14 +2,14 @@ var chai = require("chai");
 chai.use(require("chai-as-promised"));
 var expect = chai.expect;
 var facebook = require('backend/readers/facebook');
-var db = require('backend/db');
+var mongoose = require('mongoose');
 var nock = require('nock');
 var sinon = require('sinon').sandbox.create();
 
 describe('facebook', function() {
 
     afterEach(function(done) {
-        db.close(done);
+        mongoose.connection.close(done);
         sinon.restore();
     });
 

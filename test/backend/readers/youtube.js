@@ -2,13 +2,13 @@ var chai = require("chai");
 chai.use(require("chai-as-promised"));
 var expect = chai.expect;
 var youtube = require('backend/readers/youtube');
-var db = require('backend/db');
+var mongoose = require('mongoose');
 var nock = require('nock');
 
 describe('Youtube', function() {
 
     afterEach(function(done) {
-        db.close(done);
+        mongoose.connection.close(done);
     });
 
     it('specifies the type "youtube"', function() {

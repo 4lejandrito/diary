@@ -1,4 +1,5 @@
 var express = require('express');
+var mongoose = require('mongoose');
 var controllers = require('require-directory')(module, 'controllers');
 var bodyParser = require('body-parser');
 var config = require('config');
@@ -6,9 +7,11 @@ var readers = require('./readers');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('./passport');
-var db = require('./db');
+var User = require('./models/user');
 var app = module.exports = express();
 var oauth = require('./oauth');
+
+mongoose.connect(config.db.url);
 
 app.use(session({
     secret: config.secret,
@@ -47,10 +50,8 @@ readers.all().map(function(reader) {
     }
 });
 
-db.on('open', function() {
-    db.get('users').find().each(function(user) {
-        readers.forUser(user).map(function(reader) {
-            reader.start();
-        });
+User.find().stream().on('data', function(user) {
+    readers.forUser(user).map(function(reader) {
+        reader.start();
     });
 });
