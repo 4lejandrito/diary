@@ -36,21 +36,6 @@ DiaryStrategy.prototype.authenticate = function(req) {
 
 var passport = module.exports = new Passport();
 
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user) {
-        done(err, user);
-    });
-});
-
-passport.use(new DiaryStrategy(function(username, password, done) {
-    User.findOne({ email: username }, function (err, user) {
-        if (err) { return done(err); }
-        if (!user) { return done(null, false); }
-        if (!user.isPasswordCorrect(password)) { return done(null, false); }
-        return done(null, user);
-    });
-}));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+passport.use(new DiaryStrategy(User.authenticate()));

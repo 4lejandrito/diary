@@ -9,9 +9,11 @@ var readerSchema = new mongoose.Schema({
 });
 
 var schema = new mongoose.Schema({
-    email: {type: String, unique: true, required: true},
-    password: {type: String, required: true},
     readers: [readerSchema]
+});
+
+schema.plugin(require('passport-local-mongoose'), {
+    usernameField: 'email'
 });
 
 schema.methods.isPasswordCorrect = function(password) {

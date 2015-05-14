@@ -6,20 +6,11 @@ module.exports = {
         res.send(req.user);
     },
 
-    create: function(req, res) {
-        var email = req.body.email;
-        var password = req.body.password;
-
-        User.findOne({email: email}, function(err, user) {
-            if (err) throw err;
-            if (user) {
-                return res.status(400).send('Existing user');
-            } else {
-                User.insert({email: email, password: password}, function(err, user) {
-                    if (err) throw err;
-                    res.send(user);
-                });
-            }
+    create: function(req, res, next) {
+        User.register(new User({
+            email: req.body.email
+        }), req.body.password, function(err, user) {
+            if (err) next(err); else res.send(user);
         });
     },
 
