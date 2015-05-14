@@ -34,19 +34,19 @@ app.post('/api/user/logout', controllers.user.logout);
 app.use ('/auth/*'         , passport.authenticate('diary'));
 app.use ('/'               , express.static('src/public'));
 
-app.get   ('/api/user/reader'                 , controllers.user.getReaders);
-app.post  ('/api/user/reader/:type'           , controllers.user.addReader);
-app.delete('/api/user/reader/:id'             , controllers.user.deleteReader);
-app.get   ('/api/user/event'                  , controllers.user.getEvents);
-app.get   ('/api/user/event/:year'            , controllers.user.getYearView);
-app.get   ('/api/user/event/:year/:month'     , controllers.user.getMonthView);
-app.get   ('/api/user/event/:year/:month/:day', controllers.user.getDayView);
+app.get   ('/api/user/reader'                 , controllers.reader.getReaders);
+app.post  ('/api/user/reader/:type'           , controllers.reader.addReader);
+app.delete('/api/user/reader/:id'             , controllers.reader.deleteReader);
+app.get   ('/api/user/event'                  , controllers.event.getEvents);
+app.get   ('/api/user/event/:year'            , controllers.event.getYearView);
+app.get   ('/api/user/event/:year/:month'     , controllers.event.getMonthView);
+app.get   ('/api/user/event/:year/:month/:day', controllers.event.getDayView);
 app.get   ('/api/reader'                      , controllers.reader.getAvailable);
 app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 
 readers.all().map(function(reader) {
     if (reader.schema.oauth2) {
-        oauth.register(app, reader, controllers.user.addReaderOAuth2);
+        oauth.register(app, reader, controllers.reader.addReaderOAuth2);
     }
 });
 
