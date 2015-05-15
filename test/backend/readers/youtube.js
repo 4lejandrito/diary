@@ -114,14 +114,12 @@ describe('Youtube', function() {
                         source_id: '1',
                         source: videos[0],
                         date: new Date('1989-12-09T08:00:00.0Z'),
-                        description: 'video title',
-                        videoId: "videoId"
+                        description: 'video title'
                     },{
                         source_id: '2',
                         source: videos[1],
                         date: new Date('1989-12-09T08:00:01.0Z'),
-                        description: 'video title 2',
-                        videoId: "videoId2"
+                        description: 'video title 2'
                     }]);
                 });
             });

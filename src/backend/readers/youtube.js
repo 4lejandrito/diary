@@ -47,8 +47,7 @@ module.exports = {
                     source_id: video.id,
                     source: video,
                     date: new Date(video.snippet.publishedAt),
-                    description: video.snippet.title,
-                    videoId: video.contentDetails.videoId
+                    description: video.snippet.title
                 };
             });
         });
