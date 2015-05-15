@@ -63,7 +63,7 @@ module.exports = {
                         } else if (err) {
                             finish(err);
                         } else {
-                            client.listMessages(-10, finish);
+                            client.listMessages(0, finish);
                         }
                     });
                 });
