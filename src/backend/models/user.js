@@ -20,14 +20,4 @@ schema.methods.isPasswordCorrect = function(password) {
     return this.password === password;
 };
 
-schema.methods.updateToken = function(reader_id, token, cb) {
-    this.update({
-        'readers.id': reader_id
-    }, {
-        $set: {
-            "readers.$.token": token
-        }
-    }, cb);
-};
-
 module.exports = mongoose.model('User', schema);

@@ -62,7 +62,8 @@ module.exports = function(options, user, clazz) {
                         wrapper.error = err;
                         getEvents();
                     } else {
-                        user.updateToken(options.id, newToken, function(err) {
+                        user.readers.id(options.id).token = newToken;
+                        user.save(function(err) {
                             return err ? onError(err) : getEvents();
                         });
                     }
