@@ -2,6 +2,7 @@ var React = require('react');
 var api = require('api');
 var Sticky = require('react-sticky');
 var Icon = require('components/icon');
+var Button = require('components/button');
 
 var Error = React.createClass({
     render: function() {
@@ -34,11 +35,13 @@ module.exports = React.createClass({
             this.refs.password.getValue(),
             this.onLogin
         );
+        this.setState({loading: true});
     },
     onLogin: function(err, user) {
         if (err) {
             this.setState({
-                error: err
+                error: err,
+                loading: false
             });
         } else {
             this.props.onLogin(user);
@@ -56,7 +59,9 @@ module.exports = React.createClass({
                 {this.state.error && <Error error="Invalid credentials"/>}
                 <Input autoFocus placeholder="Username" icon="user" ref="username" type="email"/>
                 <Input placeholder="Password" icon="key" ref="password" type="password"/>
-                <button onClick={this.login}>Login <Icon name="sign-in"/></button>
+                <Button onClick={this.login} icon="sign-in" loading={this.state.loading}>
+                    Login
+                </Button>
             </form>
         </article>;
     }

@@ -7,12 +7,24 @@ button, .button {
     padding: @spacing / 2 @spacing * 2;
     padding-bottom: @spacing / 1.6;
     transition: all .1s ease;
-    &:hover, &:active, &:focus, &[data-toggle='true'] {
-        outline: none;
-        text-decoration: none;
-        background: white;
-        color: @main-color;
-        border-color: white;
+    &:enabled {
+        &:hover, &:active, &:focus, &[data-toggle='true'] {
+            outline: none;
+            text-decoration: none;
+            background: white;
+            color: @main-color;
+            border-color: white;
+        }
+    }
+    &:disabled {
+        opacity: .5;
+        .loading {
+            display: inline-block;
+            vertical-align: middle;
+            margin: 0;
+            padding: 2px;
+            .circle(10.5px);
+        }
     }
 }
 
