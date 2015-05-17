@@ -20,5 +20,5 @@ module.exports = {
             clientSecret: '2014b120d9fb453766b64654f7ae9a44'
         }
     },
-    interval: 1000
+    interval: 10000000
 };

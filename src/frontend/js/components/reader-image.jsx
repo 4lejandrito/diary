@@ -7,8 +7,8 @@ module.exports = React.createClass({
         }
     },
     render: function() {
-        return <img
-            disabled={this.props.disabled}
+        return <img className={this.props.selected && 'selected'}
+            selected={this.props.selected}
             onClick={this.onClick}
             src={'/api/reader/' + this.props.type + '/picture'}
         />;

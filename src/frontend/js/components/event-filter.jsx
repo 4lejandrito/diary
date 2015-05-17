@@ -15,15 +15,14 @@ module.exports = React.createClass({
     filterType: function(event, type) {
         var filter = this.state.filter;
         filter[type] = !filter[type];
-        var events = _.filter(
-            this.props.events,
-            function(e) {
-                return !filter[e.type];
-            }
-        );
         this.setState({
             filter: filter,
-            byType: events
+            byType: _.filter(
+                this.props.events,
+                function(e) {
+                    return !filter[e.type];
+                }
+            )
         }, this.filter);
     },
     filter: function() {
@@ -39,10 +38,10 @@ module.exports = React.createClass({
         return <div className="event-filter">
             <ul>
                 {_.mapObject(
-                    _.groupBy(this.props.events, 'type'),
+                    _.groupBy(this.state.byText || this.props.events, 'type'),
                     function(events, type) {
                         return <li>
-                            <ReaderImage onClick={filterType} disabled={filter[type]} type={type}/>
+                            <ReaderImage onClick={filterType} selected={!!filter[type]} type={type}/>
                         </li>;
                     }
                 )}
