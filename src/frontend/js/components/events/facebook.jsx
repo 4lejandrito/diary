@@ -13,33 +13,35 @@ module.exports = React.createClass({
     render_link: function(post) {
         return <div>
             <header>
-                <img src={post.icon}/> <Person {...post.from}/> shared a link with you
+                <img src={post.icon}/> <Person {...post.from}/> shared a link with you:
             </header>
             <Link href={post.link} className="preview">
-                <img src={post.picture}/>
-                <strong><small>{post.name}</small></strong>
-                <small>{post.caption}</small>
-                <small>{post.description}</small>
+                {post.picture && <img src={post.picture}/>}
+                <strong><small>{post.name || post.caption || '????'}</small></strong>
+                {post.caption && <small>{post.caption}</small>}
+                {post.description && <small>{post.description}</small>}
             </Link>
         </div>;
     },
     render_status: function(post) {
         //enum{mobile_status_update, created_note, added_photos, added_video, shared_story, created_group, created_event, app_created_story, published_story, tagged_in_photo, approved_friend}
-        var content = 'You changed your status';
+        var content = 'You changed your status:';
         if (post.status_type === 'wall_post') {
-            content = [<Person {...post.from}/>, ' published on your wall'];
+            content = [<Person {...post.from}/>, ' published on your wall:'];
         }
         return <div>
             <header>
                 {content}
             </header>
-            {post.message}
+            <blockquote>
+                <small>{post.message || '????'}</small>
+            </blockquote>
         </div>;
     },
     render_photo: function(post) {
         return <div>
             <header>
-                <img src={post.icon}/> <Person {...post.from}/> shared a picture with you
+                <img src={post.icon}/> <Person {...post.from}/> shared a picture with you:
             </header>
             <Link href={post.link}>
                 <div><img src={post.picture}/></div>
@@ -49,7 +51,7 @@ module.exports = React.createClass({
     render_video: function(post) {
         return <div>
             <header>
-                <img src={post.icon}/> <Person {...post.from}/> shared a video with you
+                <img src={post.icon}/> <Person {...post.from}/> shared a video with you:
             </header>
             <small>{post.caption}</small>
             <iframe src={post.source.replace('autoplay=1', '')}/>
