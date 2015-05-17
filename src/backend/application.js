@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var controllers = require('require-directory')(module, 'controllers');
 var bodyParser = require('body-parser');
 var config = require('config');
-var readers = require('./readers');
+var Reader = require('./models/reader');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var passport = require('./passport');
@@ -44,14 +44,12 @@ app.get   ('/api/user/event/:year/:month/:day', controllers.event.getDayView);
 app.get   ('/api/reader'                      , controllers.reader.getAvailable);
 app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 
-readers.all().map(function(reader) {
+Reader.available().map(function(reader) {
     if (reader.schema.oauth2) {
         oauth.register(app, reader, controllers.reader.addReaderOAuth2);
     }
 });
 
 User.find().stream().on('data', function(user) {
-    readers.forUser(user).map(function(reader) {
-        reader.start();
-    });
+    user.start();
 });

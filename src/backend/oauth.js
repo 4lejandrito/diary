@@ -30,13 +30,5 @@ module.exports = {
             successRedirect: '/#/services',
             failureRedirect: '/#/services/new'
         }));
-    },
-
-    refreshToken: function(reader, done) {
-        oauthRefresh.requestNewAccessToken(
-            reader.type,
-            reader.refreshToken,
-            done
-        );
     }
 };

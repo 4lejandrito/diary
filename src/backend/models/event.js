@@ -1,6 +1,7 @@
 var uuid = require('node-uuid');
 var mongoose = require('mongoose');
 var async = require('async');
+var extend = require('extend');
 
 var schema = new mongoose.Schema({
     type: {type: String, required: true},
@@ -16,13 +17,16 @@ var schema = new mongoose.Schema({
 
 schema.index({reader_id: 1, source_id: 1}, {unique: true, sparse: true});
 
-schema.statics.insert = function(events, cb) {
-    var Event = this;
+schema.statics.insert = function(reader, events, cb) {
     async.filter(events, function(event, ok) {
-        Event.create(event, function(err) {
-            ok(!err);
-        });
-    }, cb);
+        this.create(extend(event, {
+            type: reader.type,
+            user: reader.parent().id,
+            reader_id: reader.id
+        }), ok);
+    }.bind(this), function(inserted) {
+        cb(null, inserted);
+    });
 };
 
 module.exports = mongoose.model('Event', schema);

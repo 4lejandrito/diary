@@ -16,7 +16,7 @@ module.exports = React.createClass({
     },
     render: function() {
         var className = '';
-        if (this.props.reader.error) {
+        if (this.props.reader.metadata.error) {
             className += 'error';
         }
         return <li className="active-reader">
