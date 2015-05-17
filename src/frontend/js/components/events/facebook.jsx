@@ -24,12 +24,16 @@ module.exports = React.createClass({
         </div>;
     },
     render_status: function(post) {
-        //enum{mobile_status_update, created_note, added_photos, added_video, shared_story, created_group, created_event, wall_post, app_created_story, published_story, tagged_in_photo, approved_friend}
+        //enum{mobile_status_update, created_note, added_photos, added_video, shared_story, created_group, created_event, app_created_story, published_story, tagged_in_photo, approved_friend}
+        var content = 'You changed your status';
+        if (post.status_type === 'wall_post') {
+            content = [<Person {...post.from}/>, ' published on your wall'];
+        }
         return <div>
             <header>
-                You changed your status
+                {content}
             </header>
-            <strong>{post.message}</strong>
+            {post.message}
         </div>;
     },
     render_photo: function(post) {
