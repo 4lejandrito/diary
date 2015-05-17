@@ -7,7 +7,7 @@ var Link = require('components/link');
 var Icon = require('components/icon');
 var eventComponents = require('./events/*', {hash: true});
 var Sticky = require('react-sticky');
-var Search = require('components/search');
+var Filter = require('components/event-filter');
 
 var Event = React.createClass({
     render: function() {
@@ -81,7 +81,7 @@ module.exports = React.createClass({
                 </Link>
                 <h3>{day.format('MMMM Do gggg')}</h3>
             </Sticky>
-            <Search placeholder="Search this timeline" list={this.state.events} onChange={this.filter}/>
+            <Filter events={this.state.events} onChange={this.filter}/>
             {
                 !this.state.events && <Loading/>
             }

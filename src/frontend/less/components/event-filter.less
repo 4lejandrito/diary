@@ -1,0 +1,18 @@
+.event-filter {
+    margin-top: 2 * @spacing;
+    ul {
+        padding: 0;
+        margin-bottom: @spacing;
+        li {
+            display: inline-block;
+            img {
+                cursor: pointer;
+                .circle(20px);
+                margin: 0 @spacing / 2;
+                &[disabled="true"] {
+                    opacity: .3;
+                }
+            }
+        }
+    }
+}
