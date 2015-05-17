@@ -6,4 +6,30 @@ a {
     &:hover {
         text-decoration: underline;
     }
+
+    &.preview {
+        &:hover {
+            text-decoration: none;
+            background: lighten(@shy-color, 15%);
+            & strong {
+                text-decoration: underline;
+            }
+        }
+        display: block;
+        padding: @spacing / 2;
+        border-radius: 2px;
+        img {
+            .circle(25px);
+            margin-right: @spacing;
+            float: left;
+        }
+        small {
+            .ellipsis;
+            display: block;
+        }
+        & > small {
+            color: @shy-color;
+            font-weight: normal;
+        }
+    }
 }
