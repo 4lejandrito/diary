@@ -5,12 +5,74 @@ var Gravatar = require('react-gravatar');
 var ghURL = 'https://github.com/';
 
 module.exports = React.createClass({
-    render: function() {
-        var ghEvent = this.props.event.source;
-        if (ghEvent.type !== 'PushEvent') return <div>
-            <i>{ghEvent.type}</i> is not yet supported
+    render_DeleteEvent: function(ghEvent) {
+        return <div>
+            <header>
+                <Icon name="minus"/>{' '}
+                You deleted a {ghEvent.payload.ref_type}
+                {' '}({ghEvent.payload.ref}){' '}
+                on <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
         </div>;
-
+    },
+    render_CreateEvent: function(ghEvent) {
+        return <div>
+            <header>
+                <Icon name="plus"/>{' '}
+                You created a {ghEvent.payload.ref_type}
+                {' '}({ghEvent.payload.ref}){' '}
+                on <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
+        </div>;
+    },
+    render_IssueCommentEvent: function(ghEvent) {
+        var issue = ghEvent.payload.issue;
+        var comment = ghEvent.payload.comment;
+        return <div>
+            <header>
+                <Icon name="comment"/>{' '}
+                You commented the issue <Link href={issue.html_url}>
+                    #{issue.number} {issue.title}
+                </Link> on <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
+            <blockquote>
+                <small>{comment.body}</small>
+            </blockquote>
+        </div>;
+    },
+    render_IssuesEvent: function(ghEvent) {
+        var issue = ghEvent.payload.issue;
+        return <div>
+            <header>
+                <Icon name="comment"/>{' '}
+                You {ghEvent.payload.action} the issue <Link href={issue.html_url}>
+                    #{issue.number} {issue.title}
+                </Link> on <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
+        </div>;
+    },
+    render_MemberEvent: function(ghEvent) {
+        var member = ghEvent.payload.member;
+        return <div>
+            <header>
+                <Icon name="user"/>{' '}
+                You {ghEvent.payload.action} <Link href={member.html_url}>
+                    {member.login}
+                </Link> on <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
+        </div>;
+    },
+    render_PushEvent: function(ghEvent) {
         return <div>
             <header>
                 <Icon name="code"/>{' '}
@@ -29,5 +91,16 @@ module.exports = React.createClass({
                  })}
              </ul>
         </div>;
+    },
+    render: function() {
+        var ghEvent = this.props.event.source;
+        var renderer = this['render_' + ghEvent.type];
+        if (renderer) {
+            return renderer(ghEvent);
+        } else {
+            return <div>
+                <i>{ghEvent.type}</i> is not yet supported
+            </div>;
+        }
     }
 });
