@@ -5,6 +5,35 @@ var Gravatar = require('react-gravatar');
 var ghURL = 'https://github.com/';
 
 module.exports = React.createClass({
+    render_PullRequestEvent: function(ghEvent) {
+        var pullRequest = ghEvent.payload.pull_request;
+        return <div>
+            <header>
+                <Icon name="upload"/>{' '}
+                You {ghEvent.payload.action} the pull request <Link href={pullRequest.html_url}>
+                    #{pullRequest.number} {pullRequest.title}
+                </Link> on <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
+            <blockquote>
+                <small>{pullRequest.body}</small>
+            </blockquote>
+        </div>;
+    },
+    render_ReleaseEvent: function(ghEvent) {
+        var release = ghEvent.payload.release;
+        return <div>
+            <header>
+                <Icon name="upload"/>{' '}
+                You {ghEvent.payload.action} the version{' '}
+                <Link href={release.html_url}>{release.tag_name}</Link>
+                {' '} of <Link href={ghURL + ghEvent.repo.name}>
+                    {ghEvent.repo.name}
+                </Link>
+            </header>
+        </div>;
+    },
     render_DeleteEvent: function(ghEvent) {
         return <div>
             <header>
