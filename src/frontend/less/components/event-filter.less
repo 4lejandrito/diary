@@ -1,17 +1,27 @@
+@bubble-radius: 20px;
+
 .event-filter {
     margin-top: 2 * @spacing;
     ul {
+        min-height: @bubble-radius * 2 + 4px;
         padding: 0;
         margin-bottom: @spacing;
         li {
             display: inline-block;
+            position: relative;
             img {
                 cursor: pointer;
-                .circle(20px);
+                .circle(@bubble-radius);
                 margin: 0 @spacing / 2;
                 &.selected {
                     opacity: .3;
                 }
+            }
+            strong:extend(.badge) {
+                vertical-align: middle;
+                position: absolute;
+                top: -5px;
+                right: 0;
             }
         }
     }

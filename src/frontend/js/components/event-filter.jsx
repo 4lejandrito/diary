@@ -41,6 +41,7 @@ module.exports = React.createClass({
                     _.groupBy(this.state.byText || this.props.events, 'type'),
                     function(events, type) {
                         return <li>
+                            {!filter[type] && <strong>{events.length}</strong>}
                             <ReaderImage onClick={filterType} selected={!!filter[type]} type={type}/>
                         </li>;
                     }
