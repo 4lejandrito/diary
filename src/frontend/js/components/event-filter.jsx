@@ -9,27 +9,28 @@ module.exports = React.createClass({
             filter: {}
         };
     },
+    componentWillReceiveProps: function(nextProps) {
+        if (this.props.events != nextProps.events) {
+            this.setState({byText: nextProps.events}, this.filter);
+        }
+    },
     filterText: function(events) {
         this.setState({byText: events}, this.filter);
     },
     filterType: function(event, type) {
-        var filter = this.state.filter;
-        filter[type] = !filter[type];
+        this.state.filter[type] = !this.state.filter[type];
         this.setState({
-            filter: filter,
-            byType: _.filter(
-                this.props.events,
-                function(e) {
-                    return !filter[e.type];
-                }
-            )
+            filter: this.state.filter
         }, this.filter);
     },
     filter: function() {
+        var filter = this.state.filter;
         this.props.onChange(
             _.intersection(
                 this.state.byText || this.props.events,
-                this.state.byType || this.props.events
+                _.filter(this.props.events, function(e) {
+                    return !filter[e.type];
+                })
             )
         );
     },

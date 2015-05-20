@@ -9,6 +9,12 @@ module.exports = React.createClass({
             filteredList: []
         };
     },
+    componentWillReceiveProps: function(nextProps) {
+        if (nextProps.list !== this.props.list) {
+            this.props = nextProps;
+            this.filter();
+        }
+    },
     toggle: function() {
         this.setState({toggle: !this.state.toggle});
         this.props.onChange(this.props.list);
@@ -29,10 +35,12 @@ module.exports = React.createClass({
             }, this);
         }
     },
-    filter: function(event) {
-        this.props.onChange(_.filter(this.props.list, function(element) {
-            return this.containsTerm(element, event.target.value);
-        }, this));
+    filter: function() {
+        if (this.state.toggle) {
+            this.props.onChange(_.filter(this.props.list, function(element) {
+                return this.containsTerm(element, this.refs.input.getDOMNode().value);
+            }, this));
+        }
     },
     stopPropagation: function(event) {
         event.stopPropagation();
