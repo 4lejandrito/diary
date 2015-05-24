@@ -23,7 +23,9 @@ schema.statics.insert = function(reader, events, cb) {
             type: reader.type,
             user: reader.parent().id,
             reader_id: reader.id
-        }), ok);
+        }), function(err) {
+            ok(!err);
+        });
     }.bind(this), function(inserted) {
         cb(null, inserted);
     });
