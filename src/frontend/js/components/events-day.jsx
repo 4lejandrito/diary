@@ -5,31 +5,9 @@ var ReaderImage = require('components/reader-image');
 var moment = require('moment');
 var Link = require('components/link');
 var Icon = require('components/icon');
-var eventComponents = require('./events/*', {hash: true});
 var Sticky = require('react-sticky');
 var Filter = require('components/event-filter');
-
-var Event = React.createClass({
-    render: function() {
-        var Component = eventComponents[this.props.event.type];
-
-        return <li className="event">
-            <ReaderImage type={this.props.event.type}/>
-            <time>
-                <Icon name="clock-o"/>{' '}
-                {moment(this.props.event.date).format('HH:mm')}
-            </time>
-            <div className="content">
-                {Component ? <Component event={this.props.event}/> : <div>
-                    <header>
-                        {this.props.event.description || this.props.event.type}
-                    </header>
-                    {this.props.event.image ? <img src={this.props.event.image}/> : null}
-                </div>}
-            </div>
-        </li>;
-    }
-});
+var Event = require('components/event');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -87,9 +65,16 @@ module.exports = React.createClass({
             }
             {
                 this.state.events && !!this.state.events.length &&
-                <ol className="events">
+                <ol>
                     {this.state.filteredEvents.map(function(e) {
-                        return <Event event={e}/>;
+                        return <li>
+                            <ReaderImage type={e.type}/>
+                            <time>
+                                <Icon name="clock-o"/>{' '}
+                                {moment(e.date).format('HH:mm')}
+                            </time>
+                            <Event event={e}/>
+                        </li>;
                     })}
                 </ol>
             }

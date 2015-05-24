@@ -1,0 +1,44 @@
+.event {
+    .card(@hover: false);
+    width: 100%;
+    max-width: 100%;
+    text-align: left;
+    margin: @spacing / 2 0;
+
+    div > img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 2px;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        margin-top: @spacing;
+    }
+    iframe {
+        width: 100%;
+        border: none;
+        margin-top: @spacing;
+    }
+    li {
+        img {
+            vertical-align: middle;
+            .circle(9px);
+            padding: 1px;
+            margin-right: @spacing / 2;
+        }
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    header {
+        img {
+            width: auto;
+            height: auto;
+            border: none;
+            background: none;
+            border-radius: 0;
+            box-shadow: none;
+            vertical-align: middle;
+        }
+    }
+}

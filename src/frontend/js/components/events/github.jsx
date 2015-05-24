@@ -7,7 +7,7 @@ var ghURL = 'https://github.com/';
 module.exports = React.createClass({
     render_PullRequestEvent: function(ghEvent) {
         var pullRequest = ghEvent.payload.pull_request;
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="upload"/>{' '}
                 You {ghEvent.payload.action} the pull request <Link href={pullRequest.html_url}>
@@ -23,7 +23,7 @@ module.exports = React.createClass({
     },
     render_ReleaseEvent: function(ghEvent) {
         var release = ghEvent.payload.release;
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="upload"/>{' '}
                 You {ghEvent.payload.action} the version{' '}
@@ -35,7 +35,7 @@ module.exports = React.createClass({
         </div>;
     },
     render_DeleteEvent: function(ghEvent) {
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="minus"/>{' '}
                 You deleted a {ghEvent.payload.ref_type}
@@ -47,7 +47,7 @@ module.exports = React.createClass({
         </div>;
     },
     render_CreateEvent: function(ghEvent) {
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="plus"/>{' '}
                 You created a {ghEvent.payload.ref_type}
@@ -61,7 +61,7 @@ module.exports = React.createClass({
     render_IssueCommentEvent: function(ghEvent) {
         var issue = ghEvent.payload.issue;
         var comment = ghEvent.payload.comment;
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="comment"/>{' '}
                 You commented the issue <Link href={issue.html_url}>
@@ -77,7 +77,7 @@ module.exports = React.createClass({
     },
     render_IssuesEvent: function(ghEvent) {
         var issue = ghEvent.payload.issue;
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="comment"/>{' '}
                 You {ghEvent.payload.action} the issue <Link href={issue.html_url}>
@@ -90,7 +90,7 @@ module.exports = React.createClass({
     },
     render_MemberEvent: function(ghEvent) {
         var member = ghEvent.payload.member;
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="user"/>{' '}
                 You {ghEvent.payload.action} <Link href={member.html_url}>
@@ -102,7 +102,7 @@ module.exports = React.createClass({
         </div>;
     },
     render_PushEvent: function(ghEvent) {
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="code"/>{' '}
                 You pushed to <Link href={ghURL + ghEvent.repo.name}>
@@ -127,7 +127,7 @@ module.exports = React.createClass({
         if (renderer) {
             return renderer(ghEvent);
         } else {
-            return <div>
+            return <div className="event">
                 <i>{ghEvent.type}</i> is not yet supported
             </div>;
         }

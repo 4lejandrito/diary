@@ -5,9 +5,7 @@ var _ = require('underscore');
 
 var response = function(cb) {
     return function(err, res) {
-        setTimeout(function() {
-            cb(err, res && res.body);
-        }, 0);
+        cb(err, res && res.body);
     };
 };
 
@@ -53,8 +51,10 @@ var api = module.exports = extend(true, new EventEmitter2(), {
             if (cb) cb(res.body.authors);
         });
     },
-    events: function(cb) {
-        return rest.get('/api/user/event', response(cb));
+    events: function(q, cb) {
+        return rest.get('/api/user/event').query({
+            q: q
+        }).end(response(cb));
     },
     viewYear: function(year, cb) {
         return rest.get('/api/user/event/' + year).end(response(cb));

@@ -1,23 +1,17 @@
 .events-day {
     padding-bottom: @spacing;
 
-    .nothing {
-        color: darken(@main-color, 20%);
-        font-weight: bold;
-        margin: 2 * @spacing;
-    }
-
     & > a  {
         margin-bottom: @spacing;
     }
 
-    ol.events {
+    & > ol {
         list-style: none;
         padding: 0;
 
         @timelineWidth: 4px;
 
-        .event {
+        & > li {
             color: white;
             position: relative;
             margin: 0 0;
@@ -70,11 +64,7 @@
                     float: none;
                 });
             }
-            .content {
-                .card(@hover: false);
-                width: 100%;
-                max-width: 100%;
-                text-align: left;
+            & > .event {
                 margin: @spacing 0;
                 .bp-m({
                     width: auto;
@@ -84,42 +74,6 @@
                     width: auto;
                     max-width: 70%;
                 });
-                div > img {
-                    display: block;
-                    margin: 0 auto;
-                    border-radius: 2px;
-                    max-width: 100%;
-                    width: 100%;
-                    height: auto;
-                    margin-top: @spacing;
-                }
-                iframe {
-                    width: 100%;
-                    border: none;
-                    margin-top: @spacing;
-                }
-                li {
-                    img {
-                        vertical-align: middle;
-                        .circle(9px);
-                        padding: 1px;
-                        margin-right: @spacing / 2;
-                    }
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-                header {
-                    img {
-                        width: auto;
-                        height: auto;
-                        border: none;
-                        background: none;
-                        border-radius: 0;
-                        box-shadow: none;
-                        vertical-align: middle;
-                    }
-                }
             }
         }
     }

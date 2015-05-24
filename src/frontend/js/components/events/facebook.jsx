@@ -11,7 +11,7 @@ var Person = React.createClass({
 
 module.exports = React.createClass({
     render_link: function(post) {
-        return <div>
+        return <div className="event">
             <header>
                 <img src={post.icon}/> <Person {...post.from}/> shared a link with you:
             </header>
@@ -29,7 +29,7 @@ module.exports = React.createClass({
         if (post.status_type === 'wall_post') {
             content = [<Person {...post.from}/>, ' published on your wall:'];
         }
-        return <div>
+        return <div className="event">
             <header>
                 {content}
             </header>
@@ -39,7 +39,7 @@ module.exports = React.createClass({
         </div>;
     },
     render_photo: function(post) {
-        return <div>
+        return <div className="event">
             <header>
                 <img src={post.icon}/> <Person {...post.from}/> shared a picture with you:
             </header>
@@ -49,7 +49,7 @@ module.exports = React.createClass({
         </div>;
     },
     render_video: function(post) {
-        return <div>
+        return <div className="event">
             <header>
                 <img src={post.icon}/> <Person {...post.from}/> shared a video with you:
             </header>

@@ -4,7 +4,7 @@ var Icon = require('components/icon');
 module.exports = React.createClass({
     render: function() {
         var video = this.props.event.source;
-        return <div>
+        return <div className="event">
             <header>
                 <Icon name="youtube-play"/>{' '}
                 You watched the following video
