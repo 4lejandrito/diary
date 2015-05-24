@@ -7,7 +7,8 @@ var schema = new mongoose.Schema({
 });
 
 schema.plugin(require('passport-local-mongoose'), {
-    usernameField: 'email'
+    usernameField: 'email',
+    usernameLowerCase: true
 });
 
 schema.methods.start = function() {
