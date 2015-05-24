@@ -23,7 +23,11 @@ schema.statics.insert = function(reader, events, cb) {
             type: reader.type,
             user: reader.parent().id,
             reader_id: reader.id
-        }), function(err) {
+        }), function(err, event) {
+            if (!err && event.date > reader.lastEvent) {
+                reader.lastEvent = event.date;
+                reader.parent().save();
+            }
             ok(!err);
         });
     }.bind(this), function(inserted) {

@@ -12,6 +12,7 @@ var availableReaders = fs.readdirSync(config.readers).map(function(file) {
 
 var schema = new mongoose.Schema({
     type: {type: String, required: true},
+    lastEvent: {type: Date, default: 0},
     token: {type: String},
     refreshToken: {type: String},
     settings: {type: Object, default: {}},
