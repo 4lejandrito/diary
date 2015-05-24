@@ -1,6 +1,4 @@
-var rest = require('superagent');
-var Promise = require('promise');
-var async = require('async');
+var Facebook = require('../util/facebook');
 
 module.exports = {
     type: 'facebook',
@@ -17,40 +15,20 @@ module.exports = {
         }
     },
     tick: function(reader) {
-        return new Promise(function (resolve, reject) {
-            var events = [],
-                lastResponse = {},
-                url = 'https://graph.facebook.com/v2.3/me/feed?access_token=' + reader.token +
-                '&since=1&until=' + new Date().getTime();
+        var fb = new Facebook({
+            access_token: reader.token,
+            since: reader.lastEvent / 1000 | 0,
+        });
 
-            async.doWhilst(function(cb) {
-                rest.get(url).end(function(err, res) {
-                    try {
-                        lastResponse = JSON.parse(res.text);
-                        if (lastResponse.data) {
-                            lastResponse.data.map(function(e) {
-                                events.push(e);
-                            });
-                        }
-                    } catch (error) {
-                        return cb(error);
-                    }
-                    cb(err);
-                });
-            }, function() {
-                return (url = lastResponse.paging && lastResponse.paging.next);
-            }, function(err) {
-                if (err) reject(err); else resolve(events);
-            });
-        }).then(function(events) {
-            return events.map(function(e) {
+        return fb.getEdges('me/feed').then(function(posts) {
+            return posts.map(function(p) {
                 return {
-                    date: new Date(e.created_time),
-                    source_id: e.id,
-                    source: e,
-                    image: e.picture,
-                    description: e.message || e.caption || e.description,
-                    url: e.link
+                    date: new Date(p.created_time),
+                    source_id: p.id,
+                    source: p,
+                    image: p.picture,
+                    description: p.message || p.caption || p.description,
+                    url: p.link
                 };
             });
         });

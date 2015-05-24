@@ -96,10 +96,8 @@ describe('facebook', function() {
             }];
 
             it('and resolves when they are all ok', function() {
-                sinon.useFakeTimers();
-
                 api
-                .get('/feed?access_token=test-token&since=1&until=' + new Date().getTime())
+                .get('/feed?access_token=test-token&since=1')
                 .reply(200, JSON.stringify(feed[0]))
                 .get('/feed?page=2')
                 .reply(200, JSON.stringify(feed[1]))
@@ -133,10 +131,8 @@ describe('facebook', function() {
             });
 
             it('and rejects when one of the calls fails', function() {
-                sinon.useFakeTimers();
-
                 api
-                .get('/feed?access_token=test-token&since=1&until=' + new Date().getTime())
+                .get('/feed?access_token=test-token&since=1')
                 .reply(200, JSON.stringify(feed[0]))
                 .get('/feed?page=2')
                 .reply(400, 'horrible');
