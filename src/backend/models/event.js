@@ -16,6 +16,7 @@ var schema = new mongoose.Schema({
 });
 
 schema.index({reader_id: 1, source_id: 1}, {unique: true, sparse: true});
+schema.index({"$**": "text"}, {name: "SearchIndex"});
 
 schema.statics.insert = function(reader, events, cb) {
     async.filter(events, function(event, ok) {

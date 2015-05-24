@@ -4,9 +4,9 @@ var Event = require('../models/event');
 module.exports = {
 
     getEvents: function(req, res) {
-        Event.find({
-            user: req.user.id
-        }, '-user', function(err, events) {
+        Event
+        .find({ user: req.user.id, $text: { $search: req.query.q } })
+        .sort({date : -1}).exec(function(err, events) {
             res.send(events);
         });
     },
