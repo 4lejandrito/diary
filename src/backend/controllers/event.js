@@ -9,6 +9,7 @@ module.exports = {
         var month = parseInt(req.params.month || req.query.month);
         var day = parseInt(req.params.day || req.query.day);
         var start = moment().year(0), end = moment();
+        var pageSize = req.query.pageSize || 100;
 
         if (year) {
             start.year(year).startOf('year');
@@ -27,8 +28,8 @@ module.exports = {
             start: start.toDate(),
             end: end.toDate(),
             q: req.params.q || req.query.q,
-            limit: req.query.pageSize,
-            skip: req.query.page * req.query.pageSize
+            limit: pageSize,
+            skip: req.query.page * pageSize
         };
     },
 
