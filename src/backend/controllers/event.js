@@ -56,7 +56,9 @@ module.exports = {
         }
 
         Event.aggregate([{
-            $match: filter.q ? {$text: {$search: filter.q}} : {}
+            $match: extend({
+                user: req.user.id
+            }, filter.q && {$text: {$search: filter.q}})
         },{
             $project: {
                 date:{
@@ -67,7 +69,6 @@ module.exports = {
             }
         },{
             $match: {
-                user: req.user.id,
                 date: {$gte: filter.start, $lte: filter.end}
             }
         },{
