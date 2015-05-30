@@ -51,10 +51,8 @@ var api = module.exports = extend(true, new EventEmitter2(), {
             if (cb) cb(res.body.authors);
         });
     },
-    events: function(q, cb) {
-        return rest.get('/api/user/event').query({
-            q: q
-        }).end(response(cb));
+    events: function(query, cb) {
+        return rest.get('/api/user/event').query(query).end(response(cb));
     },
     viewYear: function(year, cb) {
         return rest.get('/api/user/event/' + year).end(response(cb));

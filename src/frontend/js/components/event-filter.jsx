@@ -2,6 +2,7 @@ var React = require('react');
 var Search = require('components/search');
 var _ = require('underscore');
 var ReaderImage = require('components/reader-image');
+var api = require('api');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -14,10 +15,10 @@ module.exports = React.createClass({
             this.setState({byText: nextProps.events}, this.filter);
         }
     },
-    filterText: function(events) {
+    onResultsByText: function(events) {
         this.setState({byText: events}, this.filter);
     },
-    filterType: function(event, type) {
+    onTypeFilter: function(event, type) {
         this.state.filter[type] = !this.state.filter[type];
         this.setState({
             filter: this.state.filter
@@ -28,30 +29,49 @@ module.exports = React.createClass({
         this.props.onChange(
             _.intersection(
                 this.state.byText || this.props.events,
-                _.filter(this.props.events, function(e) {
+                _.filter(this.props.events || this.state.byText, function(e) {
                     return !filter[e.type];
                 })
             )
         );
     },
+    fetch: function(text, cb) {
+        return api.events({
+            q: text,
+            year: this.props.year,
+            month: this.props.month
+        }, cb);
+    },
     render: function() {
-        var filter = this.state.filter, filterType = this.filterType;
+        var events = this.state.byText || this.props.events;
+        if (!events && this.props.view) {
+            events = [];
+            this.props.view.map(function(g) {
+                for (var i = 0; i < g.count; i++) {
+                    events.push({type: g._id.type});
+                }
+            });
+        }
         return <div className="event-filter">
             <ul>
-                {_.mapObject(
-                    _.groupBy(this.state.byText || this.props.events, 'type'),
-                    function(events, type) {
-                        return <li>
-                            {!filter[type] && <strong>{events.length}</strong>}
-                            <ReaderImage onClick={filterType} selected={!!filter[type]} type={type}/>
-                        </li>;
-                    }
-                )}
+                {_.sortBy(_.pairs(_.groupBy(events, 'type')), function(pair) {
+                    return -pair[1].length;
+                }).map(function(pair) {
+                    var type = pair[0], events = pair[1];
+                    return <li>
+                        {!this.state.filter[type] && <strong>{events.length}</strong>}
+                        <ReaderImage
+                            onClick={this.onTypeFilter}
+                            selected={!!this.state.filter[type]}
+                            type={type}
+                        />
+                    </li>;
+                }.bind(this))}
             </ul>
             <Search
-                placeholder="Search this timeline"
-                list={this.props.events}
-                onChange={this.filterText}/>
+                placeholder="Search your diary"
+                source={this.props.events || this.fetch}
+                onResults={this.onResultsByText}/>
         </div>;
     }
 });

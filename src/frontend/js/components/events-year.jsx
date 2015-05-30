@@ -82,7 +82,7 @@ module.exports = React.createClass({
                     {moment(day).add(1, 'years').format('gggg')}
                 </Link>
             </Sticky>
-            <EventSearch/>
+            <EventSearch year={day.year()} view={this.state.view}/>
             <Year view={this.state.view} moment={day}/>
         </article>;
     }

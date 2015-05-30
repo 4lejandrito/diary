@@ -26,7 +26,7 @@ module.exports = React.createClass({
                 <h3>Add a new service integration</h3>
             </Sticky>
             {this.state.filteredReaders ? <div>
-                <Search placeholder="Find a service" list={this.state.readers} onChange={this.filter}/>
+                <Search placeholder="Find a service" source={this.state.readers} onResults={this.filter}/>
                 <ul>
                     {
                         this.state.filteredReaders.map(function(reader) {

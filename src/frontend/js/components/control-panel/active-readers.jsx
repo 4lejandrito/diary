@@ -41,7 +41,7 @@ module.exports = React.createClass({
                 <h3>Manage your services</h3>
             </Sticky>
             {this.state.readers ? <div>
-                <Search placeholder="Search your services" list={this.state.readers} onChange={this.filter}/>
+                <Search placeholder="Search your services" source={this.state.readers} onResults={this.filter}/>
                 <Link className="button" to="/services/new"><Icon name="plus"/></Link>
                 <ul>
                     {

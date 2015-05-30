@@ -6,6 +6,7 @@ var moment = require('moment');
 var Link = require('react-router').Link;
 var _ = require('underscore');
 var Sticky = require('react-sticky');
+var EventSearch = require('components/events-search');
 
 var Day = React.createClass({
     render: function() {
@@ -96,6 +97,7 @@ module.exports = React.createClass({
                 </Link>
                 <h3>{day.format('gggg')}</h3>
             </Sticky>
+            <EventSearch year={day.year()} month={day.month()} view={this.state.view}/>
             <Month view={this.state.view} moment={moment(day)}/>
         </article>;
     }

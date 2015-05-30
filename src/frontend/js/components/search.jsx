@@ -1,23 +1,27 @@
 var React = require('react');
 var Icon = require('components/icon');
 var _ = require('underscore');
+var Loading = require('components/loading');
 
 module.exports = React.createClass({
     getInitialState: function() {
         return {
-            toggle: false,
-            filteredList: []
+            toggle: false
         };
     },
     componentWillReceiveProps: function(nextProps) {
-        if (nextProps.list !== this.props.list) {
+        if (nextProps.source !== this.props.source) {
             this.props = nextProps;
             this.filter();
         }
     },
     toggle: function() {
         this.setState({toggle: !this.state.toggle});
-        this.props.onChange(this.props.list);
+        if (_.isArray(this.props.source)) {
+            this.props.onResults(this.props.source);
+        } else {
+            this.props.onResults();
+        }
     },
     onBlur: function() {
         if (!this.refs.input.getDOMNode().value) {
@@ -36,19 +40,38 @@ module.exports = React.createClass({
         }
     },
     filter: function() {
-        if (this.state.toggle) {
-            this.props.onChange(_.filter(this.props.list, function(element) {
-                return this.containsTerm(element, this.refs.input.getDOMNode().value);
-            }, this));
+        if (this.state.toggle && this.props.source) {
+            var value = this.refs.input.getDOMNode().value;
+            if (_.isArray(this.props.source)) {
+                this.props.onResults(_.filter(this.props.source, function(element) {
+                    return this.containsTerm(element, value);
+                }, this));
+            } else if (_.isFunction(this.props.source)) {
+                if (this.state.request) this.state.request.abort();
+                if (!value) return this.props.onResults();
+                this.setState({
+                    loading: true,
+                    request: this.props.source(value, function(err, data) {
+                        this.props.onResults(data);
+                        this.setState({loading: false});
+                    }.bind(this))
+                });
+            }
         }
-    },
-    stopPropagation: function(event) {
-        event.stopPropagation();
     },
     render: function() {
         return <span className="search" data-toggle={this.state.toggle} onClick={this.toggle}>
             <Icon name={this.state.toggle ? 'arrow-left' : 'search'}/>
-            {this.state.toggle && <input ref="input" onBlur={this.onBlur} onClick={this.stopPropagation} autoFocus={true} type="text" placeholder={this.props.placeholder} onChange={this.filter}/>}
+            {this.state.toggle && <input
+                ref="input"
+                onBlur={this.onBlur}
+                onClick={function(e) {e.stopPropagation();}}
+                autoFocus={true}
+                type="text"
+                placeholder={this.props.placeholder}
+                onChange={_.debounce(this.filter, 200)}
+            />}
+            {this.state.loading && <Loading/>}
         </span>;
     }
 });

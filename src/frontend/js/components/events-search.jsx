@@ -1,48 +1,32 @@
 var React = require('react');
-var api = require('api');
-var Loading = require('components/loading');
 var ReaderImage = require('components/reader-image');
 var Event = require('components/event');
 var Icon = require('components/icon');
 var moment = require('moment');
-var _ = require('underscore');
+var Filter = require('components/event-filter');
 
 module.exports = React.createClass({
+
     getInitialState: function() {
-        return {events: []};
+        return {};
     },
-    onChange: function() {
-        this.setState({
-            filter: this.refs.search.getDOMNode().value,
-            loading: true
-        }, this.search);
+    getDefaultProps: function() {
+        return {
+            onEvents: function() {}
+        };
     },
-    search: function() {
-        if (this.state.request) this.state.request.abort();
+    onEvents: function(events) {
         this.setState({
-            request: api.events(this.state.filter, function(err, events) {
-                this.setState({
-                    events: events,
-                    loading: false
-                });
-            }.bind(this))
+            events: events
         });
+        this.props.onEvents(events);
     },
     render: function() {
         return <div className="events">
-            <input
-                ref="search"
-                autoFocus={true}
-                type="text"
-                placeholder='Search babe'
-                onChange={_.debounce(this.onChange, 200)}
+            <Filter {...this.props}
+                onChange={this.onEvents}
             />
-            {this.state.loading && <Loading/>}
-            {
-                !this.state.loading && this.state.events.length === 0 && this.state.filter &&
-                <div className="nothing">No results found</div>
-            }
-            {!this.state.loading && this.state.events.length > 0 &&
+            {this.state.events && this.state.events.length > 0 &&
             <ol>
                 {this.state.events.map(function(e) {
                     return <li>

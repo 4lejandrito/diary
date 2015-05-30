@@ -2,8 +2,13 @@
     .input;
     .button;
 
+    text-align: left;
+
+    &[data-toggle=true] {
+        width: 320px;
+    }
+
     input {
-        width: 80%;
         margin-left: @spacing;
         border: none;
         padding: 0;
@@ -21,5 +26,11 @@
             background: white;
             color: @main-color;
         }
+    }
+
+    .loading {
+        .circle(13px);
+        margin: 0;
+        float: right;
     }
 }

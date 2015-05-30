@@ -59,7 +59,10 @@ module.exports = React.createClass({
                 </Link>
                 <h3>{day.format('MMMM Do gggg')}</h3>
             </Sticky>
-            <Filter events={this.state.events} onChange={this.filter}/>
+            {
+                this.state.events && !!this.state.events.length &&
+                <Filter events={this.state.events} onChange={this.filter}/>
+            }
             {
                 !this.state.events && <Loading/>
             }
