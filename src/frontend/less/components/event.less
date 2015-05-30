@@ -9,15 +9,45 @@
         display: block;
         margin: 0 auto;
         border-radius: 2px;
-        max-width: 100%;
         width: 100%;
         height: auto;
         margin-top: @spacing;
+        object-fit: cover;
+        max-height: 160px;
     }
-    iframe {
-        width: 100%;
-        border: none;
-        margin-top: @spacing;
+    .video {
+        position: relative;
+        .play {
+            position: absolute;
+            top: 4px;
+            bottom: 4px;
+            left: 4px;
+            right: 4px;
+            text-align: center;
+            opacity: .5;
+            background: black;
+            &:hover {
+                background: fadeOut(black, 50%);
+                opacity: 1;
+            }
+            .icon {
+                color: white;
+                margin-top: 10%;
+                font-size: 80px;
+                vertical-align: middle;
+                .bp-m({
+                    font-size: 56px;
+                });
+                .bp-l({
+                    font-size: 80px;
+                });
+            }
+        }
+        iframe {
+            width: 100%;
+            border: none;
+            margin-top: @spacing;
+        }
     }
     li {
         img {

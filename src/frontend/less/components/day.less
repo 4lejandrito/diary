@@ -8,8 +8,13 @@
     & > ol {
         list-style: none;
         padding: 0;
+        margin: 2 * @spacing @spacing;
 
         @timelineWidth: 4px;
+
+        .bp-m({
+            margin: 0;
+        });
 
         & > li {
             color: white;
@@ -42,9 +47,15 @@
                     }
                 }
             });
+
             & > img {
                 .circle(15px);
-                float: left;
+                position: absolute;
+                .bp-s({
+                    left: 0;
+                    top: 0;
+                    z-index: 999;
+                });
                 .bp-m({
                     padding: @timelineWidth;
                     border: none;
@@ -55,20 +66,27 @@
                     top: 42%;
                 });
             }
-            time {
-                .text-m;
-                display: inline-block;
-                float: right;
+
+            & > time {
+                .bp-s({
+                    .badge;
+                    position: absolute;
+                    top: 0;
+                    right: 5px;
+                });
                 .bp-m({
+                    .text-m;
                     display: block;
                     float: none;
                 });
             }
+
             & > .event {
-                margin: @spacing 0;
+                margin: 0;
                 .bp-m({
                     width: auto;
                     max-width: 100%;
+                    margin: @spacing 0;
                 });
                 .bp-l({
                     width: auto;

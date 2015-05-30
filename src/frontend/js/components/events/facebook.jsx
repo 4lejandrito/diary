@@ -1,5 +1,6 @@
 var React = require('react');
 var Link = require('components/link');
+var Icon = require('components/icon');
 
 var Person = React.createClass({
     render: function() {
@@ -53,8 +54,13 @@ module.exports = React.createClass({
             <header>
                 <img src={post.icon}/> <Person {...post.from}/> shared a video with you:
             </header>
-            <small>{post.caption}</small>
-            <iframe src={post.source.replace('autoplay=1', '')}/>
+            <small>{post.name}</small>
+            <div className="video">
+                <img src={post.picture}/>
+                <Link href={post.link} className="play">
+                    <Icon name="youtube-play"/>
+                </Link>
+            </div>
         </div>;
     },
     render: function() {
