@@ -11,15 +11,15 @@ module.exports = {
         var start = moment().year(0), end = moment();
         var pageSize = req.query.pageSize || 100;
 
-        if (year) {
+        if (!isNaN(year)) {
             start.year(year).startOf('year');
             end = moment(start).endOf('year');
         }
-        if (month) {
+        if (!isNaN(month)) {
             start.month(month).startOf('month');
             end = moment(start).endOf('month');
         }
-        if (day) {
+        if (!isNaN(day)) {
             start.date(day).startOf('day');
             end = moment(start).endOf('day');
         }
@@ -51,7 +51,7 @@ module.exports = {
     getEventsView: function(req, res) {
         var filter = module.exports.getFilter(req);
         var _id = {month: {$month: "$date"}};
-        if (parseInt(req.params.month)) {
+        if (!isNaN(parseInt(req.params.month))) {
             _id = {day: {$dayOfMonth: "$date"}};
         }
 
