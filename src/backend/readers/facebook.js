@@ -1,4 +1,5 @@
 var Facebook = require('../util/facebook');
+var parser = require('../parsers/facebook');
 
 module.exports = {
     type: 'facebook',
@@ -26,9 +27,7 @@ module.exports = {
                     date: new Date(p.created_time),
                     source_id: p.id,
                     source: p,
-                    image: p.picture,
-                    description: p.message || p.caption || p.description,
-                    url: p.link
+                    semantics: parser(reader, p)
                 };
             });
         });
