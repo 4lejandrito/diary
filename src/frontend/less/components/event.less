@@ -15,6 +15,10 @@
         object-fit: cover;
         max-height: 160px;
     }
+    .location {
+        margin-top: @spacing / 2;
+        float: right;
+    }
     .video {
         position: relative;
         .play {
@@ -49,16 +53,18 @@
             margin-top: @spacing;
         }
     }
-    li {
+    .commit {
+        padding-left: @spacing / 2;
         img {
             vertical-align: middle;
             .circle(9px);
             padding: 1px;
             margin-right: @spacing / 2;
         }
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        .ellipsis;
+    }
+    ul, li {
+        padding: 0;
     }
     header {
         img {
@@ -69,6 +75,9 @@
             border-radius: 0;
             box-shadow: none;
             vertical-align: middle;
+        }
+        ul, li {
+            display: inline;
         }
     }
 }
