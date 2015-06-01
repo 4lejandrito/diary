@@ -1,5 +1,6 @@
 var Promise = require('promise');
 var google = require('googleapis');
+var parser = require('../parsers/youtube');
 
 module.exports = {
     type: 'youtube',
@@ -47,7 +48,7 @@ module.exports = {
                     source_id: video.id,
                     source: video,
                     date: new Date(video.snippet.publishedAt),
-                    description: video.snippet.title
+                    semantics: parser(reader, video)
                 };
             });
         });
