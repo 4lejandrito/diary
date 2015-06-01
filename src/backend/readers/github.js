@@ -1,5 +1,6 @@
 var github = require('octonode');
 var Promise = require('promise');
+var parser = require('../parsers/github');
 
 module.exports = {
     type: 'github',
@@ -24,7 +25,8 @@ module.exports = {
                     return {
                         date: new Date(event.created_at),
                         source_id: event.id,
-                        source: event
+                        source: event,
+                        semantics: parser(reader, event)
                     };
                 });
             });
