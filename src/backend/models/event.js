@@ -2,6 +2,7 @@ var uuid = require('node-uuid');
 var mongoose = require('mongoose');
 var async = require('async');
 var extend = require('extend');
+var Semantics = require('./semantics');
 
 var schema = new mongoose.Schema({
     type: {type: String, required: true},
@@ -12,11 +13,12 @@ var schema = new mongoose.Schema({
     user: {type: String, required: true},
     reader_id: {type: String, required: true},
     source_id: {type: String, default: uuid.v4},
-    source: {type: Object, default: {}}
+    source: {type: Object, default: {}},
+    semantics: Semantics,
 });
 
 schema.index({reader_id: 1, source_id: 1}, {unique: true, sparse: true});
-schema.index({"$**": "text"}, {name: "SearchIndex"});
+schema.index({"$**": "text"}, {name: "SearchIndex", language_override: "somenonexistingfield"});
 
 schema.statics.insert = function(reader, events, cb) {
     async.filter(events, function(event, ok) {
