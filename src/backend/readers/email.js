@@ -2,6 +2,7 @@ var inbox = require("inbox");
 var Promise = require('promise');
 var extend = require('extend');
 var Event = require('../models/event');
+var parser = require('../parsers/email');
 
 module.exports = {
     type: 'email',
@@ -75,7 +76,8 @@ module.exports = {
                         return {
                             date: email.date,
                             source_id: email.UID,
-                            source: email
+                            source: email,
+                            semantics: parser(reader, email)
                         };
                     }));
                 } else {
