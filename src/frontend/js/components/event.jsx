@@ -3,10 +3,11 @@ var Link = require('components/link');
 var Icon = require('components/icon');
 var Gravatar = require('react-gravatar');
 var _ = require('underscore');
+var pluralize = require('pluralize');
 
 var Person = React.createClass({
     render: function() {
-        var name = this.props.isYou ? 'You' : this.props.name;
+        var name = this.props.isYou ? 'you' : this.props.name;
         return this.props.url ? <Link href={this.props.url}>
             {name}
         </Link> : <span>{name}</span>;
@@ -29,13 +30,17 @@ var WhatType = React.createClass({
 
 var WhatList = React.createClass({
     render: function() {
+        var groups = _.pairs(_.groupBy(this.props.what, 'type'));
+        var pending = groups.length;
         return this.props.what.length > 1 ?
         <ul>
-            {_.pairs(
-                _.countBy(this.props.what, function(w) {return w.type;})
-            ).map(function(pair) {
-                var type = pair[0], count = pair[1];
-                return <li>{count + ' ' + type + 's'}</li>;
+            {groups.map(function(pair) {
+                var type = pair[0], whats = pair[1], el;
+                if (whats.length === 1)
+                    el = <WhatType {...pair[1][0]}/>;
+                else
+                    el = pluralize(type, whats.length, true);
+                return <li>{el}{--pending === 0 ? '' : ' and '}</li>;
             })}
         </ul> : <WhatType {...this.props.what[0]}/>;
     }
@@ -51,9 +56,9 @@ var Complements = React.createClass({
     }
 });
 
-module.exports = React.createClass({
-    getIcon: function(semantics) {
-        switch(semantics.verb) {
+var SemanticIcon = React.createClass({
+    render: function() {
+        switch(this.props.semantics.verb) {
             case 'watched': return <Icon name="youtube-play"/>;
             case 'added': return <Icon name="plus"/>;
             case 'created': return <Icon name="plus"/>;
@@ -62,8 +67,12 @@ module.exports = React.createClass({
             case 'published': return <Icon name="cloud-upload"/>;
             case 'shared': return <Icon name="share-alt"/>;
             case 'sent': return <Icon name="send"/>;
+            default: return <Icon name="lightbulb-o"/>;
         }
-    },
+    }
+});
+
+module.exports = React.createClass({
     render_link: function(link) {
         return <Link href={link.url} className="preview">
             {link.picture && <img src={link.picture}/>}
@@ -123,7 +132,7 @@ module.exports = React.createClass({
         var what = semantics.what;
         return <div className="event">
             <header>
-                {this.getIcon(semantics)}{' '}
+                <SemanticIcon semantics={semantics}/>{' '}
                 <Person {...semantics.who}/>{' '}
                 {semantics.verb}{' '}
                 {semantics.whom && <Person {...semantics.whom}/>}{' '}

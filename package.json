@@ -63,6 +63,7 @@
     "passport-local-mongoose": "^1.0.0",
     "passport-oauth": "^1.0.0",
     "passport-oauth2-refresh": "^0.4.0",
+    "pluralize": "^1.1.2",
     "promise": "^7.0.1",
     "qs": "^3.0.0",
     "react": "0.13.1",
