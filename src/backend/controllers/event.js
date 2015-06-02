@@ -79,5 +79,16 @@ module.exports = {
         }], function(err, data) {
             res.send(data);
         });
+    },
+    newEvent: function(req, res) {
+        Event.create({
+            type: 'me',
+            user: req.user.id,
+            reader_id: 'MASTER',
+            date: new Date(req.body.when),
+            semantics: req.body
+        }, function(err, event) {
+            res.send(err || event);
+        });
     }
 };

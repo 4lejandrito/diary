@@ -1,4 +1,5 @@
 var Reader = require('../models/reader');
+var gravatar = require('gravatar');
 
 module.exports = {
 
@@ -7,7 +8,11 @@ module.exports = {
     },
 
     getPicture: function(req, res) {
-        res.redirect(Reader.forType(req.params.type).image);
+        if (req.params.type === 'diary') {
+            res.redirect(gravatar.url(req.user.email));
+        } else {
+            res.redirect(Reader.forType(req.params.type).image);
+        }
     },
 
     getReaders: function(req, res) {
