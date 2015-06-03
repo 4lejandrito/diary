@@ -6,7 +6,10 @@ var moment = require('moment');
 var Link = require('react-router').Link;
 var _ = require('underscore');
 var Sticky = require('react-sticky');
-var EventSearch = require('components/events-search');
+var EventFilter = require('components/event-filter');
+var Cover = require('components/cover');
+var Icon = require('components/icon');
+var Event = require('components/event');
 
 var Day = React.createClass({
     render: function() {
@@ -64,20 +67,22 @@ var Month = React.createClass({
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {};
+        return {events: []};
     },
     componentWillMount: function() {
-        this.refresh(this.props.year, this.props.month);
+        this.refresh(this.props);
     },
     componentWillReceiveProps: function(nextProps) {
-        this.refresh(nextProps.year, nextProps.month);
+        if (!_.isEqual(nextProps, this.props)) this.refresh(nextProps);
     },
-    refresh: function(year, month) {
+    refresh: function(props) {
         var self = this;
-        api.viewMonth(year, month, function(err, view) {
+        api.viewMonth(props.year, props.month, function(err, view) {
             self.setState({view: view});
         });
-        this.replaceState({});
+    },
+    onEvents: function(events) {
+        this.setState({events: events});
     },
     render: function() {
         var day = moment()
@@ -91,13 +96,26 @@ module.exports = React.createClass({
                 <Link to="month" params={{year: previous.year(), month: previous.month()}}>
                     {moment(day).subtract(1, 'months').format('MMM')}
                 </Link>
-                <h2>{day.format('MMMM')}</h2>
+                <h2>{day.format('MMMM')} {day.format('gggg')}</h2>
                 <Link to="month" params={{year: next.year(), month: next.month()}}>
                     {moment(day).add(1, 'months').format('MMM')}
                 </Link>
-                <h3>{day.format('gggg')}</h3>
+                <Cover year={day.year()} month={day.month()}/>
+                <EventFilter year={day.year()} month={day.month()} view={this.state.view} onChange={this.onEvents}/>
             </Sticky>
-            <EventSearch year={day.year()} month={day.month()} view={this.state.view}/>
+            {this.state.events.length > 0 &&
+            <ol className="events">
+                {this.state.events.map(function(e) {
+                    return <li>
+                        <ReaderImage type={e.type}/>
+                        <Event event={e}/>
+                        <time>
+                            <Icon name="clock-o"/>{' '}
+                            {moment(e.date).format('Do HH:mm')}
+                        </time>
+                    </li>;
+                })}
+            </ol>}
             <Month view={this.state.view} moment={moment(day)}/>
         </article>;
     }

@@ -8,6 +8,7 @@ var Icon = require('components/icon');
 var Sticky = require('react-sticky');
 var Filter = require('components/event-filter');
 var Event = require('components/event');
+var Cover = require('components/cover');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -58,11 +59,12 @@ module.exports = React.createClass({
                     {next.format('ddd')}
                 </Link>
                 <h3>{day.format('MMMM Do gggg')}</h3>
+                <Cover year={day.year()} month={day.month()} day={day.date()}/>
+                {
+                    this.state.events && !!this.state.events.length &&
+                    <Filter events={this.state.events} onChange={this.filter}/>
+                }
             </Sticky>
-            {
-                this.state.events && !!this.state.events.length &&
-                <Filter events={this.state.events} onChange={this.filter}/>
-            }
             {
                 !this.state.events && <Loading/>
             }

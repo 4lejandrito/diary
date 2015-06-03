@@ -1,4 +1,5 @@
 .events {
+
     margin: 2 * @spacing @spacing;
     margin-bottom: 0;
 
@@ -6,47 +7,45 @@
         padding: 0 10%;
     });
 
-    & > ol {
-        padding: 0;
-        padding-top: 2 * @spacing;
+    padding: 0;
+    padding-top: 2 * @spacing;
+
+    .bp-m({
+        -webkit-column-count: 2;
+        -webkit-column-fill: auto;
+        -webkit-column-gap: 0;
+    });
+
+    .bp-l({
+        -webkit-column-count: 3;
+    });
+
+    & > li {
+        position: relative;
+        padding: @spacing;
+        padding-top: @spacing + 2px;
+        margin-bottom: 0;
 
         .bp-m({
-            -webkit-column-count: 2;
-            -webkit-column-fill: auto;
-            -webkit-column-gap: 0;
+            -webkit-column-break-inside: avoid;
         });
 
-        .bp-l({
-            -webkit-column-count: 3;
-        });
+        & > img {
+            .circle(15px);
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
 
-        & > li {
-            position: relative;
-            padding: @spacing;
-            padding-top: @spacing + 2px;
-            margin-bottom: 0;
+        & > time {
+            .badge;
+            position: absolute;
+            top: 0;
+            right: 5px;
+        }
 
-            .bp-m({
-                -webkit-column-break-inside: avoid;
-            });
-
-            & > img {
-                .circle(15px);
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-
-            & > time {
-                .badge;
-                position: absolute;
-                top: 0;
-                right: 5px;
-            }
-
-            .event {
-                margin: 0;
-            }
+        .event {
+            margin: 0;
         }
     }
 

@@ -6,7 +6,10 @@ var moment = require('moment');
 var Link = require('react-router').Link;
 var _ = require('underscore');
 var Sticky = require('react-sticky');
-var EventSearch = require('components/events-search');
+var EventFilter = require('components/event-filter');
+var Cover = require('components/cover');
+var Icon = require('components/icon');
+var Event = require('components/event');
 
 var Month = React.createClass({
     render: function() {
@@ -54,18 +57,23 @@ var Year = React.createClass({
 });
 
 module.exports = React.createClass({
+    getInitialState: function() {
+        return {events: []};
+    },
     componentWillMount: function() {
         this.refresh(this.props.year);
     },
     componentWillReceiveProps: function(nextProps) {
-        this.refresh(nextProps.year);
+        if (nextProps.year !== this.props.year) this.refresh(nextProps.year);
     },
     refresh: function(year) {
         var self = this;
         api.viewYear(year || moment().year(), function(err, view) {
             self.setState({view: view});
         });
-        this.replaceState({});
+    },
+    onEvents: function(events) {
+        this.setState({events: events});
     },
     render: function() {
         var day = moment().year(this.props.year || moment().year());
@@ -81,8 +89,22 @@ module.exports = React.createClass({
                 <Link to="year" params={{year: day.year() + 1}}>
                     {moment(day).add(1, 'years').format('gggg')}
                 </Link>
+                <Cover year={day.year()}/>
+                <EventFilter year={day.year()} view={this.state.view} onChange={this.onEvents}/>
             </Sticky>
-            <EventSearch year={day.year()} view={this.state.view}/>
+            {this.state.events.length > 0 &&
+            <ol className="events">
+                {this.state.events.map(function(e) {
+                    return <li>
+                        <ReaderImage type={e.type}/>
+                        <Event event={e}/>
+                        <time>
+                            <Icon name="clock-o"/>{' '}
+                            {moment(e.date).format('MMMM Do gggg HH:mm')}
+                        </time>
+                    </li>;
+                })}
+            </ol>}
             <Year view={this.state.view} moment={day}/>
         </article>;
     }

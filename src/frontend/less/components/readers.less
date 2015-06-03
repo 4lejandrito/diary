@@ -1,12 +1,11 @@
 .active-readers, .available-readers {
 
     & > header {
-        margin-bottom: @grid-spacing;
-    }
-
-    .search, .button, button {
-        display: inline-block;
-        margin: 0 @spacing / 2;
+        & > .search, & > .button, button {
+            display: inline-block;
+            margin: 0 @spacing / 2 !important;
+            margin-top: 2 * @spacing !important;
+        }
     }
 
     text-align: center;
