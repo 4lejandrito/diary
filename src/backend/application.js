@@ -41,6 +41,7 @@ app.get   ('/api/user/event'                  , controllers.event.getEvents);
 app.post  ('/api/user/event'                  , controllers.event.newEvent);
 app.get   ('/api/user/event/:year/:month?'    , controllers.event.getEventsView);
 app.get   ('/api/user/event/:year/:month/:day', controllers.event.getEvents);
+app.get   ('/api/user/semantics/:year?/:month?/:day?', controllers.event.getOverview);
 app.get   ('/api/reader'                      , controllers.reader.getAvailable);
 app.get   ('/api/reader/:type/picture'        , controllers.reader.getPicture);
 

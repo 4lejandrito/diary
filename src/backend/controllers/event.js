@@ -86,6 +86,49 @@ module.exports = {
             res.send(data);
         });
     },
+    getOverview: function(req, res) {
+        var filter = module.exports.getFilter(req);
+
+        Event.aggregate([{
+            $match: extend({
+                user: req.user.id,
+                'semantics.who.isYou': true
+            }, filter.q && {$text: {$search: filter.q}})
+        },{
+            $project: {
+                date:{
+                    $add: ["$date", moment().utcOffset() * 60 * 1000]
+                },
+                semantics: 1
+            }
+        },{
+            $match: {
+                date: {$gte: filter.start, $lte: filter.end}
+            }
+        },{
+            $unwind: '$semantics.what'
+        },{
+            $group: {
+                _id: {
+                    verb: '$semantics.verb',
+                    type: '$semantics.what.type'
+                },
+                times: {$sum: 1}
+            }
+        },{
+            $group : {
+                _id :  "$_id.verb",
+                what: {
+                    $push: {
+                        type: "$_id.type",
+                        times: "$times"
+                    }
+                }
+            }
+        }], function(err, data) {
+            res.send(err || data);
+        });
+    },
     newEvent: function(req, res) {
         Event.create({
             type: 'me',
