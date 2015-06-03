@@ -7,8 +7,8 @@ module.exports = function(reader, email) {
             title: email.title
         }],
         who: {
-            name: email.from.name,
-            url: 'mailto:' + email.from.address
+            name: email.from ? email.from.name : 'Unknown',
+            url: email.from && 'mailto:' + email.from.address
         },
         whom: {
             name: reader.settings.address,
