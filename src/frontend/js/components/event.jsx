@@ -56,22 +56,6 @@ var Complements = React.createClass({
     }
 });
 
-var SemanticIcon = React.createClass({
-    render: function() {
-        switch(this.props.semantics.verb) {
-            case 'watched': return <Icon name="youtube-play"/>;
-            case 'added': return <Icon name="plus"/>;
-            case 'created': return <Icon name="plus"/>;
-            case 'deleted': return <Icon name="minus"/>;
-            case 'pushed': return <Icon name="upload"/>;
-            case 'published': return <Icon name="cloud-upload"/>;
-            case 'shared': return <Icon name="share-alt"/>;
-            case 'sent': return <Icon name="send"/>;
-            default: return <Icon name="lightbulb-o"/>;
-        }
-    }
-});
-
 module.exports = React.createClass({
     render_link: function(link) {
         return <Link href={link.url} className="preview">
@@ -132,7 +116,7 @@ module.exports = React.createClass({
         var what = semantics.what;
         return <div className="event">
             <header>
-                <SemanticIcon semantics={semantics}/>{' '}
+                <Icon verb={semantics.verb}/>{' '}
                 <Person {...semantics.who}/>{' '}
                 {semantics.verb}{' '}
                 {semantics.whom && <Person {...semantics.whom}/>}{' '}

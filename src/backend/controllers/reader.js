@@ -8,7 +8,7 @@ module.exports = {
     },
 
     getPicture: function(req, res) {
-        if (req.params.type === 'diary') {
+        if (req.params.type === 'me') {
             res.redirect(gravatar.url(req.user.email));
         } else {
             res.redirect(Reader.forType(req.params.type).image);

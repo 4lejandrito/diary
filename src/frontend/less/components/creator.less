@@ -1,0 +1,33 @@
+.event-creator {
+    margin: 2 * @spacing;
+    margin-bottom: 0;
+}
+
+div.event-creator {
+    display: inline-block;
+    border: solid 4px white;
+    border-radius: 2px;
+    padding: @spacing 2 * @spacing;
+    text-align: center;
+    form > header {
+        .text-s;
+        margin-bottom: @spacing / 2;
+    }
+    .event {
+        display: block;
+        margin: @spacing auto;
+        margin-bottom: @spacing / 2;
+    }
+    input {
+        margin: @spacing / 2;
+    }
+    button:extend(.small) {
+        margin: @spacing / 2;
+        margin-top: @spacing;
+    }
+    .what {
+        input.article {
+            width: 70px;
+        }
+    }
+}

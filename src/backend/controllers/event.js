@@ -130,13 +130,12 @@ module.exports = {
         });
     },
     newEvent: function(req, res) {
-        Event.create({
+        Event.create(extend(req.body, {
             type: 'me',
             user: req.user.id,
             reader_id: 'MASTER',
-            date: new Date(req.body.when),
-            semantics: req.body
-        }, function(err, event) {
+            date: new Date(req.body.semantics.when)
+        }), function(err, event) {
             res.send(err || event);
         });
     }
