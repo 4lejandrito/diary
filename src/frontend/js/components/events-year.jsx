@@ -79,7 +79,7 @@ module.exports = React.createClass({
         var day = moment().year(this.props.year || moment().year());
 
         return <article className="events-year">
-            <Sticky type={React.DOM.header}>
+            <Sticky type={React.DOM.header} stickyOffset={100}>
                 <Link to="year" params={{year: day.year() - 1}}>
                     {moment(day).subtract(1, 'years').format('gggg')}
                 </Link>

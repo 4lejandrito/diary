@@ -92,7 +92,7 @@ module.exports = React.createClass({
         var next = moment(day).add(1, 'months');
 
         return <article className="events-month">
-            <Sticky type={React.DOM.header}>
+            <Sticky type={React.DOM.header} stickyOffset={100}>
                 <Link to="month" params={{year: previous.year(), month: previous.month()}}>
                     {moment(day).subtract(1, 'months').format('MMM')}
                 </Link>
