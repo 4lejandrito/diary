@@ -2,11 +2,9 @@ var React = require('react');
 var api = require('api');
 var Content = require('components/content');
 var Loading = require('components/loading');
-var Icon = require('components/icon');
 var Gravatar = require('react-gravatar');
 var RouteHandler = require('react-router').RouteHandler;
 var Link = require('react-router').Link;
-var Author = require('components/author');
 var Logo = require('components/logo');
 var Login = require('components/login');
 
@@ -55,18 +53,6 @@ module.exports = React.createClass({
                 {this.state.user && <RouteHandler {...this.props.params}/>}
                 {!this.state.user && !this.state.loading && <Login onLogin={this.login}/>}
             </Content>
-            <footer>
-                <div>
-                    <Icon name="code"/> on <a href="http://github.com/4lejandrito/diary" target="_blank">
-                        <Icon name="github-alt"/>
-                    </a> by
-                </div>
-                {
-                    this.state.authors.map(function(author) {
-                        return <Author data={author}/>;
-                    })
-                }
-            </footer>
         </div>;
     }
 });
