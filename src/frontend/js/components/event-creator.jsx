@@ -20,7 +20,7 @@ module.exports = React.createClass({
                     },
                     what: [],
                     complements: [],
-                    when: Date.now()
+                    when: this.props.day || Date.now()
                 }
             }
         };
