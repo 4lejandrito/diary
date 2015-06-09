@@ -52,21 +52,23 @@ module.exports = React.createClass({
                 }
             });
         }
+        var filter = _.sortBy(_.pairs(_.groupBy(events, 'type')), function(pair) {
+            return -pair[1].length;
+        }).map(function(pair) {
+            var type = pair[0], events = pair[1];
+            return <li>
+                {!this.state.filter[type] && <strong>{events.length}</strong>}
+                <ReaderImage
+                    onClick={this.onTypeFilter}
+                    selected={!!this.state.filter[type]}
+                    type={type}
+                />
+            </li>;
+        }.bind(this));
+
         return <div className="event-filter">
             <ul>
-                {_.sortBy(_.pairs(_.groupBy(events, 'type')), function(pair) {
-                    return -pair[1].length;
-                }).map(function(pair) {
-                    var type = pair[0], events = pair[1];
-                    return <li>
-                        {!this.state.filter[type] && <strong>{events.length}</strong>}
-                        <ReaderImage
-                            onClick={this.onTypeFilter}
-                            selected={!!this.state.filter[type]}
-                            type={type}
-                        />
-                    </li>;
-                }.bind(this))}
+                {filter.length ? filter : <strong>No results</strong>}
             </ul>
             <Search
                 placeholder="Search your diary"

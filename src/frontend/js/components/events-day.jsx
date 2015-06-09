@@ -94,12 +94,6 @@ module.exports = React.createClass({
             }
             {
                 this.state.events &&
-                !!this.state.events.length &&
-                !this.state.filteredEvents.length &&
-                <div className="nothing">No results found</div>
-            }
-            {
-                this.state.events &&
                 <Link className="button" to="day" params={{
                     year: next.year(),
                     month: next.month(),

@@ -5,7 +5,12 @@
     ul {
         min-height: @bubble-radius * 2 + 4px;
         padding: 0;
-        li {
+        display: flex;
+        justify-content: center;
+        & > strong {
+            margin: auto;
+        }
+        & > li {
             display: inline-block;
             position: relative;
             img {
