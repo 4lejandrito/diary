@@ -43,7 +43,9 @@ module.exports = {
                 maxResults: 50
             });
         }).then(function(data) {
-            return data.items.map(function(video) {
+            return data.items.filter(function(video) {
+                return video.snippet.thumbnails;
+            }).map(function(video) {
                 return {
                     source_id: video.id,
                     source: video,
