@@ -3,13 +3,13 @@
     margin-bottom: 0;
 }
 
-div.event-creator {
+form.event-creator {
     display: inline-block;
     border: solid 4px white;
     border-radius: 2px;
     padding: @spacing 2 * @spacing;
     text-align: center;
-    form > header {
+    header {
         .text-s;
         margin-bottom: @spacing / 2;
     }
@@ -21,13 +21,57 @@ div.event-creator {
     input {
         margin: @spacing / 2;
     }
-    button:extend(.small) {
+    label {
+        display: inline-block;
+        margin: @spacing / 2 @spacing @spacing @spacing;
+        font-size: 1em;
+        [type="radio"]:checked + i {
+            color: @main-color;
+            background: white;
+        }
+        [type="radio"]:disabled + i {
+            opacity: .5;
+        }
+        [type="radio"]:enabled + i {
+            cursor: pointer;
+        }
+        i {
+            border: solid 3px white;
+            border-radius: 50%;
+            padding-top: 5px;
+            width: 32px;
+            height: 32px;
+        }
+        input[type="radio"] {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px; margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+        }
+    }
+    button:extend(.small all) {
         margin: @spacing / 2;
         margin-top: @spacing;
     }
     .what {
         input.article {
             width: 70px;
+        }
+    }
+    .where .location {
+        position: relative;
+        display: inline-block;
+        input {
+            padding-right: 44px;
+        }
+        button {
+            .inverse;
+            right: 5px;
+            top: -1px;
+            position: absolute;
         }
     }
 }
