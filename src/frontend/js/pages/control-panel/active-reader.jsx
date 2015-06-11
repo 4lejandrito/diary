@@ -1,7 +1,7 @@
 var React = require('react');
 var api = require('api');
-var Icon = require('components/icon');
-var Link = require('components/link');
+var Icon = require('components/ui/icon');
+var Link = require('components/ui/link');
 var Gravatar = require('react-gravatar');
 
 module.exports = React.createClass({

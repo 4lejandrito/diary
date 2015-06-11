@@ -1,6 +1,6 @@
 var React = require('react');
-var Icon = require('components/icon');
-var Loading = require('components/loading');
+var Icon = require('components/ui/icon');
+var Loading = require('components/ui/loading');
 
 module.exports = React.createClass({
     render: function() {

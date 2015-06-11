@@ -1,15 +1,15 @@
 var React = require('react');
 var api = require('api');
-var Loading = require('components/loading');
+var Loading = require('components/ui/loading');
 var ReaderImage = require('components/reader-image');
 var moment = require('moment');
 var Link = require('react-router').Link;
 var _ = require('underscore');
 var Sticky = require('react-sticky');
-var EventFilter = require('components/event-filter');
+var EventFilter = require('components/events/filter');
 var Cover = require('components/cover');
-var Icon = require('components/icon');
-var Event = require('components/event');
+var Icon = require('components/ui/icon');
+var Event = require('components/events/event');
 
 var Day = React.createClass({
     render: function() {

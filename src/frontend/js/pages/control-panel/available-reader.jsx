@@ -1,5 +1,5 @@
 var React = require('react');
-var Link = require('components/link');
+var Link = require('components/ui/link');
 
 module.exports = React.createClass({
     render: function() {

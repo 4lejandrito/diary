@@ -1,15 +1,15 @@
 var React = require('react');
 var api = require('api');
-var Loading = require('components/loading');
+var Loading = require('components/ui/loading');
 var ReaderImage = require('components/reader-image');
 var moment = require('moment');
-var Link = require('components/link');
-var Icon = require('components/icon');
+var Link = require('components/ui/link');
+var Icon = require('components/ui/icon');
 var Sticky = require('react-sticky');
-var Filter = require('components/event-filter');
-var Event = require('components/event');
+var Filter = require('components/events/filter');
+var Event = require('components/events/event');
 var Cover = require('components/cover');
-var Creator = require('components/event-creator');
+var Creator = require('components/events/creator');
 
 module.exports = React.createClass({
     getInitialState: function() {

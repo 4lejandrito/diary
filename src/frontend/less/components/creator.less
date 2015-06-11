@@ -4,11 +4,13 @@
 }
 
 form.event-creator {
-    display: inline-block;
     border: solid 4px white;
     border-radius: 2px;
     padding: @spacing 2 * @spacing;
     text-align: center;
+    .bp-m({
+        display: inline-block;
+    });
     header {
         .text-s;
         margin-bottom: @spacing / 2;

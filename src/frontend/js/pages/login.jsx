@@ -1,8 +1,8 @@
 var React = require('react');
 var api = require('api');
 var Sticky = require('react-sticky');
-var Icon = require('components/icon');
-var Button = require('components/button');
+var Icon = require('components/ui/icon');
+var Button = require('components/ui/button');
 
 var Error = React.createClass({
     render: function() {

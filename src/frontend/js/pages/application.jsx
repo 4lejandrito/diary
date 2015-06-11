@@ -1,12 +1,12 @@
 var React = require('react');
 var api = require('api');
 var Content = require('components/content');
-var Loading = require('components/loading');
+var Loading = require('components/ui/loading');
 var Gravatar = require('react-gravatar');
 var RouteHandler = require('react-router').RouteHandler;
 var Link = require('react-router').Link;
-var Logo = require('components/logo');
-var Login = require('components/login');
+var Logo = require('components/ui/logo');
+var Login = require('pages/login');
 
 module.exports = React.createClass({
     getInitialState: function() {
