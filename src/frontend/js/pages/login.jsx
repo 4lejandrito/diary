@@ -3,6 +3,8 @@ var api = require('api');
 var Sticky = require('react-sticky');
 var Icon = require('components/ui/icon');
 var Button = require('components/ui/button');
+var Cover = require('components/cover');
+var Content = require('components/ui/content');
 
 var Error = React.createClass({
     render: function() {
@@ -54,15 +56,18 @@ module.exports = React.createClass({
                     Login
                 </h2>
                 <h3>Access your diary</h3>
+                <Cover/>
             </Sticky>
-            <form onSubmit={this.login}>
-                {this.state.error && <Error error="Invalid credentials"/>}
-                <Input autoFocus placeholder="Username" icon="user" ref="username" type="email"/>
-                <Input placeholder="Password" icon="key" ref="password" type="password"/>
-                <Button onClick={this.login} icon="sign-in" loading={this.state.loading}>
-                    Login
-                </Button>
-            </form>
+            <Content>
+                <form onSubmit={this.login}>
+                    {this.state.error && <Error error="Invalid credentials"/>}
+                    <Input autoFocus placeholder="Username" icon="user" ref="username" type="email"/>
+                    <Input placeholder="Password" icon="key" ref="password" type="password"/>
+                    <Button onClick={this.login} icon="sign-in" loading={this.state.loading}>
+                        Login
+                    </Button>
+                </form>
+            </Content>
         </article>;
     }
 });

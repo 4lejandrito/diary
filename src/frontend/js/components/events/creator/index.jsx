@@ -104,7 +104,7 @@ module.exports = React.createClass({
         if (this.state.toggle) {
             var steps = this.steps(), step = steps[this.state.step];
             return <Form className="event-creator" onSubmit={this.nextStep}>
-                <div>
+                <header>
                     {steps.map(function(step, i) {
                         return <label>
                             <input
@@ -115,7 +115,7 @@ module.exports = React.createClass({
                             {step.icon}
                         </label>;
                     }.bind(this))}
-                </div>
+                </header>
                 {step.component}
                 {this.state.step < steps.length - 1 &&
                 <button type="button" disabled={this.state.step === 0} onClick={this.previousStep}>

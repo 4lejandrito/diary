@@ -5,6 +5,7 @@ var Loading = require('components/ui/loading');
 var Search = require('components/search');
 var Sticky = require('react-sticky');
 var Cover = require('components/cover');
+var Content = require('components/ui/content');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -28,15 +29,17 @@ module.exports = React.createClass({
                 <Cover/>
                 <Search placeholder="Find a service" source={this.state.readers} onResults={this.filter}/>
             </Sticky>
-            {this.state.filteredReaders ? <div>
-                <ul>
-                    {
-                        this.state.filteredReaders.map(function(reader) {
-                            return <AvailableReader reader={reader}/>;
-                        })
-                    }
-                </ul>
-            </div> : <Loading/>}
+            <Content>
+                {this.state.filteredReaders ? <div>
+                    <ul>
+                        {
+                            this.state.filteredReaders.map(function(reader) {
+                                return <AvailableReader reader={reader}/>;
+                            })
+                        }
+                    </ul>
+                </div> : <Loading/>}
+            </Content>
         </article>;
     }
 });

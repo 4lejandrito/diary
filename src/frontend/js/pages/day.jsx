@@ -10,6 +10,7 @@ var Filter = require('components/events/filter');
 var Event = require('components/events/event');
 var Cover = require('components/cover');
 var Creator = require('components/events/creator');
+var Content = require('components/ui/content');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -66,42 +67,43 @@ module.exports = React.createClass({
                     <Filter events={this.state.events} onChange={this.filter}/>
                 }
             </Sticky>
+            <Content>
+                <Creator day={day} onEvent={this.componentWillMount.bind(this)}/>
 
-            <Creator day={day} onEvent={this.componentWillMount.bind(this)}/>
-
-            {
-                !this.state.events && <Loading/>
-            }
-            {
-                this.state.events && !!this.state.events.length &&
-                <ol>
-                    {this.state.filteredEvents.map(function(e) {
-                        return <li>
-                            <ReaderImage type={e.type}/>
-                            <time>
-                                <Icon name="clock-o"/>{' '}
-                                {moment(e.date).format('HH:mm')}
-                            </time>
-                            <Event event={e}/>
-                        </li>;
-                    })}
-                </ol>
-            }
-            {
-                this.state.events &&
-                !this.state.events.length &&
-                <div className="nothing">No data</div>
-            }
-            {
-                this.state.events &&
-                <Link className="button" to="day" params={{
-                    year: next.year(),
-                    month: next.month(),
-                    day: next.date()
-                }}>
-                    {next.format('dddd')}  <Icon name="forward"/>
-                </Link>
-            }
+                {
+                    !this.state.events && <Loading/>
+                }
+                {
+                    this.state.events && !!this.state.events.length &&
+                    <ol>
+                        {this.state.filteredEvents.map(function(e) {
+                            return <li>
+                                <ReaderImage type={e.type}/>
+                                <time>
+                                    <Icon name="clock-o"/>{' '}
+                                    {moment(e.date).format('HH:mm')}
+                                </time>
+                                <Event event={e}/>
+                            </li>;
+                        })}
+                    </ol>
+                }
+                {
+                    this.state.events &&
+                    !this.state.events.length &&
+                    <div className="nothing">No data</div>
+                }
+                {
+                    this.state.events &&
+                    <Link className="button" to="day" params={{
+                        year: next.year(),
+                        month: next.month(),
+                        day: next.date()
+                    }}>
+                        {next.format('dddd')}  <Icon name="forward"/>
+                    </Link>
+                }
+            </Content>
         </article>;
     }
 });

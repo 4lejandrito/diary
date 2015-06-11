@@ -32,11 +32,13 @@ button, .button {
 
 .inverse {
     color: @main-color;
-    border-color: @main-color;
+    border-color: @main-color !important;
     background: white;
-    &:hover, &:active, &:focus, &[data-toggle='true'] {
-        color: white;
-        background: @main-color;
+    &:not(:disabled) {
+        &:hover, &:active, &:focus, &[data-toggle='true'] {
+            color: white;
+            background: @main-color;
+        }
     }
 
     &.danger {

@@ -1,6 +1,6 @@
 var React = require('react');
 var api = require('api');
-var Content = require('components/content');
+var Content = require('components/ui/content');
 var Loading = require('components/ui/loading');
 var Gravatar = require('react-gravatar');
 var RouteHandler = require('react-router').RouteHandler;
@@ -10,7 +10,7 @@ var Login = require('pages/login');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {authors: [], loading: true};
+        return {loading: true};
     },
     componentWillMount: function() {
         var self = this;
@@ -18,11 +18,6 @@ module.exports = React.createClass({
             self.setState({
                 user: user,
                 loading: false
-            });
-        });
-        api.authors(function(authors) {
-            self.setState({
-                authors: authors
             });
         });
     },

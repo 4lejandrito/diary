@@ -10,6 +10,7 @@ var EventFilter = require('components/events/filter');
 var Cover = require('components/cover');
 var Icon = require('components/ui/icon');
 var Event = require('components/events/event');
+var Content = require('components/ui/content');
 
 var Month = React.createClass({
     render: function() {
@@ -92,20 +93,22 @@ module.exports = React.createClass({
                 <Cover year={day.year()}/>
                 <EventFilter year={day.year()} view={this.state.view} onChange={this.onEvents}/>
             </Sticky>
-            {this.state.events.length > 0 &&
-            <ol className="events">
-                {this.state.events.map(function(e) {
-                    return <li>
-                        <ReaderImage type={e.type}/>
-                        <Event event={e}/>
-                        <time>
-                            <Icon name="clock-o"/>{' '}
-                            {moment(e.date).format('MMMM Do gggg HH:mm')}
-                        </time>
-                    </li>;
-                })}
-            </ol>}
-            <Year view={this.state.view} moment={day}/>
+            <Content>
+                {this.state.events.length > 0 &&
+                <ol className="events">
+                    {this.state.events.map(function(e) {
+                        return <li>
+                            <ReaderImage type={e.type}/>
+                            <Event event={e}/>
+                            <time>
+                                <Icon name="clock-o"/>{' '}
+                                {moment(e.date).format('MMMM Do gggg HH:mm')}
+                            </time>
+                        </li>;
+                    })}
+                </ol>}
+                <Year view={this.state.view} moment={day}/>
+            </Content>
         </article>;
     }
 });

@@ -8,6 +8,7 @@ var Link = require('react-router').Link;
 var Search = require('components/search');
 var Sticky = require('react-sticky');
 var Cover = require('components/cover');
+var Content = require('components/ui/content');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -44,15 +45,17 @@ module.exports = React.createClass({
                 <Search placeholder="Search your services" source={this.state.readers} onResults={this.filter}/>
                 <Link className="button" to="/services/new"><Icon name="plus"/></Link>
             </Sticky>
-            {this.state.readers ? <div>
-                <ul>
-                    {
-                        this.state.filteredReaders.map(function(reader) {
-                            return <ActiveReader reader={reader}/>;
-                        })
-                    }
-                </ul>
-            </div> : <Loading/>}
+            <Content>
+                {this.state.readers ? <div>
+                    <ul>
+                        {
+                            this.state.filteredReaders.map(function(reader) {
+                                return <ActiveReader reader={reader}/>;
+                            })
+                        }
+                    </ul>
+                </div> : <Loading/>}
+            </Content>
         </article>;
     }
 });

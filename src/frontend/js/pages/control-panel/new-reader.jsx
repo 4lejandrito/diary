@@ -5,6 +5,7 @@ var Icon = require('components/ui/icon');
 var _ = require('underscore');
 var ReaderImage = require('components/reader-image');
 var Sticky = require('react-sticky');
+var Content = require('components/ui/content');
 
 module.exports = React.createClass({
     contextTypes: {
@@ -50,22 +51,24 @@ module.exports = React.createClass({
                 <h2>{this.state.reader ? this.state.reader.type : '...'}</h2>
                 <h3>{this.state.reader ? this.state.reader.description : '...'}</h3>
             </Sticky>
-            {this.state.reader && <ReaderImage type={this.state.reader.type}/>}
-            {
-                this.state.reader &&
-                _.mapObject(this.state.reader.schema, function(val, key) {
-                    if (key != 'oauth2') {
-                        return <div className="param">
-                            <label>{val.description}</label>
-                            <input type={val.type} ref={key} placeholder={val.example}/>
-                        </div>;
-                    }
-                })
-            }
-            {this.state.reader &&
-                <button onClick={this.addReader}><Icon name="plus"/> Add</button>
-            }
-            {!this.state.reader && <Loading/>}
+            <Content>
+                {this.state.reader && <ReaderImage type={this.state.reader.type}/>}
+                {
+                    this.state.reader &&
+                    _.mapObject(this.state.reader.schema, function(val, key) {
+                        if (key != 'oauth2') {
+                            return <div className="param">
+                                <label>{val.description}</label>
+                                <input type={val.type} ref={key} placeholder={val.example}/>
+                            </div>;
+                        }
+                    })
+                }
+                {this.state.reader &&
+                    <button onClick={this.addReader}><Icon name="plus"/> Add</button>
+                }
+                {!this.state.reader && <Loading/>}
+            </Content>
         </article>;
     }
 });

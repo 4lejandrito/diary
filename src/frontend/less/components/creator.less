@@ -1,6 +1,5 @@
-.event-creator {
-    margin: 2 * @spacing;
-    margin-bottom: 0;
+button.event-creator {
+    margin-top: @spacing;
 }
 
 form.event-creator {
@@ -8,10 +7,13 @@ form.event-creator {
     border-radius: 2px;
     padding: @spacing 2 * @spacing;
     text-align: center;
+    margin: 2 * @spacing @spacing;
     .bp-m({
         display: inline-block;
+        margin: @spacing;
+        margin-bottom: 0;
     });
-    header {
+    & > div > header {
         .text-s;
         margin-bottom: @spacing / 2;
     }
