@@ -122,6 +122,10 @@ module.exports = React.createClass({
                     <Icon name="chevron-left"/> Back
                 </button>}
                 {this.state.step < steps.length - 1 &&
+                <button type="button" onClick={this.close}>
+                    <Icon name="times"/> Cancel
+                </button>}
+                {this.state.step < steps.length - 1 &&
                 <button type="submit" disabled={!step.completed}>
                     Next <Icon name="chevron-right"/>
                 </button>}
