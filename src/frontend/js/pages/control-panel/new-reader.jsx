@@ -6,6 +6,7 @@ var _ = require('underscore');
 var ReaderImage = require('components/reader-image');
 var Sticky = require('react-sticky');
 var Content = require('components/ui/content');
+var Cover = require('components/cover');
 
 module.exports = React.createClass({
     contextTypes: {
@@ -50,6 +51,7 @@ module.exports = React.createClass({
             <Sticky type={React.DOM.header}>
                 <h2>{this.state.reader ? this.state.reader.type : '...'}</h2>
                 <h3>{this.state.reader ? this.state.reader.description : '...'}</h3>
+                <Cover/>
             </Sticky>
             <Content>
                 {this.state.reader && <ReaderImage type={this.state.reader.type}/>}
