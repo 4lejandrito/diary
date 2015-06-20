@@ -8,6 +8,7 @@ var What = require('./what');
 var When = require('./when');
 var Where = require('./where');
 var Preview = require('./preview');
+var Text = require('./text');
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -89,6 +90,12 @@ module.exports = React.createClass({
         steps.push(previous = {
             component: <Where onChange={this.onChange} {...semantics}/>,
             icon: <Icon name="map-marker"/>,
+            enabled: previous.completed && previous.enabled,
+            completed: semantics.where && semantics.where.name
+        });
+        steps.push(previous = {
+            component: <Text onChange={this.onChange} {...semantics}/>,
+        icon: <Icon name="align-justify"/>,
             enabled: previous.completed && previous.enabled,
             completed: semantics.where && semantics.where.name
         });

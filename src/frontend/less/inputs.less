@@ -59,7 +59,7 @@ button, .button {
     }
 }
 
-button, .button, input, .input {
+button, .button, input, .input, textarea {
     font-size: 1.25em;
     font-weight: normal;
     border: solid 3px;
@@ -70,7 +70,7 @@ button, .button, input, .input {
     -webkit-tap-highlight-color: transparent;
 }
 
-input, .input {
+input, .input, textarea {
     font-size: 1.25rem;
     padding: @spacing / 2;
     border-radius: 2px;
@@ -80,6 +80,10 @@ input, .input {
     &::-webkit-input-placeholder {
         opacity: .9;
     }
+}
+
+textarea {
+    width: 95%;
 }
 
 .input-group {

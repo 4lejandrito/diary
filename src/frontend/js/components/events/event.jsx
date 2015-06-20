@@ -128,6 +128,7 @@ module.exports = React.createClass({
                     return <li className={what.type}>{this.render_what(what)}</li>;
                 }.bind(this))}
             </ul>
+            {semantics.text && <blockquote>{semantics.text}</blockquote>}
             {this.render_where(semantics.where)}
         </div>;
     }

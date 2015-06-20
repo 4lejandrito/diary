@@ -37,5 +37,6 @@ module.exports = {
     who: Person,
     whom: Person,
     where: Location,
-    when: {type: Date, default: Date.now}
+    when: {type: Date, default: Date.now},
+    text: {type: String}
 };
