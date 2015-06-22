@@ -16,6 +16,7 @@ module.exports = {
         }
     },
     tick: function(reader) {
+        if (!reader.token) return Promise.reject('No token specified');
         var client = github.client(reader.token),
         ghuser = client.user(reader.profile.username),
         ghEvents = Promise.denodeify(ghuser.events.bind(ghuser)),

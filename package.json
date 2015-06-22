@@ -96,6 +96,6 @@
     "watch": "gulp watch",
     "debug": "node-debug src/diary.js",
     "test": "export NODE_ENV=test && export NODE_PATH=./src && gulp test",
-    "coverage": "export NODE_ENV=test && ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
+    "coverage": "export NODE_ENV=test && export NODE_PATH=./src && ./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive"
   }
 }

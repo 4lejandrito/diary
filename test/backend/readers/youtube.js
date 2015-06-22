@@ -79,11 +79,23 @@ describe('Youtube', function() {
 
             describe('and a successfull call to playlistitems', function() {
 
+                var profile = {
+                    displayName: 'displayName',
+                    _json: {
+                        url: 'profileUrl'
+                    }
+                };
+
                 var videos = [{
                     id: '1',
                     snippet: {
                         publishedAt: '1989-12-09T08:00:00.0Z',
-                        title: 'video title'
+                        title: 'video title',
+                        thumbnails: {
+                            medium: {
+                                url: 'http://somepicture1'
+                            }
+                        }
                     },
                     contentDetails: {
                         videoId: 'videoId'
@@ -92,7 +104,12 @@ describe('Youtube', function() {
                     id: '2',
                     snippet: {
                         publishedAt: '1989-12-09T08:00:01.0Z',
-                        title: 'video title 2'
+                        title: 'video title 2',
+                        thumbnails: {
+                            high: {
+                                url: 'http://somepicture2'
+                            }
+                        }
                     },
                     contentDetails: {
                         videoId: 'videoId2'
@@ -109,17 +126,46 @@ describe('Youtube', function() {
 
                 it('resolves to the videos from the users watch history', function() {
                     return expect(youtube.tick({
-                        token: 'test-token'
+                        token: 'test-token',
+                        profile: profile
                     })).to.eventually.deep.equal([{
                         source_id: '1',
                         source: videos[0],
                         date: new Date('1989-12-09T08:00:00.0Z'),
-                        description: 'video title'
+                        semantics: {
+                            verb: "watched",
+                            what: [{
+                                picture: "http://somepicture1",
+                                title: "video title",
+                                type: "video",
+                                url: "//www.youtube.com/watch?v=videoId"
+                            }],
+                            when: new Date('1989-12-09T08:00:00.0Z'),
+                            who: {
+                                isYou: true,
+                                name: "displayName",
+                                url: "profileUrl"
+                            }
+                        }
                     },{
                         source_id: '2',
                         source: videos[1],
                         date: new Date('1989-12-09T08:00:01.0Z'),
-                        description: 'video title 2'
+                        semantics: {
+                            verb: "watched",
+                            what: [{
+                                picture: "http://somepicture2",
+                                title: "video title 2",
+                                type: "video",
+                                url: "//www.youtube.com/watch?v=videoId2"
+                            }],
+                            when: new Date('1989-12-09T08:00:01.0Z'),
+                            who: {
+                                isYou: true,
+                                name: "displayName",
+                                url: "profileUrl"
+                            }
+                        }
                     }]);
                 });
             });

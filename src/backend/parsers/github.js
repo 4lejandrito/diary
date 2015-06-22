@@ -7,7 +7,6 @@ module.exports = function(reader, event) {
         what: what(reader.profile, event),
         complements: complements(event),
         who: who(reader.profile, event),
-        where: where(event),
         when: when(event)
     };
 };
@@ -129,25 +128,13 @@ function complements(event) {
 
 function who(profile, event) {
     return event.actor && {
+        type: 'person',
         name: event.actor.login,
         url: ghURL + event.actor.login,
         isYou: profile.id === event.actor.id
     };
 }
 
-function where(event) {
-    return event.place && {
-        name: event.place.name,
-        city: event.place.location.city,
-        country: event.place.location.country,
-        zip: event.place.location.zip,
-        coordinates: [
-            event.place.location.longitude,
-            event.place.location.latitude
-        ]
-    };
-}
-
 function when(event) {
-    return event.created_time;
+    return new Date(event.created_at);
 }
