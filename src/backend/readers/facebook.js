@@ -1,5 +1,6 @@
 var Facebook = require('../util/facebook');
 var parser = require('../parsers/facebook');
+var Promise = require('promise');
 
 module.exports = {
     type: 'facebook',
@@ -16,6 +17,8 @@ module.exports = {
         }
     },
     tick: function(reader) {
+        if (!reader.token) return Promise.reject('No token specified');
+
         var fb = new Facebook({
             access_token: reader.token,
             since: reader.lastEvent / 1000 | 0,

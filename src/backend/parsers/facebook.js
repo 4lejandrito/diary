@@ -105,5 +105,5 @@ function where(post) {
 }
 
 function when(post) {
-    return post.created_time;
+    return new Date(post.created_time);
 }
