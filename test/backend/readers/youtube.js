@@ -120,7 +120,12 @@ describe('Youtube', function() {
                     api
                     .get('/playlistItems?part=contentDetails%2Csnippet&playlistId=watchhistoryid&maxResults=50')
                     .reply(200, {
-                        items: videos
+                        items: [videos[0]],
+                        nextPageToken: 'somethingrandom'
+                    })
+                    .get('/playlistItems?part=contentDetails%2Csnippet&playlistId=watchhistoryid&maxResults=50&pageToken=somethingrandom')
+                    .reply(200, {
+                        items: [videos[1]]
                     });
                 });
 

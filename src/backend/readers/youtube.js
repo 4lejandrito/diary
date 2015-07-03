@@ -1,6 +1,8 @@
 var Promise = require('promise');
 var google = require('googleapis');
 var parser = require('../parsers/youtube');
+var async = require('async');
+var extend = require('extend');
 
 module.exports = {
     type: 'youtube',
@@ -36,14 +38,30 @@ module.exports = {
             maxResults: 50
         }).then(function(data) {
             var id = data.items[0].contentDetails.relatedPlaylists.watchHistory;
-            return playListItems({
-                auth: auth,
-                part: 'contentDetails,snippet',
-                playlistId: id,
-                maxResults: 50
+            return new Promise(function (resolve, reject) {
+                var videos = [], nextPageToken;
+                async.doWhilst(function(cb) {
+                    playListItems(extend({
+                        auth: auth,
+                        part: 'contentDetails,snippet',
+                        playlistId: id,
+                        maxResults: 50
+                    }, nextPageToken && {pageToken: nextPageToken}))
+                    .then(function(data) {
+                        nextPageToken = data.nextPageToken;
+                        videos = videos.concat(data.items);
+                        cb();
+                    }).catch(function(error) {
+                        cb(error);
+                    });
+                }, function() {
+                    return !!nextPageToken;
+                }, function(err) {
+                    if (err) reject(err); else resolve(videos);
+                });
             });
-        }).then(function(data) {
-            return data.items.filter(function(video) {
+        }).then(function(videos) {
+            return videos.filter(function(video) {
                 return video.snippet.thumbnails;
             }).map(function(video) {
                 return {
